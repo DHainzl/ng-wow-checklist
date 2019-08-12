@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class CharacterService {
+    // curl -u {client_id}:{client_secret} -d grant_type=client_credentials https://us.battle.net/oauth/token
     private readonly accessToken = 'REDACTED';
 
     constructor(

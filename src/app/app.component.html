@@ -1,5 +1,9 @@
 <div>
-    <button (click)="fetch()">Fetch</button>
+    <button (click)="fetch('')">Fetch</button>
+    <button (click)="fetch('achievements')">Fetch Achievements</button>
+    <button (click)="fetch('reputation')">Fetch Reputation</button>
+    <button (click)="fetch('quests')">Fetch Quests</button>
+    <button (click)="fetch('professions')">Fetch Professions</button>
 </div>
 
 <div *ngFor="let result of characterData">

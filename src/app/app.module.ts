@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CharacterService } from './services/battle-net/character/character.service';
 import { CharacterImagePipe } from './services/battle-net/character/character-image.pipe';
 
@@ -18,6 +18,7 @@ import { CharacterImagePipe } from './services/battle-net/character/character-im
         AppRoutingModule,
         HttpClientModule,
         ReactiveFormsModule,
+        FormsModule,
         HttpClientJsonpModule,
     ],
     providers: [
