@@ -1,0 +1,23 @@
+<ng-container *ngIf="!loading; else loadingDiv">
+    <ng-container *ngIf="!error; else errorDiv">
+        <div>
+            <img [src]="characterData.thumbnail | characterImage:characterInfo.region" /> <span class="cc cc-{{ characterData.class }}">{{ characterData.name }}</span> {{ characterData.items.averageItemLevelEquipped }} ({{ characterData.items.neck.azeriteItem.azeriteLevel }})
+        </div>
+
+        <table>
+            <ng-container *ngFor="let item of evaluatedChecklist">
+                <tr *ngIf="item.isShown" [class.complete]="item.isCompleted" [class.incomplete]="!item.isCompleted">
+                    <td><span class="item-name item-indention-{{ item.indention }}" [innerHTML]="item.name"></span></td>
+                    <td>{{ item.note }}</td>
+                    <td>{{ item.isCompleted ? 'done' : '-' }}</td>
+                </tr>
+            </ng-container>
+        </table>
+    </ng-container>
+</ng-container>
+
+<ng-template #loadingDiv>Loading ...</ng-template>
+<ng-template #errorDiv>
+    <div>An error occured: {{ error }}.</div>
+    <div>Have you set up the character on the <a routerLink="/">Main screen?</a></div>
+</ng-template>

@@ -1,17 +1,1 @@
-<div>
-    <button (click)="fetch()">Fetch</button>
-</div>
-
-<div *ngFor="let result of characterData">
-    <ng-container *ngIf="result">
-        <div>
-            <img [src]="result.thumbnail | characterImage:'eu'" /> <span class="cc cc-{{ result.class }}">{{ result.name }}</span> {{ result.items.averageItemLevelEquipped }} ({{ result.items.neck.azeriteItem.azeriteLevel }})
-        </div>
-        <div><strong>Leveling / Drustvar / Drust Do It.</strong> {{ hasAv(result, 12497) }}</div>
-        <div><strong>Leveling / Drustvar / Waycrest Manor</strong> {{ hasQuest(result, 50639) }}</div>
-        <div><strong>Reputation / 7th Legion / Exalted</strong> {{ hasReputation(result, 2159, 7) }}</div>
-        <div><strong>Professions / Kul Tiran Tailoring</strong> {{ hasPrimaryProfession(result, 2533) }}</div>
-        <div><strong>Professions / Kul Tiran Enchanting</strong> {{ hasPrimaryProfession(result, 2486) }}</div>
-        <div><strong>Professions / Kul Tiran Cooking</strong> {{ hasSecondaryProfession(result, 2541) }}</div>
-    </ng-container>
-</div>
+<router-outlet></router-outlet>

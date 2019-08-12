@@ -1,0 +1,14 @@
+<ng-container *ngIf="!loading; else loadingDiv">
+    <ng-container *ngIf="characterData.length; else noCharacters">
+        <div *ngFor="let result of characterData">
+            <ng-container *ngIf="result">
+                <div [routerLink]="[ '/', result.info.region, result.info.realm, result.info.name ]">
+                    <img [src]="result.data.thumbnail | characterImage:result.info.region" /> <span class="cc cc-{{ result.data.class }}">{{ result.data.name }}</span> {{ result.data.items.averageItemLevelEquipped }} ({{ result.data.items.neck.azeriteItem.azeriteLevel }})
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-template #loadingDiv>Loading ...</ng-template>
+<ng-template #noCharacters>No characters set up!</ng-template>
