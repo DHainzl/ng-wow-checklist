@@ -20,4 +20,7 @@ export abstract class ChecklistHandler<T extends ChecklistItem> {
     getSubitems(data: ChecklistHandlerParams<T>): string[] {
         return [];
     }
+    getWowheadId(data: ChecklistHandlerParams<T>): string {
+        return `${data.item.type}-${data.item.id}`;
+    }
 }

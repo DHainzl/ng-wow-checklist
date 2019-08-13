@@ -21,6 +21,10 @@ tr {
     }
 }
 
+a[data-wowhead] {
+    display: block;
+}
+
 .item-name {
     display: inline-block;
 

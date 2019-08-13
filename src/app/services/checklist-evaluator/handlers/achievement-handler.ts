@@ -11,4 +11,8 @@ export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemA
     isCompleted(data: ChecklistHandlerParams<ChecklistItemAchievement>): boolean {
         return data.characterData.achievements.achievementsCompleted.includes(data.item.id);
     }
+
+    getWowheadId(data: ChecklistHandlerParams<ChecklistItemAchievement>): string {
+        return `${data.item.type}-${data.item.id}?who=${data.characterData.name}&when=1273022820000`;
+    }
 }

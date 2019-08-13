@@ -7,7 +7,11 @@
         <table>
             <ng-container *ngFor="let item of evaluatedChecklist">
                 <tr *ngIf="item.isShown" [class.complete]="item.isCompleted" [class.incomplete]="!item.isCompleted">
-                    <td><span class="item-name item-indention-{{ item.indention }}" [innerHTML]="item.name"></span></td>
+                    <td>
+                        <a [attr.data-wowhead]="item.wowheadId">
+                            <span class="item-name item-indention-{{ item.indention }}" [innerHTML]="item.name"></span>
+                        </a>
+                    </td>
                     <td>{{ item.note }}</td>
                     <td>{{ item.isCompleted ? 'done' : '-' }}</td>
                 </tr>

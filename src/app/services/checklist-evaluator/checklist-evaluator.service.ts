@@ -46,6 +46,7 @@ export class ChecklistEvaluatorService {
                 isShown: handler.isShown(handlerParams),
                 note: handler.getNote(handlerParams),
                 isCompleted: handler.isCompleted(handlerParams),
+                wowheadId: handler.getWowheadId(handlerParams),
                 subitems: handler.getSubitems(handlerParams),
             };
         });
