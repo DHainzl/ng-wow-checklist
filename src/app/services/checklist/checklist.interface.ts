@@ -7,7 +7,7 @@ export interface ChecklistItemBase {
     id: number;
     key: string;
     name: string;
-    type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary';
+    type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'item-level';
 }
 
 export interface ChecklistItemHeader extends ChecklistItemBase {
@@ -32,5 +32,13 @@ export interface ChecklistItemSecondaryProfession extends ChecklistItemBase {
     type: 'profession-secondary';
     max: number;
 }
+export interface ChecklistItemLevel extends ChecklistItemBase {
+    type: 'level';
+    max: number;
+}
+export interface ChecklistItemEquipmentLevel extends ChecklistItemBase {
+    type: 'item-level';
+    max: number;
+}
 
-export type ChecklistItem = ChecklistItemHeader | ChecklistItemAchievement | ChecklistItemQuest | ChecklistItemReputation | ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession;
+export type ChecklistItem = ChecklistItemHeader | ChecklistItemAchievement | ChecklistItemQuest | ChecklistItemReputation | ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemEquipmentLevel;

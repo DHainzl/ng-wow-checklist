@@ -42,7 +42,7 @@ export interface BattleNetCharacterItems {
     legs: BattleNetCharacterItem;
     mainHand: BattleNetCharacterItem;
     offHand: BattleNetCharacterItem;
-    nerck: BattleNetCharacterItem;
+    neck: BattleNetCharacterItem;
     shirt: BattleNetCharacterItem;
     shoulder: BattleNetCharacterItem;
     tabard: BattleNetCharacterItem;

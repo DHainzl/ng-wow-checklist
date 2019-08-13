@@ -3,13 +3,15 @@ import { Checklist, ChecklistItemBase, ChecklistItem } from '../checklist/checkl
 import { BattleNetCharacter } from '../battle-net/character/character.interface';
 import { CharacterInfo } from '../character-store/character-store.interface';
 import { EvaluatedChecklistItem } from './checklist-evaluator.interface';
-import { ChecklistHandler, ChecklistHandlerParams } from 'src/app/checklist/handlers/_handler';
 import { ChecklistHeaderHandler } from './handlers/header-handler';
 import { ChecklistAchievementHandler } from './handlers/achievement-handler';
 import { ChecklistQuestHandler } from './handlers/quest-handler';
 import { ChecklistReputationHandler } from './handlers/reputation-handler';
 import { ChecklistPrimaryProfessionHandler } from './handlers/primary-profession-handler';
 import { ChecklistSecondaryProfessionHandler } from './handlers/secondary-profession-handler';
+import { ChecklistHandler, ChecklistHandlerParams } from './handlers/_handler';
+import { ChecklistLevelHandler } from './handlers/level-handler';
+import { ChecklistEquipmentHandler } from './handlers/equpiment-level-handler';
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistEvaluatorService {
@@ -20,6 +22,8 @@ export class ChecklistEvaluatorService {
         reputation: new ChecklistReputationHandler(),
         'profession-primary': new ChecklistPrimaryProfessionHandler(),
         'profession-secondary': new ChecklistSecondaryProfessionHandler(),
+        level: new ChecklistLevelHandler(),
+        "item-level": new ChecklistEquipmentHandler(),
     }
 
     static getHandler(type: ChecklistItemBase['type']): ChecklistHandler<ChecklistItem> {

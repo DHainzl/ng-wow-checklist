@@ -18,7 +18,8 @@ const data: Checklist = {
         { key: 'leveling-tiragarde-freehold', name: 'Freehold', type: 'quest', id: 52148 },
 
         { key: 'leveling-general', name: 'General', type: 'header', id: 0, level: 1 },
-        // TODO Type level
+        { key: 'leveling-general-110', name: 'Level 110', type: 'level', id: 0, max: 110 },
+        { key: 'leveling-general-120', name: 'Level 120', type: 'level', id: 0, max: 120 },
         { key: 'leveling-general-flightmaster', name: 'Unlock Flight Masters Whistle', type: 'quest', id: 51918 },
 
         { key: 'wareffort', name: 'War Effort', type: 'header', id: 0, level: 0 },
@@ -56,7 +57,8 @@ const data: Checklist = {
         { key: 'wareffort-anationunited-siegeofboralus', name: 'Siege of Boralus: Lady Ashvane\'s Return', type: 'quest', id: 52153 },
 
         { key: 'wareffort-gear', name: 'Gear', type: 'header', id: 0, level: 1 },
-        // TODO Type average-ilvl
+        { key: 'wareffort-gear-310', name: 'iLvl 310 / Superior', type: 'item-level', id: 0, max: 310 },
+        { key: 'wareffort-gear-385', name: 'iLvl 385 / Benthic', type: 'item-level', id: 0, max: 385 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', id: 0, level: 0 },
         { key: 'reputation-7thlegion', type: 'reputation', name: '7th Legion', id: 2159, max: 7 },
