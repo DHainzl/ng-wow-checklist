@@ -80,7 +80,7 @@ export class CharactersComponent implements OnInit {
             { region: 'eu', realm: 'antonidas', name: 'bastrik', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'antonidas', name: 'cerulia', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'antonidas', name: 'jaspia', checklistId: 'bfa-alliance', overrides: {} },
-            { region: 'eu', realm: 'blackrock', name: 'andesina', checklistId: '', overrides: {} }
+            { region: 'eu', realm: 'blackrock', name: 'andesina', checklistId: 'bfa-horde', overrides: {} }
         ]);
         this.fetch();
     }
