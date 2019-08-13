@@ -12,6 +12,9 @@ tr {
     &.complete {
         background-color: rgb(169, 208, 142);
     }
+    &.subitem {
+        background-color: rgb(142, 169, 219);
+    }
 
     td {
         padding: 3px 10px;

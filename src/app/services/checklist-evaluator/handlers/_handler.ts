@@ -17,4 +17,7 @@ export abstract class ChecklistHandler<T extends ChecklistItem> {
     getHeader(data: ChecklistHandlerParams<T>): string {
         return data.item.name;
     }
+    getSubitems(data: ChecklistHandlerParams<T>): string[] {
+        return [];
+    }
 }

@@ -11,6 +11,13 @@
                     <td>{{ item.note }}</td>
                     <td>{{ item.isCompleted ? 'done' : '-' }}</td>
                 </tr>
+                <ng-container *ngIf="item.subitems.length">
+                    <tr *ngFor="let subitem of item.subitems" class="subitem">
+                        <td><span class="item-name item-indention-{{ item.indention + 1}}">{{ subitem }}</span></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </ng-container>
             </ng-container>
         </table>
     </ng-container>

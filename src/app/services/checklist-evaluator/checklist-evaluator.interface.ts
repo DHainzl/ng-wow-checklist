@@ -4,4 +4,5 @@ export class EvaluatedChecklistItem {
     isShown: boolean;
     note: string;
     isCompleted: boolean;
+    subitems: string[];
 }
