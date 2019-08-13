@@ -11,4 +11,7 @@
 </ng-container>
 
 <ng-template #loadingDiv>Loading ...</ng-template>
-<ng-template #noCharacters>No characters set up!</ng-template>
+<ng-template #noCharacters>
+    No characters set up!
+    <a (click)="setupTestData()">Click to set up test data</a>
+</ng-template>
