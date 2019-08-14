@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~8.2.0",
     "@angular/router": "~8.2.0",
     "@dhainzl/ng-tslint-config": "^7.2.1",
+    "@now/node": "^0.12.6",
     "localforage": "^1.7.3",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
