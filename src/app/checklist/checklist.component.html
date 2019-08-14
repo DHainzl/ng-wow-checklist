@@ -4,6 +4,7 @@
             <img [src]="characterData.thumbnail | characterImage:characterInfo.region" /> <span class="cc cc-{{ characterData.class }}">{{ characterData.name }}</span> {{ characterData.items.averageItemLevelEquipped }} ({{ characterData.items.neck.azeriteItem.azeriteLevel }})
             
             <div class="pull-right">
+                <button (click)="refresh()">Refresh</button>
                 <label>
                     <input type="checkbox" [(ngModel)]="hideCompleted" (ngModelChange)="hideCompletedChange($event)" />
                     Hide Completed Items

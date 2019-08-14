@@ -30,6 +30,10 @@ export class CharactersComponent implements OnInit {
         this.fetch();
     }
 
+    refresh(): void {
+        this.characterService.clearCache().subscribe(() => this.fetch());
+    }
+
     fetch(): void {
         this.loading = true;
         this.resolved = 0;
@@ -41,7 +45,7 @@ export class CharactersComponent implements OnInit {
             }
 
             characters.forEach((c, idx) => {
-                this.characterService.getCharacter(c.region, c.realm, c.name, [ 'items' ])
+                this.characterService.getCharacter(c.region, c.realm, c.name, [ 'items' ], true)
                   .subscribe(result => {
                       this.characterData[idx] = {
                           info: c,

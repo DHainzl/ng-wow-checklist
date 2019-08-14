@@ -52,7 +52,11 @@ export class ChecklistComponent implements OnInit {
         this.titleService.setTitle(`WoW Checklist`);
     }
 
-    private loadData(): void {
+    refresh(): void {
+        this.loadData(false);
+    }
+
+    private loadData(cached: boolean = true): void {
         this.loading = true;
 
         this.characterStoreService.getCharacter(this.region, this.realm, this.name).pipe(
@@ -62,7 +66,7 @@ export class ChecklistComponent implements OnInit {
             }),
             flatMap(checklist => {
                 this.checklist = checklist;
-                return this.characterService.getCharacter(this.region, this.realm, this.name, ChecklistComponent.FIELDS);
+                return this.characterService.getCharacter(this.region, this.realm, this.name, ChecklistComponent.FIELDS, cached);
             }),
         )
         .subscribe(
