@@ -1,6 +1,6 @@
 <ng-container *ngIf="!loading; else loadingDiv">
     <ng-container *ngIf="characterData.length; else noCharacters">
-        <button (click)="refresh()">Refresh</button>
+        <button (click)="refresh()">Refresh All</button>
         <div *ngFor="let result of characterData">
             <ng-container *ngIf="result">
                 <div [routerLink]="[ '/', result.info.region, result.info.realm, result.info.name ]">
