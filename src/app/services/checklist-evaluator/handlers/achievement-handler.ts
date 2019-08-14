@@ -14,6 +14,15 @@ export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemA
     }
 
     getWowheadId(data: ChecklistHandlerParams<ChecklistItemAchievement>): string {
-        return `${data.item.type}-${data.item.id}?who=${data.characterData.name}&when=1273022820000`;
+        let link = `${data.item.type}-${data.item.id}`;
+
+        const achievementIdx = data.characterData.achievements.achievementsCompleted.indexOf(data.item.id);
+
+        if (achievementIdx !== -1) {
+            const timestamp = data.characterData.achievements.achievementsCompletedTimestamp[achievementIdx];
+            link += `?who=${data.characterData.name}&when=${timestamp}`;
+        }
+
+        return link;
     }
 }
