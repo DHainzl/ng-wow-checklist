@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Region } from '../services/battle-net/battle-net.interface';
-import { BattleNetCharacterService } from '../services/battle-net/character/character.service';
-import { CharacterStoreService } from '../services/character-store/character-store.service';
-import { CharacterInfo } from '../services/character-store/character-store.interface';
-import { BattleNetCharacter } from '../services/battle-net/character/character.interface';
-import { LocalStorageService } from '../services/local-storage/local-storage.service';
 import { Router } from '@angular/router';
+
+import { Region } from '../services/battle-net/battle-net.interface';
+import { BattleNetCharacter } from '../services/battle-net/character/character.interface';
+import { BattleNetCharacterService } from '../services/battle-net/character/character.service';
+import { CharacterInfo } from '../services/character-store/character-store.interface';
+import { CharacterStoreService } from '../services/character-store/character-store.service';
+import { LocalStorageService } from '../services/local-storage/local-storage.service';
 
 @Component({
     selector: 'app-characters',
@@ -25,7 +26,7 @@ export class CharactersComponent implements OnInit {
         private router: Router,
     ) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.fetch();
     }
 
@@ -42,22 +43,22 @@ export class CharactersComponent implements OnInit {
             characters.forEach((c, idx) => {
                 this.characterService.getCharacter(c.region, c.realm, c.name, [ 'items' ])
                   .subscribe(result => {
-                        this.characterData[idx] = {
-                            info: c,
-                            data: result,
-                        };
+                      this.characterData[idx] = {
+                          info: c,
+                          data: result,
+                      };
 
-                        this.resolved++;
+                      this.resolved++;
 
-                        if (characters.length === this.resolved) {
-                            this.loading = false;
-                        }
+                      if (characters.length === this.resolved) {
+                          this.loading = false;
+                      }
                   });
             });
-        })   
+        });
     }
 
-    setupTestData() {
+    setupTestData(): void {
         this.localStorageService.set('characters', [
             { region: 'eu', realm: 'antonidas', name: 'hoazl', checklistId: 'bfa-alliance', overrides: {
                 'reputation-championsofazeroth': { type: 'reputation', max: 7 },
@@ -80,7 +81,7 @@ export class CharactersComponent implements OnInit {
             { region: 'eu', realm: 'antonidas', name: 'bastrik', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'antonidas', name: 'cerulia', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'antonidas', name: 'jaspia', checklistId: 'bfa-alliance', overrides: {} },
-            { region: 'eu', realm: 'blackrock', name: 'andesina', checklistId: 'bfa-horde', overrides: {} }
+            { region: 'eu', realm: 'blackrock', name: 'andesina', checklistId: 'bfa-horde', overrides: {} },
         ]);
         this.fetch();
     }

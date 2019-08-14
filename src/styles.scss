@@ -26,3 +26,15 @@ h2, h3 {
     margin-top: 0;
     margin-bottom: 0;
 }
+
+.group:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.pull-left {
+    float: left;
+}
+.pull-right {
+    float: right;
+}

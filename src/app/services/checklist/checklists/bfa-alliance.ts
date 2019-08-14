@@ -1,10 +1,10 @@
-import { Checklist } from "../checklist.interface";
+import { Checklist } from '../checklist.interface';
 
 const data: Checklist = {
     id: 'bfa-alliance',
     items: [
         { key: 'leveling', name: 'Leveling', type: 'header', id: 0, level: 0 },
-        
+
         { key: 'leveling-drustvar', name: 'Drustvar', type: 'header', id: 0, level: 1 },
         { key: 'leveling-drustvar-drustdoit', name: 'Drust Do It.', type: 'achievement', id: 12497 },
         { key: 'leveling-drustvar-waycrestmanor', name: 'Waycrest Manor', type: 'quest', id: 50639 },
@@ -116,9 +116,9 @@ const data: Checklist = {
         { key: 'ship-jestereth', name: 'Follower: Grand Admiral Jes-Tereth', type: 'header', id: 0, level: 1 },
         { key: 'ship-jestereth-collected', name: 'Collected', type: 'quest', id: 56378 },
         // TODO Type: follower-level
-    ]
+    ],
 };
 
 export {
-    data
+    data,
 };

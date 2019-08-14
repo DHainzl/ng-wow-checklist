@@ -1,5 +1,6 @@
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 import { ChecklistItemEquipmentLevel } from 'src/app/services/checklist/checklist.interface';
+
+import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEquipmentLevel> {
     private static NAME_MAP: { [ slot: string ]: string } = {

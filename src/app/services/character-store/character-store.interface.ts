@@ -8,12 +8,11 @@ export interface CharacterInfo {
     overrides: { [ id: string ]: CharacterInfoOverride };
 }
 
-
 export interface CharacterInfoBaseOverride {
     type: 'reputation' | 'profession-secondary';
 }
 export interface CharacterInfoReputationOverride extends CharacterInfoBaseOverride {
-    type: 'reputation',
+    type: 'reputation';
     max: number;
 }
 export interface CharacterInfoSecondaryProfessionOverride extends CharacterInfoBaseOverride {

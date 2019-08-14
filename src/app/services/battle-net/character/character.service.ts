@@ -5,6 +5,7 @@ import { flatMap } from 'rxjs/operators';
 
 import { Region } from '../battle-net.interface';
 import { BattleNetService } from '../battle-net.service';
+
 import { BattleNetCharacter } from './character.interface';
 
 @Injectable({ providedIn: 'root' })

@@ -1,5 +1,6 @@
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 import { ChecklistItemQuest } from 'src/app/services/checklist/checklist.interface';
+
+import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistQuestHandler extends ChecklistHandler<ChecklistItemQuest> {
     isShown(data: ChecklistHandlerParams<ChecklistItemQuest>): boolean {
