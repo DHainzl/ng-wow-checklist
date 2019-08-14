@@ -1,5 +1,6 @@
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 import { ChecklistItemAchievement } from 'src/app/services/checklist/checklist.interface';
+
+import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemAchievement> {
     isShown(data: ChecklistHandlerParams<ChecklistItemAchievement>): boolean {

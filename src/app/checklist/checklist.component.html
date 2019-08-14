@@ -1,11 +1,18 @@
 <ng-container *ngIf="!loading; else loadingDiv">
     <ng-container *ngIf="!error; else errorDiv">
-        <div>
+        <div class="character-data group">
             <img [src]="characterData.thumbnail | characterImage:characterInfo.region" /> <span class="cc cc-{{ characterData.class }}">{{ characterData.name }}</span> {{ characterData.items.averageItemLevelEquipped }} ({{ characterData.items.neck.azeriteItem.azeriteLevel }})
+            
+            <div class="pull-right">
+                <label>
+                    <input type="checkbox" [(ngModel)]="hideCompleted" (ngModelChange)="hideCompletedChange($event)" />
+                    Hide Completed Items
+                </label>
+            </div>
         </div>
 
         <table>
-            <ng-container *ngFor="let item of evaluatedChecklist">
+            <ng-container *ngFor="let item of evaluatedChecklist | showCompleted:hideCompleted">
                 <tr *ngIf="item.isShown" [class.complete]="item.isCompleted" [class.incomplete]="!item.isCompleted">
                     <td>
                         <a [attr.data-wowhead]="item.wowheadId">

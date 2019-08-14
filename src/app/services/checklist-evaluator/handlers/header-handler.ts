@@ -1,6 +1,8 @@
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
-import { ChecklistItemHeader, ChecklistItem } from 'src/app/services/checklist/checklist.interface';
+import { ChecklistItem, ChecklistItemHeader } from 'src/app/services/checklist/checklist.interface';
+
 import { ChecklistEvaluatorService } from '../checklist-evaluator.service';
+
+import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader> {
     getHeader(data: ChecklistHandlerParams<ChecklistItemHeader>): string {
@@ -44,12 +46,15 @@ export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader
         return fromCurrent;
     }
 
-    private getHandlerParams(item: ChecklistItem, data: ChecklistHandlerParams<ChecklistItemHeader>): ChecklistHandlerParams<ChecklistItem> {
+    private getHandlerParams(
+        item: ChecklistItem,
+        data: ChecklistHandlerParams<ChecklistItemHeader>,
+    ): ChecklistHandlerParams<ChecklistItem> {
         return {
             item,
             characterData: data.characterData,
             checklist: data.checklist,
             overrides: data.overrides,
-        }
+        };
     }
 }

@@ -1,7 +1,8 @@
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
-import { ChecklistItemSecondaryProfession } from 'src/app/services/checklist/checklist.interface';
 import { BattleNetCharacter, BattleNetCharacterProfession } from 'src/app/services/battle-net/character/character.interface';
 import { CharacterInfo } from 'src/app/services/character-store/character-store.interface';
+import { ChecklistItemSecondaryProfession } from 'src/app/services/checklist/checklist.interface';
+
+import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<ChecklistItemSecondaryProfession> {
     isShown(data: ChecklistHandlerParams<ChecklistItemSecondaryProfession>): boolean {

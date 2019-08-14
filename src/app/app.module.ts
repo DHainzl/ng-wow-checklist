@@ -6,8 +6,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharactersComponent } from './characters/characters.component';
-import { CharacterImagePipe } from './services/battle-net/character/character-image.pipe';
 import { ChecklistComponent } from './checklist/checklist.component';
+import { ShowCompletedPipe } from './checklist/show-completed.pipe';
+import { CharacterImagePipe } from './services/battle-net/character/character-image.pipe';
 
 @NgModule({
     declarations: [
@@ -15,6 +16,7 @@ import { ChecklistComponent } from './checklist/checklist.component';
         CharacterImagePipe,
         CharactersComponent,
         ChecklistComponent,
+        ShowCompletedPipe,
     ],
     imports: [
         BrowserModule,

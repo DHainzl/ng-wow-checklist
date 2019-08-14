@@ -1,5 +1,6 @@
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 import { ChecklistItemLevel } from 'src/app/services/checklist/checklist.interface';
+
+import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> {
     isShown(data: ChecklistHandlerParams<ChecklistItemLevel>): boolean {
@@ -7,7 +8,7 @@ export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> 
     }
     getNote(data: ChecklistHandlerParams<ChecklistItemLevel>): string {
         if (!this.isCompleted(data)) {
-            return `${data.characterData.level} / ${data.item.max}`
+            return `${data.characterData.level} / ${data.item.max}`;
         }
         return '';
     }

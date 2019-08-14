@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { CharactersComponent } from './characters/characters.component';
@@ -19,12 +19,12 @@ const routes: Routes = [
         path: '',
         redirectTo: 'characters',
         pathMatch: 'full',
-    }
+    },
 ];
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes)
+        RouterModule.forRoot(routes),
     ],
     exports: [ RouterModule ],
 })

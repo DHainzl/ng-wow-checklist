@@ -18,7 +18,7 @@ export interface BattleNetCharacter {
     professions?: BattleNetCharacterProfessions;
     quests: number[];
     reputation: BattleNetCharacterReputation[];
-};
+}
 
 export interface BattleNetCharacterAchievements {
     achievementsCompleted: number[];
@@ -49,7 +49,7 @@ export interface BattleNetCharacterItems {
     trinket1: BattleNetCharacterItem;
     trinket2: BattleNetCharacterItem;
     waist: BattleNetCharacterItem;
-    wrist: BattleNetCharacterItem;   
+    wrist: BattleNetCharacterItem;
 }
 
 // tslint:disable-next-line:no-any
