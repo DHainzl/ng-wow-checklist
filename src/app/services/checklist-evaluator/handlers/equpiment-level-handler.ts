@@ -3,25 +3,6 @@ import { ChecklistItemEquipmentLevel } from 'src/app/services/checklist/checklis
 import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEquipmentLevel> {
-    private static NAME_MAP: { [ slot: string ]: string } = {
-        back: 'Back',
-        chest: 'Chest',
-        feet: 'Feet',
-        finger1: 'Finger 1',
-        finger2: 'Finger 2',
-        hands: 'Hands',
-        head: 'Head',
-        legs: 'Legs',
-        mainHand: 'Main Hand',
-        offHand: 'Off-Hand',
-        neck: 'Neck',
-        shoulder: 'Shoulder',
-        trinket1: 'Trinket 1',
-        trinket2: 'Trinket 2',
-        waist: 'Waist',
-        wrist: 'Wrist',
-    };
-
     isShown(data: ChecklistHandlerParams<ChecklistItemEquipmentLevel>): boolean {
         return true;
     }
@@ -36,16 +17,13 @@ export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEqu
     }
 
     private getItemsBelowLevel(data: ChecklistHandlerParams<ChecklistItemEquipmentLevel>): string[] {
-        const excludedKeys = [ 'averageItemLevel', 'averageItemLevelEquipped', 'shirt', 'tabard' ];
+        const excludedKeys = [ 'SHIRT', 'TABARD' ];
 
-        return Object.keys(data.characterData.items)
-            .filter(key => excludedKeys.indexOf(key) === -1)
-            .filter(key => data.characterData.items[key].itemLevel < data.item.max)
-            .map(key => {
-                const slot = ChecklistEquipmentHandler.NAME_MAP[key];
-                const itemLevel = data.characterData.items[key].itemLevel;
-
-                return `${slot} (${itemLevel})`;
+        return data.characterData.equipment.equipped_items
+            .filter(item => excludedKeys.indexOf(item.slot.type) === -1)
+            .filter(item => item.level.value < data.item.max)
+            .map(item => {
+                return `${item.slot.name} (${item.level.value})`;
             });
     }
 }

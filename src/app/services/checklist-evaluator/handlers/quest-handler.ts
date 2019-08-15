@@ -10,6 +10,6 @@ export class ChecklistQuestHandler extends ChecklistHandler<ChecklistItemQuest> 
         return '';
     }
     isCompleted(data: ChecklistHandlerParams<ChecklistItemQuest>): boolean {
-        return data.characterData.quests.includes(data.item.id);
+        return data.characterData.mainCharacter.quests.includes(data.item.id);
     }
 }

@@ -8,11 +8,11 @@ export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> 
     }
     getNote(data: ChecklistHandlerParams<ChecklistItemLevel>): string {
         if (!this.isCompleted(data)) {
-            return `${data.characterData.level} / ${data.item.max}`;
+            return `${data.characterData.profile.level} / ${data.item.max}`;
         }
         return '';
     }
     isCompleted(data: ChecklistHandlerParams<ChecklistItemLevel>): boolean {
-        return data.characterData.level >= data.item.max;
+        return data.characterData.profile.level >= data.item.max;
     }
 }
