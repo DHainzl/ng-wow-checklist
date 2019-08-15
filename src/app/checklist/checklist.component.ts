@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Region } from '../services/battle-net/battle-net.interface';
-import { BattleNetCharacter } from '../services/battle-net/character/character.interface';
 import { BattleNetCharacterService } from '../services/battle-net/character/character.service';
 import { CharacterInfo } from '../services/character-store/character-store.interface';
 import { CharacterStoreService } from '../services/character-store/character-store.service';
-import { EvaluatedChecklistItem } from '../services/checklist-evaluator/checklist-evaluator.interface';
+import { AllCharacterData, EvaluatedChecklistItem } from '../services/checklist-evaluator/checklist-evaluator.interface';
 import { ChecklistEvaluatorService } from '../services/checklist-evaluator/checklist-evaluator.service';
 import { Checklist } from '../services/checklist/checklist.interface';
 import { ChecklistService } from '../services/checklist/checklist.service';
@@ -20,7 +20,7 @@ import { LocalStorageService } from '../services/local-storage/local-storage.ser
     styleUrls: [ './checklist.component.scss' ],
 })
 export class ChecklistComponent implements OnInit {
-    private static readonly FIELDS = [ 'items', 'achievements', 'reputation', 'quests', 'professions' ];
+    private static readonly FIELDS = [ 'reputation', 'quests', 'professions' ];
 
     loading: boolean = true;
     error: string = '';
@@ -33,7 +33,7 @@ export class ChecklistComponent implements OnInit {
 
     private checklist: Checklist;
     characterInfo: CharacterInfo;
-    characterData: BattleNetCharacter;
+    characterData: AllCharacterData;
     evaluatedChecklist: EvaluatedChecklistItem[];
 
     constructor(
@@ -66,17 +66,30 @@ export class ChecklistComponent implements OnInit {
             }),
             flatMap(checklist => {
                 this.checklist = checklist;
-                return this.characterService.getCharacter(this.region, this.realm, this.name, ChecklistComponent.FIELDS, cached);
+                return forkJoin(
+                    this.characterService.getCharacter(this.region, this.realm, this.name, ChecklistComponent.FIELDS, cached),
+                    this.characterService.getAchievement(this.region, this.realm, this.name, cached),
+                    this.characterService.getEquipment(this.region, this.realm, this.name, cached),
+                    this.characterService.getMedia(this.region, this.realm, this.name, cached),
+                    this.characterService.getProfile(this.region, this.realm, this.name, cached),
+                );
             }),
         )
         .subscribe(
-            data => {
-                this.characterData = data;
+            ([ characterData, achievements, equipment, media, profile ]) => {
+                this.characterData = {
+                    mainCharacter: characterData,
+                    achievements,
+                    equipment,
+                    media,
+                    profile,
+                };
 
                 this.evaluatedChecklist = this.checklistEvaluatorService
                     .evaluateChecklist(this.checklist.items, this.characterData, this.characterInfo.overrides);
 
-                const title = `${this.characterData.name} @ ${this.region.toUpperCase()}-${this.characterData.realm} :: WoW Checklist`;
+                // tslint:disable-next-line:max-line-length
+                const title = `${this.characterData.profile.name} @ ${this.region.toUpperCase()}-${this.characterData.profile.realm.name} :: WoW Checklist`;
                 this.titleService.setTitle(title);
                 this.loading = false;
             },
@@ -88,7 +101,6 @@ export class ChecklistComponent implements OnInit {
     }
 
     hideCompletedChange(value: boolean): void {
-        console.log('uhm', value);
         this.localStorageService.set('hideCompleted', value);
     }
 }

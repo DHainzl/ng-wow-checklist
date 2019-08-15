@@ -1,10 +1,11 @@
-import { BattleNetCharacter } from 'src/app/services/battle-net/character/character.interface';
 import { CharacterInfo } from 'src/app/services/character-store/character-store.interface';
 import { Checklist, ChecklistItem } from 'src/app/services/checklist/checklist.interface';
 
+import { AllCharacterData } from '../checklist-evaluator.interface';
+
 export interface ChecklistHandlerParams<T extends ChecklistItem> {
     item: T;
-    characterData: BattleNetCharacter;
+    characterData: AllCharacterData;
     overrides: CharacterInfo['overrides'];
     checklist: Checklist['items'];
 }
