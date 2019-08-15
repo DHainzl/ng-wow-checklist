@@ -1,19 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { flatMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { LocalForageService } from '../../local-forage/local-forage.service';
 import { Region } from '../battle-net.interface';
 import { BattleNetService } from '../battle-net.service';
 
 import { BattleNetCharacter } from './character.interface';
+import { BattleNetAchievements } from './types/battlenet-achievement';
+import { BattleNetEquipment } from './types/battlenet-equipment';
+import { BattleNetMedia } from './types/battlenet-media';
+import { BattleNetProfile } from './types/battlenet-profile';
 
 @Injectable({ providedIn: 'root' })
 export class BattleNetCharacterService {
     constructor(
         private bnetService: BattleNetService,
-        private http: HttpClient,
         private localForageService: LocalForageService,
     ) { }
 
@@ -24,35 +26,37 @@ export class BattleNetCharacterService {
         fields: string[],
         cached: boolean = false,
     ): Observable<BattleNetCharacter> {
-        const cacheKey = `character-${region}-${realm}-${characterName}-${fields.join(',')}`;
-
         const baseUrl =  `${this.bnetService.getBaseUrl(region)}/wow/character/${realm}/${characterName}`;
         const url = `${baseUrl}?locale=en_US&fields=${fields.join(',')}`;
 
-        let cache$: Observable<BattleNetCharacter | undefined> = of(undefined);
-        if (cached) {
-            cache$ = this.localForageService.get(cacheKey);
-        }
+        return this.bnetService.requestWithCache(url, region, realm, characterName, fields.join(','), cached, 'jsonp');
+    }
 
-        return cache$.pipe(
-            flatMap(cachedData => {
-                if (cachedData) {
-                    return of(cachedData);
-                }
+    public getAchievement(region: Region, realm: string, characterName: string, cached: boolean = true): Observable<BattleNetAchievements> {
+        return this.getFromProfileAPI(region, realm, characterName, cached, '/achievements');
+    }
 
-                return this.bnetService.getSecret(region).pipe(
-                    flatMap(secret => {
-                        return this.http.jsonp<BattleNetCharacter>(`${url}&access_token=${secret.result.access_token}`, 'jsonp');
-                    }),
-                    tap(character => {
-                        this.localForageService.set(cacheKey, character);
-                    }),
-                );
-            }),
-        );
+    public getEquipment(region: Region, realm: string, characterName: string, cached: boolean = true): Observable<BattleNetEquipment> {
+        return this.getFromProfileAPI(region, realm, characterName, cached, '/equipment');
+    }
+
+    public getMedia(region: Region, realm: string, characterName: string, cached: boolean = true): Observable<BattleNetMedia> {
+        return this.getFromProfileAPI(region, realm, characterName, cached, '/character-media');
+    }
+
+    public getProfile(region: Region, realm: string, characterName: string, cached: boolean = true): Observable<BattleNetProfile> {
+        return this.getFromProfileAPI(region, realm, characterName, cached, '');
+    }
+
+    private getFromProfileAPI<T>(region: Region, realm: string, characterName: string, cached: boolean, endpoint: string): Observable<T> {
+        const baseUrl =  `${this.bnetService.getBaseUrl(region)}/profile/wow/character/${realm}/${characterName}${endpoint}`;
+        const url = `${baseUrl}?namespace=profile-${region}&locale=en_US`;
+
+        return this.bnetService.requestWithCache(url, region, realm, characterName, endpoint, cached, 'json');
     }
 
     public clearCache(): Observable<void[]> {
         return this.localForageService.clearKeysStartingWith('character-');
     }
+
 }

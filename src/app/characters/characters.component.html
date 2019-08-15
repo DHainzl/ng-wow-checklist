@@ -4,7 +4,7 @@
         <div *ngFor="let result of characterData">
             <ng-container *ngIf="result">
                 <div [routerLink]="[ '/', result.info.region, result.info.realm, result.info.name ]">
-                    <img [src]="result.data.thumbnail | characterImage:result.info.region" /> <span class="cc cc-{{ result.data.class }}">{{ result.data.name }}</span> {{ result.data.items.averageItemLevelEquipped }} ({{ result.data.items.neck.azeriteItem.azeriteLevel }})
+                    <img [src]="result.media.avatar_url" /> <span class="cc cc-{{ result.profile.character_class.id }}">{{ result.profile.name }}</span> {{ result.profile.equipped_item_level }} ({{ result.equipment.equipped_items | hoaLevel }})
                 </div>
             </ng-container>
         </div>

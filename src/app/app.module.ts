@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { CharactersComponent } from './characters/characters.component';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { ShowCompletedPipe } from './checklist/show-completed.pipe';
+import { HoALevelPipe } from './pipes/hoa-level.pipe';
 import { CharacterImagePipe } from './services/battle-net/character/character-image.pipe';
 
 @NgModule({
@@ -17,6 +18,8 @@ import { CharacterImagePipe } from './services/battle-net/character/character-im
         CharactersComponent,
         ChecklistComponent,
         ShowCompletedPipe,
+
+        HoALevelPipe,
     ],
     imports: [
         BrowserModule,

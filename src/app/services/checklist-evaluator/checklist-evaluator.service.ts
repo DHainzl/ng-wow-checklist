@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { BattleNetCharacter } from '../battle-net/character/character.interface';
 import { CharacterInfo } from '../character-store/character-store.interface';
 import { Checklist, ChecklistItem, ChecklistItemBase } from '../checklist/checklist.interface';
 
-import { EvaluatedChecklistItem } from './checklist-evaluator.interface';
+import { AllCharacterData, EvaluatedChecklistItem } from './checklist-evaluator.interface';
 import { ChecklistHandler, ChecklistHandlerParams } from './handlers/_handler';
 import { ChecklistAchievementHandler } from './handlers/achievement-handler';
 import { ChecklistEquipmentHandler } from './handlers/equpiment-level-handler';
@@ -34,7 +33,7 @@ export class ChecklistEvaluatorService {
 
     evaluateChecklist(
         items: Checklist['items'],
-        data: BattleNetCharacter,
+        data: AllCharacterData,
         overrides: CharacterInfo['overrides'],
     ): EvaluatedChecklistItem[] {
         return items.map(item => {

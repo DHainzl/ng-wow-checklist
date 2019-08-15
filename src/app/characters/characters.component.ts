@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
-import { Region } from '../services/battle-net/battle-net.interface';
-import { BattleNetCharacter } from '../services/battle-net/character/character.interface';
 import { BattleNetCharacterService } from '../services/battle-net/character/character.service';
+import { BattleNetEquipment } from '../services/battle-net/character/types/battlenet-equipment';
+import { BattleNetMedia } from '../services/battle-net/character/types/battlenet-media';
+import { BattleNetProfile } from '../services/battle-net/character/types/battlenet-profile';
 import { CharacterInfo } from '../services/character-store/character-store.interface';
 import { CharacterStoreService } from '../services/character-store/character-store.service';
 import { LocalStorageService } from '../services/local-storage/local-storage.service';
@@ -16,14 +17,18 @@ import { LocalStorageService } from '../services/local-storage/local-storage.ser
 export class CharactersComponent implements OnInit {
     loading: boolean = true;
 
-    characterData: { info: CharacterInfo, data: BattleNetCharacter }[] = [];
+    characterData: {
+        info: CharacterInfo,
+        profile: BattleNetProfile,
+        media: BattleNetMedia,
+        equipment: BattleNetEquipment,
+    }[] = [];
     resolved: number = 0;
 
     constructor(
         private characterService: BattleNetCharacterService,
         private characterStoreService: CharacterStoreService,
         private localStorageService: LocalStorageService,
-        private router: Router,
     ) { }
 
     ngOnInit(): void {
@@ -45,19 +50,24 @@ export class CharactersComponent implements OnInit {
             }
 
             characters.forEach((c, idx) => {
-                this.characterService.getCharacter(c.region, c.realm, c.name, [ 'items' ], true)
-                  .subscribe(result => {
-                      this.characterData[idx] = {
-                          info: c,
-                          data: result,
-                      };
+                forkJoin(
+                    this.characterService.getProfile(c.region, c.realm, c.name, true),
+                    this.characterService.getMedia(c.region, c.realm, c.name, true),
+                    this.characterService.getEquipment(c.region, c.realm, c.name, true),
+                ).subscribe(([ profile, media, equipment ]) => {
+                    this.characterData[idx] = {
+                        info: c,
+                        profile,
+                        media,
+                        equipment,
+                    };
 
-                      this.resolved++;
+                    this.resolved++;
 
-                      if (characters.length === this.resolved) {
-                          this.loading = false;
-                      }
-                  });
+                    if (characters.length === this.resolved) {
+                        this.loading = false;
+                    }
+                });
             });
         });
     }

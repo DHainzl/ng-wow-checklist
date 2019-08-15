@@ -20,7 +20,7 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
             return '';
         }
 
-        const reputation = this.getReputation(data.item, data.characterData);
+        const reputation = this.getReputation(data.item, data.characterData.mainCharacter);
         if (!reputation) {
             return '';
         }
@@ -29,7 +29,7 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
     }
 
     isCompleted(data: ChecklistHandlerParams<ChecklistItemReputation>): boolean {
-        const reputation = this.getReputation(data.item, data.characterData);
+        const reputation = this.getReputation(data.item, data.characterData.mainCharacter);
         if (!reputation) {
             return false;
         }

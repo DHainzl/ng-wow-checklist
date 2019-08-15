@@ -13,43 +13,9 @@ export interface BattleNetCharacter {
     thumbnail: string;
     totalHonorableKills: number;
 
-    achievements?: BattleNetCharacterAchievements;
-    items?: BattleNetCharacterItems;
     professions?: BattleNetCharacterProfessions;
     quests: number[];
     reputation: BattleNetCharacterReputation[];
-}
-
-export interface BattleNetCharacterAchievements {
-    achievementsCompleted: number[];
-    achievementsCompletedTimestamp: number[];
-    criteria: number[];
-    criteriaCreated: number[];
-    criteriaQuantity: number[];
-    criteriaTimestamp: number[];
-}
-
-export interface BattleNetCharacterItems {
-    averageItemLevel: number;
-    averageItemLevelEquipped: number;
-    back: BattleNetCharacterItem;
-    chest: BattleNetCharacterItem;
-    feet: BattleNetCharacterItem;
-    finger1: BattleNetCharacterItem;
-    finger2: BattleNetCharacterItem;
-    hands: BattleNetCharacterItem;
-    head: BattleNetCharacterItem;
-    legs: BattleNetCharacterItem;
-    mainHand: BattleNetCharacterItem;
-    offHand: BattleNetCharacterItem;
-    neck: BattleNetCharacterItem;
-    shirt: BattleNetCharacterItem;
-    shoulder: BattleNetCharacterItem;
-    tabard: BattleNetCharacterItem;
-    trinket1: BattleNetCharacterItem;
-    trinket2: BattleNetCharacterItem;
-    waist: BattleNetCharacterItem;
-    wrist: BattleNetCharacterItem;
 }
 
 // tslint:disable-next-line:no-any

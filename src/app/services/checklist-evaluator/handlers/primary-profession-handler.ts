@@ -5,10 +5,10 @@ import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<ChecklistItemPrimaryProfession> {
     isShown(data: ChecklistHandlerParams<ChecklistItemPrimaryProfession>): boolean {
-        return !!this.getProfession(data.item, data.characterData);
+        return !!this.getProfession(data.item, data.characterData.mainCharacter);
     }
     getNote(data: ChecklistHandlerParams<ChecklistItemPrimaryProfession>): string {
-        const profession = this.getProfession(data.item, data.characterData);
+        const profession = this.getProfession(data.item, data.characterData.mainCharacter);
         if (!profession) {
             return '';
         }
@@ -16,7 +16,7 @@ export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<Checklis
         return `${profession.rank} / ${data.item.max}`;
     }
     isCompleted(data: ChecklistHandlerParams<ChecklistItemPrimaryProfession>): boolean {
-        const profession = this.getProfession(data.item, data.characterData);
+        const profession = this.getProfession(data.item, data.characterData.mainCharacter);
         if (!profession) {
             return false;
         }

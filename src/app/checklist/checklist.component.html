@@ -1,7 +1,7 @@
 <ng-container *ngIf="!loading; else loadingDiv">
     <ng-container *ngIf="!error; else errorDiv">
         <div class="character-data group">
-            <img [src]="characterData.thumbnail | characterImage:characterInfo.region" /> <span class="cc cc-{{ characterData.class }}">{{ characterData.name }}</span> {{ characterData.items.averageItemLevelEquipped }} ({{ characterData.items.neck.azeriteItem.azeriteLevel }})
+            <img [src]="characterData.media.avatar_url" /> <span class="cc cc-{{ characterData.profile.character_class.id }}">{{ characterData.profile.name }}</span> {{ characterData.profile.equipped_item_level }} ({{ characterData.equipment.equipped_items | hoaLevel }})
             
             <div class="pull-right">
                 <button (click)="refresh()">Refresh</button>

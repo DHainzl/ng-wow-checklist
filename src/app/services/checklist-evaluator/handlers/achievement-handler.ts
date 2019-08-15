@@ -1,5 +1,7 @@
 import { ChecklistItemAchievement } from 'src/app/services/checklist/checklist.interface';
 
+import { BattleNetAchievement } from '../../battle-net/character/types/battlenet-achievement';
+
 import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemAchievement> {
@@ -10,10 +12,31 @@ export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemA
         return '';
     }
     isCompleted(data: ChecklistHandlerParams<ChecklistItemAchievement>): boolean {
-        return data.characterData.achievements.achievementsCompleted.includes(data.item.id);
+        const achievement = this.getAchievement(data);
+
+        if (!achievement) {
+            return false;
+        }
+
+        return achievement.criteria.is_completed;
     }
 
     getWowheadId(data: ChecklistHandlerParams<ChecklistItemAchievement>): string {
-        return `${data.item.type}-${data.item.id}?who=${data.characterData.name}&when=1273022820000`;
+        let link = `${data.item.type}-${data.item.id}`;
+        const achievement = this.getAchievement(data);
+
+        if (!achievement) {
+            return link;
+        }
+
+        if (achievement.criteria.is_completed) {
+            link += `?who=${data.characterData.profile.name}&when=${achievement.completed_timestamp}`;
+        }
+
+        return link;
+    }
+
+    private getAchievement(data: ChecklistHandlerParams<ChecklistItemAchievement>): BattleNetAchievement {
+        return data.characterData.achievements.achievements.find(av => av.id === data.item.id);
     }
 }

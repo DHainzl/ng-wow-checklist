@@ -6,10 +6,10 @@ import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
 
 export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<ChecklistItemSecondaryProfession> {
     isShown(data: ChecklistHandlerParams<ChecklistItemSecondaryProfession>): boolean {
-        return !!this.getProfession(data.item, data.characterData) && this.isOverridden(data.item, data.overrides);
+        return !!this.getProfession(data.item, data.characterData.mainCharacter) && this.isOverridden(data.item, data.overrides);
     }
     getNote(data: ChecklistHandlerParams<ChecklistItemSecondaryProfession>): string {
-        const profession = this.getProfession(data.item, data.characterData);
+        const profession = this.getProfession(data.item, data.characterData.mainCharacter);
         if (!profession) {
             return '';
         }
@@ -17,7 +17,7 @@ export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<Checkl
         return `${profession.rank} / ${data.item.max}`;
     }
     isCompleted(data: ChecklistHandlerParams<ChecklistItemSecondaryProfession>): boolean {
-        const profession = this.getProfession(data.item, data.characterData);
+        const profession = this.getProfession(data.item, data.characterData.mainCharacter);
         if (!profession) {
             return false;
         }
