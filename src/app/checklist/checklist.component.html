@@ -1,41 +1,75 @@
+<mat-toolbar class="character-quick-switch">
+    <ng-container *ngIf="allCharacters; else loadingDiv2">
+        <div *ngFor="let character of allCharacters" class="character" [routerLink]="[ '../../..', character.region, character.realm, character.name ]" routerLinkActive="active">
+            {{ character.name }}
+        </div>
+    </ng-container>
+</mat-toolbar>
+
 <ng-container *ngIf="!loading; else loadingDiv">
     <ng-container *ngIf="!error; else errorDiv">
-        <div class="character-data group">
-            <img [src]="characterData.media.avatar_url" /> <span class="cc cc-{{ characterData.profile.character_class.id }}">{{ characterData.profile.name }}</span> {{ characterData.profile.equipped_item_level }} ({{ characterData.equipment.equipped_items | hoaLevel }})
-            
+        <div class="page-actions group">
+            <div class="pull-left">
+                <button mat-icon-button (click)="refresh()" aria-label="Refresh All">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </div>
+
             <div class="pull-right">
-                <button (click)="refresh()">Refresh</button>
-                <label>
-                    <input type="checkbox" [(ngModel)]="hideCompleted" (ngModelChange)="hideCompletedChange($event)" />
-                    Hide Completed Items
-                </label>
+                <mat-checkbox [(ngModel)]="hideCompleted" (ngModelChange)="hideCompletedChange($event)">Hide completed items</mat-checkbox>
             </div>
         </div>
 
-        <table>
-            <ng-container *ngFor="let item of evaluatedChecklist | showCompleted:hideCompleted">
-                <tr *ngIf="item.isShown" [class.complete]="item.isCompleted" [class.incomplete]="!item.isCompleted">
-                    <td>
-                        <a [attr.data-wowhead]="item.wowheadId">
-                            <span class="item-name item-indention-{{ item.indention }}" [innerHTML]="item.name"></span>
-                        </a>
-                    </td>
-                    <td>{{ item.note }}</td>
-                    <td>{{ item.isCompleted ? 'done' : '-' }}</td>
-                </tr>
-                <ng-container *ngIf="item.subitems.length">
-                    <tr *ngFor="let subitem of item.subitems" class="subitem">
-                        <td><span class="item-name item-indention-{{ item.indention + 1}}">{{ subitem }}</span></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </ng-container>
-            </ng-container>
-        </table>
+        <mat-card>
+            <mat-card-header>
+                <div mat-card-avatar [style.background-image]="characterData.media.avatar_url | safeBackgroundImage"></div>
+                <mat-card-title>{{ characterData.profile.name }}</mat-card-title>
+                <mat-card-subtitle>
+                    Level {{ characterData.profile.level }}
+                    {{ characterData.profile.race.name }}
+                    <span class="cc cc-{{ characterData.profile.character_class.id }}">{{ characterData.profile.character_class.name }}</span><br>
+                    Item Level: {{ characterData.profile.equipped_item_level }}<br>
+                    Heart of Azeroth Level: {{ characterData.equipment.equipped_items | hoaLevel }}
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <table>
+                    <ng-container *ngFor="let item of evaluatedChecklist | showCompleted:hideCompleted">
+                        <tr *ngIf="item.isShown" [class.complete]="item.isCompleted" [class.incomplete]="!item.isCompleted">
+                            <td>
+                                <a [attr.data-wowhead]="item.wowheadId">
+                                    <span class="item-name item-indention-{{ item.indention }}" [innerHTML]="item.name"></span>
+                                </a>
+                            </td>
+                            <td>{{ item.note }}</td>
+                            <td>{{ item.isCompleted ? 'done' : '-' }}</td>
+                        </tr>
+                        <ng-container *ngIf="item.subitems.length">
+                            <tr *ngFor="let subitem of item.subitems" class="subitem">
+                                <td><span class="item-name item-indention-{{ item.indention + 1}}">{{ subitem }}</span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </table>
+            </mat-card-content>
+        </mat-card>
     </ng-container>
 </ng-container>
 
-<ng-template #loadingDiv>Loading ...</ng-template>
+<ng-template #loadingDiv>
+    <div class="centered">
+        <mat-spinner diameter="50"></mat-spinner>
+    </div>
+</ng-template>
+
+<ng-template #loadingDiv2>
+    <div class="centered-x">
+        <mat-spinner diameter="20"></mat-spinner>
+    </div>
+</ng-template>
+
 <ng-template #errorDiv>
     <div>An error occured: {{ error }}.</div>
     <div>Have you set up the character on the <a routerLink="/">Main screen?</a></div>

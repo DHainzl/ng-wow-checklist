@@ -1,7 +1,17 @@
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatToolbarModule,
+} from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -9,6 +19,7 @@ import { CharactersComponent } from './characters/characters.component';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { ShowCompletedPipe } from './checklist/show-completed.pipe';
 import { HoALevelPipe } from './pipes/hoa-level.pipe';
+import { SafeBackgroundImagePipe } from './pipes/safe-background-image.pipe';
 import { CharacterImagePipe } from './services/battle-net/character/character-image.pipe';
 
 @NgModule({
@@ -17,9 +28,10 @@ import { CharacterImagePipe } from './services/battle-net/character/character-im
         CharacterImagePipe,
         CharactersComponent,
         ChecklistComponent,
-        ShowCompletedPipe,
 
+        ShowCompletedPipe,
         HoALevelPipe,
+        SafeBackgroundImagePipe,
     ],
     imports: [
         BrowserModule,
@@ -28,6 +40,15 @@ import { CharacterImagePipe } from './services/battle-net/character/character-im
         ReactiveFormsModule,
         FormsModule,
         HttpClientJsonpModule,
+        BrowserAnimationsModule,
+
+        MatToolbarModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatButtonModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
     ],
     providers: [
     ],

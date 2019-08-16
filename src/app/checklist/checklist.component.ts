@@ -25,12 +25,13 @@ export class ChecklistComponent implements OnInit {
     loading: boolean = true;
     error: string = '';
 
-    region: Region = this.activatedRoute.snapshot.params.region;
-    realm: string = this.activatedRoute.snapshot.params.realm;
-    name: string = this.activatedRoute.snapshot.params.name;
+    region: Region;
+    realm: string;
+    name: string;
 
     hideCompleted: boolean = this.localStorageService.get('hideCompleted') || false;
 
+    allCharacters: CharacterInfo[];
     private checklist: Checklist;
     characterInfo: CharacterInfo;
     characterData: AllCharacterData;
@@ -48,8 +49,15 @@ export class ChecklistComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.loadData();
         this.titleService.setTitle(`WoW Checklist`);
+
+        this.activatedRoute.params.subscribe(params => {
+            this.region = params.region;
+            this.realm = params.realm;
+            this.name = params.name;
+
+            this.loadData();
+        });
     }
 
     refresh(): void {
@@ -58,6 +66,10 @@ export class ChecklistComponent implements OnInit {
 
     private loadData(cached: boolean = true): void {
         this.loading = true;
+
+        this.characterStoreService.getCharacters().subscribe(characters => {
+            this.allCharacters = characters;
+        });
 
         this.characterStoreService.getCharacter(this.region, this.realm, this.name).pipe(
             flatMap(characterInfo => {
