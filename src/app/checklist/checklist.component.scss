@@ -43,7 +43,11 @@ table {
         line-height: 64px;
         cursor: pointer;
 
-        &.active {
+        > mat-icon {
+            margin-top: 20px;
+        }
+
+        &:hover, &.active {
             background-color: rgba(255, 255, 255, 0.12);
         }
     }
@@ -64,6 +68,17 @@ tr {
 
     td {
         padding: 3px 10px;
+
+        &.column-note {
+            text-align: center;
+            width: 100px;
+        }
+
+        &.column-completed {
+            width: 30px;
+            text-align: center;
+            padding: 3px 10px 0px
+        }
     }
 }
 

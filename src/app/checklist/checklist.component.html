@@ -1,5 +1,8 @@
 <mat-toolbar class="character-quick-switch">
     <ng-container *ngIf="allCharacters; else loadingDiv2">
+        <div class="character" routerLink="../../..">
+            <mat-icon>chevron_left</mat-icon>
+        </div>
         <div *ngFor="let character of allCharacters" class="character" [routerLink]="[ '../../..', character.region, character.realm, character.name ]" routerLinkActive="active">
             {{ character.name }}
         </div>
@@ -36,19 +39,21 @@
                 <table>
                     <ng-container *ngFor="let item of evaluatedChecklist | showCompleted:hideCompleted">
                         <tr *ngIf="item.isShown" [class.complete]="item.isCompleted" [class.incomplete]="!item.isCompleted">
-                            <td>
+                            <td class="column-label">
                                 <a [attr.data-wowhead]="item.wowheadId">
                                     <span class="item-name item-indention-{{ item.indention }}" [innerHTML]="item.name"></span>
                                 </a>
                             </td>
-                            <td>{{ item.note }}</td>
-                            <td>{{ item.isCompleted ? 'done' : '-' }}</td>
+                            <td class="column-note">{{ item.note }}</td>
+                            <td class="column-completed">
+                                <mat-icon>{{ item.isCompleted ? 'check' : 'close' }}</mat-icon>
+                            </td>
                         </tr>
                         <ng-container *ngIf="item.subitems.length">
                             <tr *ngFor="let subitem of item.subitems" class="subitem">
-                                <td><span class="item-name item-indention-{{ item.indention + 1}}">{{ subitem }}</span></td>
-                                <td></td>
-                                <td></td>
+                                <td class="column-label"><span class="item-name item-indention-{{ item.indention + 1}}">{{ subitem }}</span></td>
+                                <td class="column-note"></td>
+                                <td class="column-completed"></td>
                             </tr>
                         </ng-container>
                     </ng-container>
