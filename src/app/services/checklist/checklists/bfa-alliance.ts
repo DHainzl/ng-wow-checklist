@@ -45,7 +45,7 @@ const data: Checklist = {
         { key: 'wareffort-riseofazshara', name: 'War Campaign: Rise of Azshara', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-riseofazshara-sunkenambitions', name: 'Sunken Ambitions', type: 'achievement', id: 13710 },
         { key: 'wareffort-riseofazshara-themachagonianthreat', name: 'The Mechagonian Threat', type: 'achievement', id: 13553 },
-        { key: 'wareffort-riseofazshara-stayinexecution', name: 'Stay in Execution', type: 'quest', id: 55783 },
+        { key: 'wareffort-riseofazshara-stayofexecution', name: 'Stay of Execution', type: 'quest', id: 55783 },
 
         { key: 'wareffort-heartofazeroth', name: 'Heart of Azeroth', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-heartofazeroth-heartforge', name: 'The Heart Forge', type: 'quest', id: 55618 },
