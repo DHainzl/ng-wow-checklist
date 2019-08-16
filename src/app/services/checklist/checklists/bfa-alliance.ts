@@ -49,6 +49,11 @@ const data: Checklist = {
 
         { key: 'wareffort-heartofazeroth', name: 'Heart of Azeroth', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-heartofazeroth-heartforge', name: 'The Heart Forge', type: 'quest', id: 55618 },
+        { key: 'wareffort-heartofazeroth-afreshtrauma', name: 'A Fresh Trauma', type: 'quest', id: 55521},
+        { key: 'wareffort-heartofazeroth-crucible-1', name: 'The Crucible of Flame - Rank 1', type: 'quest', id: 57010 },
+        { key: 'wareffort-heartofazeroth-crucible-2', name: 'The Crucible of Flame - Rank 2 (Heart Level 54)', type: 'quest', id: 55398 },
+        { key: 'wareffort-heartofazeroth-crucible-3', name: 'The Crucible of Flame - Rank 3 (Heart Level 60)', type: 'quest', id: -1 },
+        { key: 'wareffort-heartofazeroth-crucible-4', name: 'The Crucible of Flame - Rank 4 (Heart Level 70)', type: 'quest', id: -1 },
 
         { key: 'wareffort-anationunited', name: 'A Nation United', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-anationunited-toldagor', name: 'Tol Dagor: The Fourth Key', type: 'quest', id: 52445 },
