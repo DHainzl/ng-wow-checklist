@@ -1,23 +1,84 @@
-table, .character-data {
+@import '~@angular/material/theming';
+
+.page-actions, mat-card {
     width: 100%;
     max-width: 600px;
+}
+
+table {
+    width: 100%;
+    
+    ::ng-deep h2, ::ng-deep h3, ::ng-deep h4 {
+        font-weight: 500;
+        margin-bottom: 0;
+    }
+}
+
+
+[mat-card-avatar] {
+    margin-top: 20px;
+    background-size: cover;
+}
+
+.page-actions {
+    padding: 10px 16px;
+
+    mat-checkbox {
+        display: block;
+        margin-top: 8px;
+    }
+}
+
+.character-quick-switch {
+    margin: -10px 0 0 -20px;
+    width: calc(100% + 40px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0;
+    
+    .character {
+        text-transform: capitalize;
+        padding: 0 20px;
+        height: 64px;
+        line-height: 64px;
+        cursor: pointer;
+
+        > mat-icon {
+            margin-top: 20px;
+        }
+
+        &:hover, &.active {
+            background-color: rgba(255, 255, 255, 0.12);
+        }
+    }
 }
 
 tr {
     color: black;
 
     &.incomplete {
-        background-color: rgb(244, 176, 132);
+        background-color: mat-color(mat-palette($mat-orange, 200));
     }
     &.complete {
-        background-color: rgb(169, 208, 142);
+        background-color: mat-color(mat-palette($mat-light-green, 300));
     }
     &.subitem {
-        background-color: rgb(142, 169, 219);
+        background-color: mat-color(mat-palette($mat-indigo, 200));
     }
 
     td {
         padding: 3px 10px;
+
+        &.column-note {
+            text-align: center;
+            width: 100px;
+        }
+
+        &.column-completed {
+            width: 30px;
+            text-align: center;
+            padding: 3px 10px 0px
+        }
     }
 }
 

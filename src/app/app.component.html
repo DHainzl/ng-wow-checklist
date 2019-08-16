@@ -1,1 +1,16 @@
-<router-outlet></router-outlet>
+<mat-toolbar color="primary" class="mat-elevation-z12">
+    <button mat-icon-button (click)="openSidenav()" *ngIf="isMobile" style="margin-right: 15px;"><mat-icon>menu</mat-icon></button>
+    <strong>WoW Checklist</strong>
+</mat-toolbar>
+
+<mat-sidenav-container class="mat-typography">
+    <mat-sidenav opened class="mat-elevation-z6" [mode]="isMobile ? 'over' : 'side'" [fixedInViewport]="isMobile" [(opened)]="isOpened">
+        <a class="link" routerLink="character" routerLinkActive="active" (click)="closeSidenav()">
+            <mat-icon>group</mat-icon>
+            <span>Characters</span>
+        </a>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

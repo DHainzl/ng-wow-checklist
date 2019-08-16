@@ -8,16 +8,16 @@ import { ChecklistComponent } from './checklist/checklist.component';
 
 const routes: Routes = [
     {
-        path: 'characters',
+        path: 'character',
         component: CharactersComponent,
     },
     {
-        path: ':region/:realm/:name',
+        path: 'character/:region/:realm/:name',
         component: ChecklistComponent,
     },
     {
         path: '',
-        redirectTo: 'characters',
+        redirectTo: 'character',
         pathMatch: 'full',
     },
 ];

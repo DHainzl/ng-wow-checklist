@@ -1,13 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material';
+import { Subscription } from 'rxjs';
 
-import { Region } from './services/battle-net/battle-net.interface';
-import { BattleNetCharacterService } from './services/battle-net/character/character.service';
+import { ResponsiveService, ScreenSize } from './services/responsive/responsive.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: [ './app.component.scss' ],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+    isMobile: boolean = true;
 
+    subscriptions: Subscription = new Subscription();
+
+    isOpened: boolean = true;
+
+    private screenSize: ScreenSize;
+
+    @ViewChild(MatSidenav, { static: false })
+    sidenav: MatSidenav;
+
+    constructor(
+        private responsiveService: ResponsiveService,
+    ) { }
+
+    ngOnInit(): void {
+        this.subscriptions.add(this.responsiveService.sizeChanged.subscribe(screenSize => {
+            this.screenSize = screenSize;
+            this.isMobile = screenSize === 's' || screenSize === 'm';
+            this.isOpened = !this.isMobile;
+        }));
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
+    }
+
+    openSidenav(): void {
+        this.sidenav.open();
+    }
+
+    closeSidenav(): void {
+        if (this.isMobile) {
+            this.sidenav.close();
+        }
+    }
 }
