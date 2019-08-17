@@ -96,7 +96,13 @@ const data: Checklist = {
         { key: 'ship', name: 'Ship', type: 'header', id: 0, level: 0 },
 
         { key: 'ship-upgrades', name: 'Upgrades', type: 'header', id: 0, level: 1 },
-        // TODO Type: ship-upgrade
+
+        { key: 'ship-upgrades-tier1', name: 'Tier 1 (Seafarer\'s Hearth OR Swift Landing)', type: 'manual', id: 0 },
+        { key: 'ship-upgrades-tier2', name: 'Tier 2 (Upgraded Troop Barracks OR Troop Portal Network)', type: 'manual', id: 0 },
+        { key: 'ship-upgrades-tier3', name: 'Tier 3 (Island Plunderer OR Island Archeologist)', type: 'manual', id: 0 },
+        { key: 'ship-upgrades-tier4', name: 'Tier 4 (World Azerite Detector OR Local Transportation)', type: 'manual', id: 0 },
+        { key: 'ship-upgrades-tier5', name: 'Tier 5 (Warfront Resourcer OR Warfront General)', type: 'manual', id: 0 },
+        { key: 'ship-upgrades-tier6', name: 'Tier 6 (Alliance Ambassador)', type: 'manual', id: 0 },
 
         { key: 'ship-falstad', name: 'Follower: Falstad Wildhammer', type: 'header', id: 0, level: 1 },
         { key: 'ship-falstad-collected', name: 'Collected', type: 'quest', id: 51714 },

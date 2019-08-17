@@ -1,5 +1,3 @@
-@import '~@angular/material/theming';
-
 .page-actions, mat-card {
     width: 100%;
     max-width: 600px;
@@ -7,11 +5,6 @@
 
 table {
     width: 100%;
-    
-    ::ng-deep h2, ::ng-deep h3, ::ng-deep h4 {
-        font-weight: 500;
-        margin-bottom: 0;
-    }
 }
 
 
@@ -53,49 +46,10 @@ table {
     }
 }
 
-tr {
-    color: black;
-
-    &.incomplete {
-        background-color: mat-color(mat-palette($mat-orange, 200));
-    }
-    &.complete {
-        background-color: mat-color(mat-palette($mat-light-green, 300));
-    }
-    &.subitem {
-        background-color: mat-color(mat-palette($mat-indigo, 200));
-    }
-
-    td {
-        padding: 3px 10px;
-
-        &.column-note {
-            text-align: center;
-            width: 100px;
-        }
-
-        &.column-completed {
-            width: 30px;
-            text-align: center;
-            padding: 3px 10px 0px
-        }
-    }
-}
-
-a[data-wowhead] {
-    display: block;
-}
-
-.item-name {
-    display: inline-block;
-
-    &.item-indention-1 {
-        margin-left: 15px;
-    }
-    &.item-indention-2 {
-        margin-left: 30px;
-    }
-    &.item-indention-3 {
-        margin-left: 45px;
-    }
+.loading {
+    background-color: rgba(255, 255, 255, 0.12);
+    margin: -15px -15px 15px !important;
+    padding: 15px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }

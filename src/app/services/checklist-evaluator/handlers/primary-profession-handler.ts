@@ -1,30 +1,61 @@
-import { BattleNetCharacter, BattleNetCharacterProfession } from 'src/app/services/battle-net/character/character.interface';
-import { ChecklistItemPrimaryProfession } from 'src/app/services/checklist/checklist.interface';
+import { Subscription } from 'rxjs';
+import { ChecklistRequestContainerService } from 'src/app/checklist/services/checklist-request-container.service';
+import { BattleNetCharacterProfession, BattleNetCharacterProfessions } from 'src/app/services/battle-net/character/character.interface';
+import { ChecklistItem, ChecklistItemPrimaryProfession } from 'src/app/services/checklist/checklist.interface';
 
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
+import { CharacterStoreService } from '../../character-store/character-store.service';
+
+import { ChecklistHandler } from './_handler';
 
 export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<ChecklistItemPrimaryProfession> {
-    isShown(data: ChecklistHandlerParams<ChecklistItemPrimaryProfession>): boolean {
-        return !!this.getProfession(data.item, data.characterData.mainCharacter);
+    subscription: Subscription = new Subscription();
+
+    constructor(
+        protected checklistRequestContainer: ChecklistRequestContainerService,
+        protected characterStoreService: CharacterStoreService,
+        protected item: ChecklistItemPrimaryProfession,
+        protected allItems: ChecklistItem[],
+    ) {
+        super(checklistRequestContainer, characterStoreService, item, allItems);
+        this._shown$.next(false);
     }
-    getNote(data: ChecklistHandlerParams<ChecklistItemPrimaryProfession>): string {
-        const profession = this.getProfession(data.item, data.characterData.mainCharacter);
-        if (!profession) {
-            return '';
+
+    handlerInit(): void {
+        this.subscription = this.checklistRequestContainer.professionsChanged.subscribe(professions => {
+            this.evaluate(professions);
+        });
+    }
+
+    handlerDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    private evaluate(professions: BattleNetCharacterProfessions): void {
+        if (!professions) {
+            this._completed$.next('loading');
+            this._shown$.next(false);
+            this._note$.next(undefined);
+            return;
         }
 
-        return `${profession.rank} / ${data.item.max}`;
-    }
-    isCompleted(data: ChecklistHandlerParams<ChecklistItemPrimaryProfession>): boolean {
-        const profession = this.getProfession(data.item, data.characterData.mainCharacter);
+        const profession = this.getProfession(professions);
+
         if (!profession) {
-            return false;
+            this._shown$.next(false);
+            return;
         }
 
-        return profession.rank >= data.item.max;
+        const isComplete = profession.rank >= this.item.max;
+
+        this._shown$.next(true);
+        this._note$.next({
+            type: 'text',
+            text: `${profession.rank} / ${this.item.max}`,
+        });
+        this._completed$.next(isComplete ? 'complete' : 'incomplete');
     }
 
-    private getProfession(item: ChecklistItemPrimaryProfession, characterData: BattleNetCharacter): BattleNetCharacterProfession {
-        return characterData.professions.primary.find(profession => profession.id === item.id);
+    private getProfession(professions: BattleNetCharacterProfessions): BattleNetCharacterProfession {
+        return professions.primary.find(profession => profession.id === this.item.id);
     }
 }

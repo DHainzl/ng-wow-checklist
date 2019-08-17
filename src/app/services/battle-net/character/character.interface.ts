@@ -14,8 +14,8 @@ export interface BattleNetCharacter {
     totalHonorableKills: number;
 
     professions?: BattleNetCharacterProfessions;
-    quests: number[];
-    reputation: BattleNetCharacterReputation[];
+    quests?: number[];
+    reputation?: BattleNetCharacterReputation[];
 }
 
 // tslint:disable-next-line:no-any

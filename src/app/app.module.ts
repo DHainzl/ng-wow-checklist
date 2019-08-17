@@ -16,8 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CharactersComponent } from './characters/characters.component';
+import { ChecklistLineComponent } from './checklist/checklist-line/checklist-line.component';
 import { ChecklistComponent } from './checklist/checklist.component';
-import { ShowCompletedPipe } from './checklist/show-completed.pipe';
 import { HoALevelPipe } from './pipes/hoa-level.pipe';
 import { SafeBackgroundImagePipe } from './pipes/safe-background-image.pipe';
 import { CharacterImagePipe } from './services/battle-net/character/character-image.pipe';
@@ -29,9 +29,9 @@ import { CharacterImagePipe } from './services/battle-net/character/character-im
         CharactersComponent,
         ChecklistComponent,
 
-        ShowCompletedPipe,
         HoALevelPipe,
         SafeBackgroundImagePipe,
+        ChecklistLineComponent,
     ],
     imports: [
         BrowserModule,

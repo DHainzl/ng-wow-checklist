@@ -1,36 +1,58 @@
-import { BattleNetCharacter, BattleNetCharacterProfession } from 'src/app/services/battle-net/character/character.interface';
+import { combineLatest, Subscription } from 'rxjs';
+import { BattleNetCharacterProfession, BattleNetCharacterProfessions } from 'src/app/services/battle-net/character/character.interface';
 import { CharacterInfo } from 'src/app/services/character-store/character-store.interface';
 import { ChecklistItemSecondaryProfession } from 'src/app/services/checklist/checklist.interface';
 
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
+import { ChecklistHandler } from './_handler';
 
 export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<ChecklistItemSecondaryProfession> {
-    isShown(data: ChecklistHandlerParams<ChecklistItemSecondaryProfession>): boolean {
-        return !!this.getProfession(data.item, data.characterData.mainCharacter) && this.isOverridden(data.item, data.overrides);
+    subscription: Subscription = new Subscription();
+
+    handlerInit(): void {
+        this.subscription = combineLatest(
+            this.checklistRequestContainer.professionsChanged,
+            this.checklistRequestContainer.overridesChanged,
+        ).subscribe(([ professions, overrides ]) => {
+            this.evaluate(professions, overrides);
+        });
     }
-    getNote(data: ChecklistHandlerParams<ChecklistItemSecondaryProfession>): string {
-        const profession = this.getProfession(data.item, data.characterData.mainCharacter);
-        if (!profession) {
-            return '';
+
+    handlerDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    private evaluate(professions: BattleNetCharacterProfessions, overrides: CharacterInfo['overrides']): void {
+        if (!professions || !overrides) {
+            this._shown$.next(false);
+            this._note$.next(undefined);
+            this._completed$.next('loading');
+            return;
         }
 
-        return `${profession.rank} / ${data.item.max}`;
-    }
-    isCompleted(data: ChecklistHandlerParams<ChecklistItemSecondaryProfession>): boolean {
-        const profession = this.getProfession(data.item, data.characterData.mainCharacter);
-        if (!profession) {
-            return false;
+        const profession = this.getProfession(professions);
+        const isEnabled = this.isEnabled(overrides);
+
+        if (!profession || !isEnabled) {
+            this._shown$.next(false);
+            return;
         }
 
-        return profession.rank >= data.item.max;
+        const isCompleted = profession.rank >= this.item.max;
+
+        this._shown$.next(true);
+        this._note$.next({
+            type: 'text',
+            text: `${profession.rank} / ${this.item.max}`,
+        });
+        this._completed$.next(isCompleted ? 'complete' : 'incomplete');
     }
 
-    private getProfession(item: ChecklistItemSecondaryProfession, characterData: BattleNetCharacter): BattleNetCharacterProfession {
-        return characterData.professions.secondary.find(profession => profession.id === item.id);
+    private getProfession(professions: BattleNetCharacterProfessions): BattleNetCharacterProfession {
+        return professions.secondary.find(profession => profession.id === this.item.id);
     }
 
-    private isOverridden(item: ChecklistItemSecondaryProfession, overrides: CharacterInfo['overrides']): boolean {
-        const override = overrides[item.key];
+    private isEnabled(overrides: CharacterInfo['overrides']): boolean {
+        const override = overrides[this.item.key];
 
         if (override && override.type === 'profession-secondary') {
             return override.enabled;

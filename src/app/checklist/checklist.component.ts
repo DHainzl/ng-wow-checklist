@@ -1,26 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { animate, style, transition, trigger, useAnimation } from '@angular/animations';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Region } from '../services/battle-net/battle-net.interface';
-import { BattleNetCharacterService } from '../services/battle-net/character/character.service';
+import { BattleNetEquipment } from '../services/battle-net/character/types/battlenet-equipment';
+import { BattleNetMedia } from '../services/battle-net/character/types/battlenet-media';
+import { BattleNetProfile } from '../services/battle-net/character/types/battlenet-profile';
 import { CharacterInfo } from '../services/character-store/character-store.interface';
 import { CharacterStoreService } from '../services/character-store/character-store.service';
-import { AllCharacterData, EvaluatedChecklistItem } from '../services/checklist-evaluator/checklist-evaluator.interface';
-import { ChecklistEvaluatorService } from '../services/checklist-evaluator/checklist-evaluator.service';
-import { Checklist } from '../services/checklist/checklist.interface';
+import { ChecklistHandlerService } from '../services/checklist-evaluator/handlers/checklist-handler.service';
+import { ChecklistItem } from '../services/checklist/checklist.interface';
 import { ChecklistService } from '../services/checklist/checklist.service';
 import { LocalStorageService } from '../services/local-storage/local-storage.service';
+import { slideEnterAnimation, slideLeaveAnimation } from '../util/animations';
+
+import { ChecklistRequestContainerService } from './services/checklist-request-container.service';
 
 @Component({
     selector: 'app-checklist',
     templateUrl: './checklist.component.html',
     styleUrls: [ './checklist.component.scss' ],
+    animations: [
+        trigger('slide', [
+            transition(':enter', useAnimation(slideEnterAnimation, { params: { time: '0.2s' }})),
+            transition(':leave', useAnimation(slideLeaveAnimation, { params: { time: '0.2s' }})),
+
+        ]),
+    ],
 })
-export class ChecklistComponent implements OnInit {
-    private static readonly FIELDS = [ 'reputation', 'quests', 'professions' ];
+export class ChecklistComponent implements OnInit, OnDestroy {
 
     loading: boolean = true;
     error: string = '';
@@ -32,25 +43,27 @@ export class ChecklistComponent implements OnInit {
     hideCompleted: boolean = this.localStorageService.get('hideCompleted') || false;
 
     allCharacters: CharacterInfo[];
-    private checklist: Checklist;
+    checklist: ChecklistItem[];
     characterInfo: CharacterInfo;
-    characterData: AllCharacterData;
-    evaluatedChecklist: EvaluatedChecklistItem[];
+
+    media: BattleNetMedia;
+    profile: BattleNetProfile;
+    equipment: BattleNetEquipment;
+
+    private subscriptions: Subscription = new Subscription();
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private characterService: BattleNetCharacterService,
+        private checklistHandlerService: ChecklistHandlerService,
+        private checklistRequestContainerService: ChecklistRequestContainerService,
         private checklistService: ChecklistService,
         private characterStoreService: CharacterStoreService,
-        private checklistEvaluatorService: ChecklistEvaluatorService,
         private localStorageService: LocalStorageService,
 
         private titleService: Title,
     ) { }
 
     ngOnInit(): void {
-        this.titleService.setTitle(`WoW Checklist`);
-
         this.activatedRoute.params.subscribe(params => {
             this.region = params.region;
             this.realm = params.realm;
@@ -58,6 +71,23 @@ export class ChecklistComponent implements OnInit {
 
             this.loadData();
         });
+
+        this.subscriptions.add(this.checklistRequestContainerService.mediaChanged.subscribe(media => this.media = media));
+        this.subscriptions.add(this.checklistRequestContainerService.profileChanged.subscribe(profile => {
+            this.profile = profile;
+
+            if (!profile) {
+                return;
+            }
+
+            const title = `${profile.name} @ ${this.region.toUpperCase()}-${profile.realm.name} :: WoW Checklist`;
+            this.titleService.setTitle(title);
+        }));
+        this.subscriptions.add(this.checklistRequestContainerService.equipmentChanged.subscribe(equipment => this.equipment = equipment));
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 
     refresh(): void {
@@ -66,6 +96,7 @@ export class ChecklistComponent implements OnInit {
 
     private loadData(cached: boolean = true): void {
         this.loading = true;
+        this.titleService.setTitle(`WoW Checklist`);
 
         this.characterStoreService.getCharacters().subscribe(characters => {
             this.allCharacters = characters;
@@ -74,42 +105,27 @@ export class ChecklistComponent implements OnInit {
         this.characterStoreService.getCharacter(this.region, this.realm, this.name).pipe(
             flatMap(characterInfo => {
                 this.characterInfo = characterInfo;
+
+                this.checklistRequestContainerService.load(this.region, this.realm, this.name, this.characterInfo, cached).subscribe(() => {
+                    this.loading = false;
+                }, error => {
+                    this.error = error;
+                    this.loading = false;
+                    return of();
+                });
+
                 return this.checklistService.getChecklist(characterInfo.checklistId);
             }),
-            flatMap(checklist => {
-                this.checklist = checklist;
-                return forkJoin(
-                    this.characterService.getCharacter(this.region, this.realm, this.name, ChecklistComponent.FIELDS, cached),
-                    this.characterService.getAchievement(this.region, this.realm, this.name, cached),
-                    this.characterService.getEquipment(this.region, this.realm, this.name, cached),
-                    this.characterService.getMedia(this.region, this.realm, this.name, cached),
-                    this.characterService.getProfile(this.region, this.realm, this.name, cached),
-                );
-            }),
-        )
-        .subscribe(
-            ([ characterData, achievements, equipment, media, profile ]) => {
-                this.characterData = {
-                    mainCharacter: characterData,
-                    achievements,
-                    equipment,
-                    media,
-                    profile,
-                };
+        ).subscribe(checklist => {
+            checklist.items.forEach(item => {
+                item.handler = this.checklistHandlerService.getHandler(item, checklist.items);
+            });
 
-                this.evaluatedChecklist = this.checklistEvaluatorService
-                    .evaluateChecklist(this.checklist.items, this.characterData, this.characterInfo.overrides);
-
-                // tslint:disable-next-line:max-line-length
-                const title = `${this.characterData.profile.name} @ ${this.region.toUpperCase()}-${this.characterData.profile.realm.name} :: WoW Checklist`;
-                this.titleService.setTitle(title);
-                this.loading = false;
-            },
-            error => {
-                this.error = error;
-                this.loading = false;
-            },
-        );
+            this.checklist = checklist.items;
+        },
+        error => {
+            this.error = error;
+        });
     }
 
     hideCompletedChange(value: boolean): void {

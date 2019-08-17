@@ -1,60 +1,64 @@
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ChecklistItem, ChecklistItemHeader } from 'src/app/services/checklist/checklist.interface';
 
-import { ChecklistEvaluatorService } from '../checklist-evaluator.service';
-
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
+import { ChecklistHandler } from './_handler';
+import { CompletionStatus } from './_handler.interface';
 
 export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader> {
-    getHeader(data: ChecklistHandlerParams<ChecklistItemHeader>): string {
-        const tag = 'h' + (data.item.level + 2);
-        return `<${tag}>${data.item.name}</${tag}>`;
-    }
-    isShown(data: ChecklistHandlerParams<ChecklistItemHeader>): boolean {
-        return true;
-    }
-    getNote(data: ChecklistHandlerParams<ChecklistItemHeader>): string {
-        return '';
-    }
-    isCompleted(data: ChecklistHandlerParams<ChecklistItemHeader>): boolean {
-        const subitems = this.findSubitems(data);
+    subscription: Subscription = new Subscription();
 
-        if (subitems.length === 0) {
-            return true;
-        }
+    handlerInit(): void {
+        this._label$.next(this.getHeader());
 
-        return subitems
-            .filter(item => {
-                return ChecklistEvaluatorService.getHandler(item.type).isShown(this.getHandlerParams(item, data));
-            })
-            .every(item => {
-                return ChecklistEvaluatorService.getHandler(item.type).isCompleted(this.getHandlerParams(item, data));
-            });
+        this.subscription = combineLatest(this.getSubitemSubscriptions()).subscribe(allStatus => {
+            const isLoading = allStatus.includes('loading');
+            if (isLoading) {
+                this._completed$.next('loading');
+                return;
+            }
+
+            const isCompleted = allStatus.every(c => c === 'complete');
+            this._completed$.next(isCompleted ? 'complete' : 'incomplete');
+        });
     }
 
-    private findSubitems(data: ChecklistHandlerParams<ChecklistItemHeader>): ChecklistItem[] {
-        const currentIndex = data.checklist.findIndex(item => item.key === data.item.key);
-        if (currentIndex + 1 >= data.checklist.length) {
+    handlerDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    private getHeader(): string {
+        const tag = 'h' + (this.item.level + 2);
+        return `<${tag}>${this.item.name}</${tag}>`;
+    }
+
+    private getSubitemSubscriptions(): Observable<CompletionStatus>[] {
+        return this.findSubitems().map(subitem => {
+            return combineLatest(subitem.handler.shown, subitem.handler.completed).pipe(
+                map(([ shown, completed ]) => {
+                    if (!shown) {
+                        // If it's not shown we assume completed to not taint summary
+                        const status: CompletionStatus = 'complete';
+                        return status;
+                    }
+                    return completed;
+                }),
+            );
+        });
+    }
+
+    private findSubitems(): ChecklistItem[] {
+        const currentIndex = this.allItems.findIndex(item => item.key === this.item.key);
+        if (currentIndex + 1 >= this.allItems.length) {
             return [];
         }
 
-        const fromCurrent = data.checklist.slice(currentIndex + 1);
-        const nextIndex = fromCurrent.findIndex(item => item.type === 'header' && item.level <= data.item.level);
+        const fromCurrent = this.allItems.slice(currentIndex + 1);
+        const nextIndex = fromCurrent.findIndex(item => item.type === 'header' && item.level <= this.item.level);
 
         if (nextIndex !== -1) {
             return fromCurrent.slice(0, nextIndex);
         }
         return fromCurrent;
-    }
-
-    private getHandlerParams(
-        item: ChecklistItem,
-        data: ChecklistHandlerParams<ChecklistItemHeader>,
-    ): ChecklistHandlerParams<ChecklistItem> {
-        return {
-            item,
-            characterData: data.characterData,
-            checklist: data.checklist,
-            overrides: data.overrides,
-        };
     }
 }

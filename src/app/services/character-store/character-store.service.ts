@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 import { Region } from '../battle-net/battle-net.interface';
 import { LocalStorageService } from '../local-storage/local-storage.service';
@@ -8,6 +9,10 @@ import { CharacterInfo } from './character-store.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CharacterStoreService {
+    private _charactersChanged$: BehaviorSubject<CharacterInfo[]> = new BehaviorSubject(undefined);
+
+    get charactersChanged(): Observable<CharacterInfo[]> { return this._charactersChanged$.asObservable(); }
+
     constructor(
         private localStorage: LocalStorageService,
     ) { }
@@ -29,5 +34,28 @@ export class CharacterStoreService {
         }
 
         return of(character);
+    }
+
+    setCharacters(characters: CharacterInfo[]): Observable<undefined> {
+        this.localStorage.set('characters', characters);
+        this._charactersChanged$.next(characters);
+        return of(undefined);
+    }
+
+    setCharacter(character: CharacterInfo): Observable<undefined> {
+        return this.getCharacters().pipe(
+            flatMap(allCharacters => {
+                const idx = allCharacters
+                    .findIndex(c => c.region === character.region && c.realm === character.realm && c.name === character.name);
+
+                if (idx === -1) {
+                    allCharacters.push(character);
+                } else {
+                    allCharacters[idx] = character;
+                }
+
+                return this.setCharacters(allCharacters);
+            }),
+        );
     }
 }
