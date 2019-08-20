@@ -57,15 +57,21 @@ const data: Checklist = {
 
         { key: 'wareffort-zandalarforever', name: 'Zandalar Forever!', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-zandalarforever-toldagor', name: 'A Bargain of Blood', type: 'achievement', id: 12480 },
-        { key: 'wareffort-zandalarforever-shrineofthestorm', name: 'The final Seal', type: 'achievement', id: 12481 },
+        { key: 'wareffort-zandalarforever-shrineofthestorm', name: 'The Final Seal', type: 'achievement', id: 12481 },
 
         { key: 'wareffort-gear', name: 'Gear', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-gear-310', name: 'iLvl 310 / Superior', type: 'item-level', id: 0, max: 310 },
         { key: 'wareffort-gear-385', name: 'iLvl 385 / Benthic', type: 'item-level', id: 0, max: 385 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', id: 0, level: 0 },
+
+        { key: 'reputation-honorbound', type: 'reputation', name: 'The Honorbound', id: 2157, max: 7 },
         { key: 'reputation-championsofazeroth', type: 'reputation', name: 'Champions of Azeroth', id: 2164, max: 6 },
+        { key: 'reputation-zandalariempire', type: 'reputation', name: 'Zandalari Empire', id: 2103, max: 6 },
+        { key: 'reputation-voldunai', type: 'reputation', name: 'Voldunai', id: 2158, max: 6 },
+        { key: 'reputation-talanjisexpedition', type: 'reputation', name: 'Talanji\'s Expedition', id: 2156, max: 6 },
         { key: 'reputation-tortollanseekers', type: 'reputation', name: 'Tortollan Seekers', id: 2163, max: 6 },
+        { key: 'reputation-unshackled', type: 'reputation', name: 'The Unshackled', id: 2373, max: 6 },
         { key: 'reputation-rustbolt', type: 'reputation', name: 'Rustbolt Resistance', id: 2391, max: 6 },
 
         { key: 'professions', name: 'Professions', type: 'header', id: 0, level: 0 },
