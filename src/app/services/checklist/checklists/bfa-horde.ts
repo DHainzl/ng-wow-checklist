@@ -52,7 +52,7 @@ const data: Checklist = {
         { key: 'wareffort-heartofazeroth-afreshtrauma', name: 'A Fresh Trauma', type: 'quest', id: 55521},
         { key: 'wareffort-heartofazeroth-crucible-1', name: 'The Crucible of Flame - Rank 1', type: 'quest', id: 57010 },
         { key: 'wareffort-heartofazeroth-crucible-2', name: 'The Crucible of Flame - Rank 2 (Heart Level 54)', type: 'quest', id: 55398 },
-        { key: 'wareffort-heartofazeroth-crucible-3', name: 'The Crucible of Flame - Rank 3 (Heart Level 60)', type: 'quest', id: -1 },
+        { key: 'wareffort-heartofazeroth-crucible-3', name: 'The Crucible of Flame - Rank 3 (Heart Level 60)', type: 'quest', id: 55657 },
         { key: 'wareffort-heartofazeroth-crucible-4', name: 'The Crucible of Flame - Rank 4 (Heart Level 70)', type: 'quest', id: -1 },
 
         { key: 'wareffort-zandalarforever', name: 'Zandalar Forever!', type: 'header', id: 0, level: 1 },
