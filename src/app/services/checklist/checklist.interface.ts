@@ -1,3 +1,5 @@
+import { ChecklistHandler } from '../checklist-evaluator/handlers/_handler';
+
 export class Checklist {
     id: string;
     items: ChecklistItem[];
@@ -7,7 +9,9 @@ export interface ChecklistItemBase {
     id: number;
     key: string;
     name: string;
-    type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'item-level';
+    type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'item-level' |
+        'manual';
+    handler?: ChecklistHandler<ChecklistItem>;
 }
 
 export interface ChecklistItemHeader extends ChecklistItemBase {
@@ -40,6 +44,10 @@ export interface ChecklistItemEquipmentLevel extends ChecklistItemBase {
     type: 'item-level';
     max: number;
 }
+export interface ChecklistItemManual extends ChecklistItemBase {
+    type: 'manual';
+}
 
 export type ChecklistItem = ChecklistItemHeader | ChecklistItemAchievement | ChecklistItemQuest | ChecklistItemReputation |
-    ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemEquipmentLevel;
+    ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemEquipmentLevel |
+    ChecklistItemManual;

@@ -1,0 +1,65 @@
+@import '~@angular/material/theming';
+
+::ng-deep h2, ::ng-deep h3, ::ng-deep h4 {
+    font-weight: 500 !important;
+    margin-bottom: 0 !important;
+}
+
+.row {
+    border: 1px solid black;
+    color: black;
+    display: flex;
+
+    &.incomplete {
+        background-color: mat-color(mat-palette($mat-orange, 200));
+    }
+    &.complete {
+        background-color: mat-color(mat-palette($mat-light-green, 300));
+    }
+    &.subitem {
+        background-color: mat-color(mat-palette($mat-indigo, 200));
+    }
+
+    > div {
+        padding: 3px 10px;
+
+        &.column-label {
+            flex: 1;
+            line-height: 27px;
+        }
+        
+        &.column-note {
+            text-align: center;
+            line-height: 27px;
+            width: 100px;
+        }
+
+        &.column-completed {
+            width: 30px;
+            text-align: center;
+            padding: 3px 10px 0px
+        }
+    }
+}
+
+.item-name {
+    display: inline-block;
+
+    &.item-indention-1 {
+        margin-left: 15px;
+    }
+    &.item-indention-2 {
+        margin-left: 30px;
+    }
+    &.item-indention-3 {
+        margin-left: 45px;
+    }
+}
+
+a[data-wowhead] {
+    display: block;
+}
+button[mat-button] {
+    text-transform: uppercase;
+    line-height: 27px;
+}

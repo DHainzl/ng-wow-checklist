@@ -1,18 +1,41 @@
+import { Subscription } from 'rxjs';
 import { ChecklistItemLevel } from 'src/app/services/checklist/checklist.interface';
 
-import { ChecklistHandler, ChecklistHandlerParams } from './_handler';
+import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';
+
+import { ChecklistHandler } from './_handler';
 
 export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> {
-    isShown(data: ChecklistHandlerParams<ChecklistItemLevel>): boolean {
-        return true;
+    subscription: Subscription = new Subscription();
+
+    handlerInit(): void {
+        this.subscription = this.checklistRequestContainer.profileChanged.subscribe(profile => {
+            this.evaluate(profile);
+        });
     }
-    getNote(data: ChecklistHandlerParams<ChecklistItemLevel>): string {
-        if (!this.isCompleted(data)) {
-            return `${data.characterData.profile.level} / ${data.item.max}`;
+
+    handlerDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    private evaluate(profile: BattleNetProfile): void {
+        if (!profile) {
+            this._completed$.next('loading');
+            this._note$.next(undefined);
+            return;
         }
-        return '';
-    }
-    isCompleted(data: ChecklistHandlerParams<ChecklistItemLevel>): boolean {
-        return data.characterData.profile.level >= data.item.max;
+
+        const isCompleted = profile.level >= this.item.max;
+
+        if (isCompleted) {
+            this._completed$.next('complete');
+            this._note$.next(undefined);
+        } else {
+            this._completed$.next('incomplete');
+            this._note$.next({
+                type: 'text',
+                text: `${profile.level} / ${this.item.max}`,
+            });
+        }
     }
 }

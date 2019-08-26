@@ -9,7 +9,7 @@ export interface CharacterInfo {
 }
 
 export interface CharacterInfoBaseOverride {
-    type: 'reputation' | 'profession-secondary';
+    type: 'reputation' | 'profession-secondary' | 'manual';
 }
 export interface CharacterInfoReputationOverride extends CharacterInfoBaseOverride {
     type: 'reputation';
@@ -19,5 +19,10 @@ export interface CharacterInfoSecondaryProfessionOverride extends CharacterInfoB
     type: 'profession-secondary';
     enabled: boolean;
 }
+export interface CharacterInfoManualOverride extends CharacterInfoBaseOverride {
+    type: 'manual';
+    checked: boolean;
+}
 
-export type CharacterInfoOverride = CharacterInfoReputationOverride | CharacterInfoSecondaryProfessionOverride;
+export type CharacterInfoOverride = CharacterInfoReputationOverride | CharacterInfoSecondaryProfessionOverride |
+    CharacterInfoManualOverride;

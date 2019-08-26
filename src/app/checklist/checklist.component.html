@@ -9,63 +9,43 @@
     </ng-container>
 </mat-toolbar>
 
-<ng-container *ngIf="!loading; else loadingDiv">
-    <ng-container *ngIf="!error; else errorDiv">
-        <div class="page-actions group">
-            <div class="pull-left">
-                <button mat-icon-button (click)="refresh()" aria-label="Refresh All">
-                    <mat-icon>refresh</mat-icon>
-                </button>
-            </div>
-
-            <div class="pull-right">
-                <mat-checkbox [(ngModel)]="hideCompleted" (ngModelChange)="hideCompletedChange($event)">Hide completed items</mat-checkbox>
-            </div>
+<ng-container *ngIf="!error; else errorDiv">
+    <div class="page-actions group">
+        <div class="pull-left">
+            <button mat-icon-button (click)="refresh()" aria-label="Refresh All" [disabled]="loading">
+                <mat-icon>refresh</mat-icon>
+            </button>
         </div>
 
-        <mat-card>
-            <mat-card-header>
-                <div mat-card-avatar [style.background-image]="characterData.media.avatar_url | safeBackgroundImage"></div>
-                <mat-card-title>{{ characterData.profile.name }}</mat-card-title>
-                <mat-card-subtitle>
-                    Level {{ characterData.profile.level }}
-                    {{ characterData.profile.race.name }}
-                    <span class="cc cc-{{ characterData.profile.character_class.id }}">{{ characterData.profile.character_class.name }}</span><br>
-                    Item Level: {{ characterData.profile.equipped_item_level }}<br>
-                    Heart of Azeroth Level: {{ characterData.equipment.equipped_items | hoaLevel }}
-                </mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-                <table>
-                    <ng-container *ngFor="let item of evaluatedChecklist | showCompleted:hideCompleted">
-                        <tr *ngIf="item.isShown" [class.complete]="item.isCompleted" [class.incomplete]="!item.isCompleted">
-                            <td class="column-label">
-                                <a [attr.data-wowhead]="item.wowheadId">
-                                    <span class="item-name item-indention-{{ item.indention }}" [innerHTML]="item.name"></span>
-                                </a>
-                            </td>
-                            <td class="column-note">{{ item.note }}</td>
-                            <td class="column-completed">
-                                <mat-icon>{{ item.isCompleted ? 'check' : 'close' }}</mat-icon>
-                            </td>
-                        </tr>
-                        <ng-container *ngIf="item.subitems.length">
-                            <tr *ngFor="let subitem of item.subitems" class="subitem">
-                                <td class="column-label"><span class="item-name item-indention-{{ item.indention + 1}}">{{ subitem }}</span></td>
-                                <td class="column-note"></td>
-                                <td class="column-completed"></td>
-                            </tr>
-                        </ng-container>
-                    </ng-container>
-                </table>
-            </mat-card-content>
-        </mat-card>
-    </ng-container>
+        <div class="pull-right">
+            <mat-checkbox [(ngModel)]="hideCompleted" (ngModelChange)="hideCompletedChange($event)">Hide completed items</mat-checkbox>
+        </div>
+    </div>
+
+    <mat-card>
+        <ng-container *ngIf="loading; then loadingDiv"></ng-container>
+        <mat-card-header *ngIf="media && profile && equipment" [@slide]>
+            <div mat-card-avatar [style.background-image]="media.avatar_url | safeBackgroundImage"></div>
+            <mat-card-title>{{ profile.name }}</mat-card-title>
+            <mat-card-subtitle>
+                Level {{ profile.level }}
+                {{ profile.race.name }}
+                <span class="cc cc-{{ profile.character_class.id }}">{{ profile.character_class.name }}</span><br>
+                Item Level: {{ profile.equipped_item_level }}<br>
+                Heart of Azeroth Level: {{ equipment.equipped_items | hoaLevel }}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <ng-container *ngFor="let item of checklist">
+                <checklist-line [handler]="item.handler" [hideCompleted]="hideCompleted"></checklist-line>
+            </ng-container>
+        </mat-card-content>
+    </mat-card>
 </ng-container>
 
 <ng-template #loadingDiv>
-    <div class="centered">
-        <mat-spinner diameter="50"></mat-spinner>
+    <div class="loading centered" [@slide]>
+        <mat-spinner diameter="25" color="accent"></mat-spinner>
     </div>
 </ng-template>
 

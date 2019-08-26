@@ -1,0 +1,23 @@
+<div *ngIf="shown && (completed != 'complete' || !hideCompleted)" class="row" [class.complete]="completed == 'complete'" [class.incomplete]="completed !== 'complete'"  [@slide]>
+    <div class="column-label">
+        <a [attr.data-wowhead]="wowheadId">
+            <span class="item-name item-indention-{{ indention }}" [innerHTML]="label"></span>
+        </a>
+    </div>
+    <div class="column-note" [ngSwitch]="note?.type">
+        <ng-container *ngSwitchCase="'text'">{{ note.text }}</ng-container>
+        <button mat-button *ngSwitchCase="'button'" (click)="runOnClick()">{{ note.label }}</button>
+    </div>
+    <div class="column-completed">
+        <mat-icon *ngIf="completed === 'complete'">check</mat-icon>
+        <mat-icon *ngIf="completed === 'incomplete'">close</mat-icon>
+        <mat-icon *ngIf="completed === 'loading'">sync</mat-icon>
+    </div>
+</div>
+<ng-container *ngIf="subitems && subitems.length">
+    <div *ngFor="let subitem of subitems" class="row subitem">
+        <div class="column-label"><span class="item-name item-indention-{{ indention + 1}}">{{ subitem }}</span></div>
+        <div class="column-note"></div>
+        <div class="column-completed"></div>
+    </div>
+</ng-container>
