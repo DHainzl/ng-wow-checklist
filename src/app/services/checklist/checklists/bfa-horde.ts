@@ -105,27 +105,27 @@ const data: Checklist = {
 
         { key: 'ship-valtrois', name: 'Follower: Arcanist Valtrois', type: 'header', id: 0, level: 1 },
         { key: 'ship-valtrois-collected', name: 'Collected', type: 'quest', id: 51770 },
-        // TODO Type: follower-level
+        { key: 'ship-valtrois-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-grapplehammer', name: 'Follower: Hoibart Grapplehammer', type: 'header', id: 0, level: 1 },
         { key: 'ship-grapplehammer-collected', name: 'Collected', type: 'quest', id: 51987 },
-        // TODO Type: follower-level
+        { key: 'ship-grapplehammer-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-rexxar', name: 'Follower: Rexxar', type: 'header', id: 0, level: 1 },
         { key: 'ship-rexxar-collected', name: 'Collected', type: 'quest', id: 51753 },
-        // TODO Type: follower-level
+        { key: 'ship-rexxar-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-tyjin', name: 'Follower: Shadow Hunter Ty\'jin', type: 'header', id: 0, level: 1 },
         { key: 'ship-tyjin-collected', name: 'Collected', type: 'quest', id: 51975 },
-        // TODO Type: follower-level
+        { key: 'ship-tyjin-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-voss', name: 'Follower: Lilian Voss', type: 'header', id: 0, level: 1 },
         { key: 'ship-voss-collected', name: 'Collected', type: 'quest', id: 52861 },
-        // TODO Type: follower-level
+        { key: 'ship-voss-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-tattersail', name: 'Follower: Dread Admiral Tattersail', type: 'header', id: 0, level: 1 },
         { key: 'ship-tattersail-collected', name: 'Collected', type: 'quest', id: 56379 },
-        // TODO Type: follower-level
+        { key: 'ship-tattersail-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
     ],
 };
 

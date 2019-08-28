@@ -106,27 +106,27 @@ const data: Checklist = {
 
         { key: 'ship-falstad', name: 'Follower: Falstad Wildhammer', type: 'header', id: 0, level: 1 },
         { key: 'ship-falstad-collected', name: 'Collected', type: 'quest', id: 51714 },
-        // TODO Type: follower-level
+        { key: 'ship-falstad-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-keeshan', name: 'Follower: John J. Keeshan', type: 'header', id: 0, level: 1 },
         { key: 'ship-keeshan-collected', name: 'Collected', type: 'quest', id: 52013 },
-        // TODO Type: follower-level
+        { key: 'ship-keeshan-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-kelsey', name: 'Follower: Kelsey Steelspark', type: 'header', id: 0, level: 1 },
         { key: 'ship-kelsey-collected', name: 'Collected', type: 'quest', id: 52003 },
-        // TODO Type: follower-level
+        { key: 'ship-kelsey-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-umbric', name: 'Follower: Magister Umbric', type: 'header', id: 0, level: 1 },
         { key: 'ship-umbric-collected', name: 'Collected', type: 'quest', id: 52008 },
-        // TODO Type: follower-level
+        { key: 'ship-umbric-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-shandris', name: 'Follower: Shandris Feathermoon', type: 'header', id: 0, level: 1 },
         { key: 'ship-shandris-collected', name: 'Collected', type: 'quest', id: 53098 },
-        // TODO Type: follower-level
+        { key: 'ship-shandris-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
 
         { key: 'ship-jestereth', name: 'Follower: Grand Admiral Jes-Tereth', type: 'header', id: 0, level: 1 },
         { key: 'ship-jestereth-collected', name: 'Collected', type: 'quest', id: 56378 },
-        // TODO Type: follower-level
+        { key: 'ship-jestereth-upgraded', name: 'Legendary Quality', type: 'manual', id: 0 },
     ],
 };
 
