@@ -1,23 +1,15 @@
-import { animate, style, transition, trigger, useAnimation } from '@angular/animations';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { ChecklistHandler } from 'src/app/services/checklist-evaluator/handlers/_handler';
 import { ChecklistNote, CompletionStatus } from 'src/app/services/checklist-evaluator/handlers/_handler.interface';
 import { ChecklistItem } from 'src/app/services/checklist/checklist.interface';
-import { slideEnterAnimation, slideLeaveAnimation } from 'src/app/util/animations';
 
 @Component({
     selector: 'checklist-line',
     templateUrl: './checklist-line.component.html',
     styleUrls: [ './checklist-line.component.scss' ],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [
-        trigger('slide', [
-            transition(':enter', useAnimation(slideEnterAnimation, { params: { time: '0.2s' }})),
-            transition(':leave', useAnimation(slideLeaveAnimation, { params: { time: '0.2s' }})),
-        ]),
-    ],
 })
 export class ChecklistLineComponent implements OnInit, OnDestroy {
     @Input()
