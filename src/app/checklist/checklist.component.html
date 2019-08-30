@@ -23,28 +23,29 @@
     </div>
 
     <mat-card>
-        <ng-container *ngIf="loading; then loadingDiv"></ng-container>
-        <mat-card-header *ngIf="media && profile && equipment" [@slide]>
-            <div mat-card-avatar [style.background-image]="media.avatar_url | safeBackgroundImage"></div>
-            <mat-card-title>{{ profile.name }}</mat-card-title>
-            <mat-card-subtitle>
-                Level {{ profile.level }}
-                {{ profile.race.name }}
-                <span class="cc cc-{{ profile.character_class.id }}">{{ profile.character_class.name }}</span><br>
-                Item Level: {{ profile.equipped_item_level }}<br>
-                Heart of Azeroth Level: {{ equipment.equipped_items | hoaLevel }}
-            </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            <ng-container *ngFor="let item of checklist">
-                <checklist-line [handler]="item.handler" [hideCompleted]="hideCompleted"></checklist-line>
-            </ng-container>
-        </mat-card-content>
+        <ng-container *ngIf="!loading; else loadingDiv">
+            <mat-card-header>
+                <div mat-card-avatar [style.background-image]="media.avatar_url | safeBackgroundImage"></div>
+                <mat-card-title>{{ profile.name }}</mat-card-title>
+                <mat-card-subtitle>
+                    Level {{ profile.level }}
+                    {{ profile.race.name }}
+                    <span class="cc cc-{{ profile.character_class.id }}">{{ profile.character_class.name }}</span><br>
+                    Item Level: {{ profile.equipped_item_level }}<br>
+                    Heart of Azeroth Level: {{ equipment.equipped_items | hoaLevel }}
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <ng-container *ngFor="let item of checklist">
+                    <checklist-line [handler]="item.handler" [hideCompleted]="hideCompleted"></checklist-line>
+                </ng-container>
+            </mat-card-content>
+        </ng-container>
     </mat-card>
 </ng-container>
 
 <ng-template #loadingDiv>
-    <div class="loading centered" [@slide]>
+    <div class="loading centered">
         <mat-spinner diameter="25" color="accent"></mat-spinner>
     </div>
 </ng-template>

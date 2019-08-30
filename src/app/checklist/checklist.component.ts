@@ -1,4 +1,3 @@
-import { animate, style, transition, trigger, useAnimation } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -15,7 +14,6 @@ import { ChecklistHandlerService } from '../services/checklist-evaluator/handler
 import { ChecklistItem } from '../services/checklist/checklist.interface';
 import { ChecklistService } from '../services/checklist/checklist.service';
 import { LocalStorageService } from '../services/local-storage/local-storage.service';
-import { slideEnterAnimation, slideLeaveAnimation } from '../util/animations';
 
 import { ChecklistRequestContainerService } from './services/checklist-request-container.service';
 
@@ -23,13 +21,6 @@ import { ChecklistRequestContainerService } from './services/checklist-request-c
     selector: 'app-checklist',
     templateUrl: './checklist.component.html',
     styleUrls: [ './checklist.component.scss' ],
-    animations: [
-        trigger('slide', [
-            transition(':enter', useAnimation(slideEnterAnimation, { params: { time: '0.2s' }})),
-            transition(':leave', useAnimation(slideLeaveAnimation, { params: { time: '0.2s' }})),
-
-        ]),
-    ],
 })
 export class ChecklistComponent implements OnInit, OnDestroy {
 

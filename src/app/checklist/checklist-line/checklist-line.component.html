@@ -1,4 +1,4 @@
-<div *ngIf="shown && (completed != 'complete' || !hideCompleted)" class="row" [class.complete]="completed == 'complete'" [class.incomplete]="completed !== 'complete'"  [@slide]>
+<div *ngIf="shown && (completed != 'complete' || !hideCompleted)" class="row" [class.complete]="completed == 'complete'" [class.incomplete]="completed !== 'complete'">
     <div class="column-label">
         <a [attr.data-wowhead]="wowheadId">
             <span class="item-name item-indention-{{ indention }}" [innerHTML]="label"></span>
