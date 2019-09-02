@@ -87,6 +87,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
     private loadData(cached: boolean = true): void {
         this.loading = true;
+        this.error = '';
         this.titleService.setTitle(`WoW Checklist`);
 
         this.characterStoreService.getCharacters().subscribe(characters => {
