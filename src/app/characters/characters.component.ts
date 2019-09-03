@@ -9,6 +9,15 @@ import { CharacterInfo } from '../services/character-store/character-store.inter
 import { CharacterStoreService } from '../services/character-store/character-store.service';
 import { LocalStorageService } from '../services/local-storage/local-storage.service';
 
+interface CharacterDataForList {
+    info: CharacterInfo;
+    loading: boolean;
+    error?: boolean;
+    profile?: BattleNetProfile;
+    media?: BattleNetMedia;
+    equipment?: BattleNetEquipment;
+}
+
 @Component({
     selector: 'app-characters',
     templateUrl: './characters.component.html',
@@ -17,13 +26,7 @@ import { LocalStorageService } from '../services/local-storage/local-storage.ser
 export class CharactersComponent implements OnInit {
     loading: boolean = true;
 
-    characterData: {
-        info: CharacterInfo,
-        profile: BattleNetProfile,
-        media: BattleNetMedia,
-        equipment: BattleNetEquipment,
-    }[] = [];
-    resolved: number = 0;
+    characterData: CharacterDataForList[] = [];
 
     constructor(
         private characterService: BattleNetCharacterService,
@@ -41,32 +44,35 @@ export class CharactersComponent implements OnInit {
 
     fetch(): void {
         this.loading = true;
-        this.resolved = 0;
+        this.characterData = [];
 
         this.characterStoreService.getCharacters().subscribe(characters => {
+            this.loading = false;
+
             if (!characters.length) {
-                this.loading = false;
                 return;
             }
 
             characters.forEach((c, idx) => {
+                const characterData: CharacterDataForList = {
+                    info: c,
+                    loading: true,
+                };
+
+                this.characterData.push(characterData);
+
                 forkJoin(
                     this.characterService.getProfile(c.region, c.realm, c.name, true),
                     this.characterService.getMedia(c.region, c.realm, c.name, true),
                     this.characterService.getEquipment(c.region, c.realm, c.name, true),
                 ).subscribe(([ profile, media, equipment ]) => {
-                    this.characterData[idx] = {
-                        info: c,
-                        profile,
-                        media,
-                        equipment,
-                    };
-
-                    this.resolved++;
-
-                    if (characters.length === this.resolved) {
-                        this.loading = false;
-                    }
+                    characterData.profile = profile;
+                    characterData.media = media;
+                    characterData.equipment = equipment;
+                    characterData.loading = false;
+                }, error => {
+                    characterData.error = true;
+                    characterData.loading = false;
                 });
             });
         });
@@ -95,6 +101,7 @@ export class CharactersComponent implements OnInit {
             { region: 'eu', realm: 'antonidas', name: 'bastrik', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'antonidas', name: 'cerulia', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'antonidas', name: 'jaspia', checklistId: 'bfa-alliance', overrides: {} },
+            { region: 'eu', realm: 'antonidas', name: 'rhoren', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'blackrock', name: 'andesina', checklistId: 'bfa-horde', overrides: {
                 'reputation-zandalariempire': { type: 'reputation', max: 7 },
             } },

@@ -8,26 +8,30 @@
 
         <div class="characters">
             <div *ngFor="let result of characterData" class="card-container">
-                <mat-card *ngIf="result">
+                <mat-card>
                     <mat-card-header>
-                        <div mat-card-avatar [style.background-image]="result.media.avatar_url | safeBackgroundImage"></div>
-                        <mat-card-title>{{ result.profile.name }}</mat-card-title>
-                        <mat-card-subtitle>
+                        <div mat-card-avatar [style.background-image]="result?.media?.avatar_url | safeBackgroundImage"></div>
+                        <mat-card-title>{{ result.info.name }}</mat-card-title>
+                        <mat-card-subtitle *ngIf="!result.loading && !result.error">
                             Level {{ result.profile.level }}
                             {{ result.profile.race.name }}
                             <span class="cc cc-{{ result.profile.character_class.id }}">{{ result.profile.character_class.name }}</span>
                         </mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content>
-                        <p>
+                        <p *ngIf="!result.loading && !result.error">
                             <strong>Item Level:</strong> {{ result.profile.equipped_item_level }}<br>
-
                             <strong>Heart of Azeroth Level:</strong> {{ result.equipment.equipped_items | hoaLevel }}
-
                         </p>
+                        <p *ngIf="!result.loading && result.error" class="error">
+                            There was an error loading this character. Ensure that it exists and you have logged in recently.
+                        </p>
+                        <ng-container *ngIf="result.loading; then loadingDiv"></ng-container>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-button color="accent" [routerLink]="[ result.info.region, result.info.realm, result.info.name ]">Checklist</button>
+                        <ng-container>
+                            <button mat-button color="accent" [routerLink]="[ result.info.region, result.info.realm, result.info.name ]">Checklist</button>
+                        </ng-container>
                     </mat-card-actions>
                 </mat-card>
             </div>
@@ -37,7 +41,7 @@
 
 <ng-template #loadingDiv>
     <div class="centered">
-        <mat-spinner diameter="50" color="accent"></mat-spinner>
+        <mat-spinner diameter="30" color="accent"></mat-spinner>
     </div>
 </ng-template>
 <ng-template #noCharacters>

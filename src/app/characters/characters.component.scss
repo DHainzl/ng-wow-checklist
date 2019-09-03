@@ -1,3 +1,5 @@
+@import '../../styles/variables';
+
 .card-container {
     text-align: left;
     width: 100%;
@@ -19,4 +21,17 @@ mat-card-actions {
 
 button[mat-button] {
     text-transform: uppercase;
+}
+
+.characters {
+    display: flex;
+    flex-wrap: wrap;
+
+    mat-card-title {
+        text-transform: capitalize;
+    }
+}
+
+.error {
+    color: $accent;
 }
