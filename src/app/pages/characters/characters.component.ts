@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { forkJoin } from 'rxjs';
 
-import { BattleNetCharacterService } from '../services/battle-net/character/character.service';
-import { BattleNetEquipment } from '../services/battle-net/character/types/battlenet-equipment';
-import { BattleNetMedia } from '../services/battle-net/character/types/battlenet-media';
-import { BattleNetProfile } from '../services/battle-net/character/types/battlenet-profile';
-import { CharacterInfo } from '../services/character-store/character-store.interface';
-import { CharacterStoreService } from '../services/character-store/character-store.service';
-import { LocalStorageService } from '../services/local-storage/local-storage.service';
+import { BattleNetCharacterService } from '../../core/services/battle-net/character/character.service';
+import { BattleNetEquipment } from '../../core/services/battle-net/character/types/battlenet-equipment';
+import { BattleNetMedia } from '../../core/services/battle-net/character/types/battlenet-media';
+import { BattleNetProfile } from '../../core/services/battle-net/character/types/battlenet-profile';
+import { CharacterInfo } from '../../core/services/character-store/character-store.interface';
+import { CharacterStoreService } from '../../core/services/character-store/character-store.service';
+import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 
 interface CharacterDataForList {
     info: CharacterInfo;

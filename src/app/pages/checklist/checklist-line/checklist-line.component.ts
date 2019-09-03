@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { ChecklistHandler } from 'src/app/services/checklist-evaluator/handlers/_handler';
-import { ChecklistNote, CompletionStatus } from 'src/app/services/checklist-evaluator/handlers/_handler.interface';
-import { ChecklistItem } from 'src/app/services/checklist/checklist.interface';
+import { ChecklistHandler } from 'src/app/core/services/checklist-evaluator/handlers/_handler';
+import { ChecklistNote, CompletionStatus } from 'src/app/core/services/checklist-evaluator/handlers/_handler.interface';
+import { ChecklistItem } from 'src/app/core/services/checklist/checklist.interface';
 
 @Component({
     selector: 'checklist-line',

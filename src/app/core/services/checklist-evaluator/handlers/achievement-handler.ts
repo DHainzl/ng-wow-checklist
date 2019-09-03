@@ -1,5 +1,5 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { ChecklistItemAchievement } from 'src/app/services/checklist/checklist.interface';
+import { ChecklistItemAchievement } from 'src/app/core/services/checklist/checklist.interface';
 
 import { BattleNetAchievement, BattleNetAchievements } from '../../battle-net/character/types/battlenet-achievement';
 import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { Subscription } from 'rxjs';
 
-import { ResponsiveService, ScreenSize } from './services/responsive/responsive.service';
+import { ResponsiveService, ScreenSize } from './core/services/responsive/responsive.service';
 
 @Component({
     selector: 'app-root',
@@ -16,8 +16,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     isOpened: boolean = true;
 
-    private screenSize: ScreenSize;
-
     @ViewChild(MatSidenav, { static: false })
     sidenav: MatSidenav;
 
@@ -27,7 +25,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.subscriptions.add(this.responsiveService.sizeChanged.subscribe(screenSize => {
-            this.screenSize = screenSize;
             this.isMobile = screenSize === 's' || screenSize === 'm';
             this.isOpened = !this.isMobile;
         }));

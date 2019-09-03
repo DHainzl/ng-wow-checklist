@@ -4,16 +4,16 @@ import { ActivatedRoute } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
-import { Region } from '../services/battle-net/battle-net.interface';
-import { BattleNetEquipment } from '../services/battle-net/character/types/battlenet-equipment';
-import { BattleNetMedia } from '../services/battle-net/character/types/battlenet-media';
-import { BattleNetProfile } from '../services/battle-net/character/types/battlenet-profile';
-import { CharacterInfo } from '../services/character-store/character-store.interface';
-import { CharacterStoreService } from '../services/character-store/character-store.service';
-import { ChecklistHandlerService } from '../services/checklist-evaluator/handlers/checklist-handler.service';
-import { ChecklistItem } from '../services/checklist/checklist.interface';
-import { ChecklistService } from '../services/checklist/checklist.service';
-import { LocalStorageService } from '../services/local-storage/local-storage.service';
+import { Region } from '../../core/services/battle-net/battle-net.interface';
+import { BattleNetEquipment } from '../../core/services/battle-net/character/types/battlenet-equipment';
+import { BattleNetMedia } from '../../core/services/battle-net/character/types/battlenet-media';
+import { BattleNetProfile } from '../../core/services/battle-net/character/types/battlenet-profile';
+import { CharacterInfo } from '../../core/services/character-store/character-store.interface';
+import { CharacterStoreService } from '../../core/services/character-store/character-store.service';
+import { ChecklistHandlerService } from '../../core/services/checklist-evaluator/handlers/checklist-handler.service';
+import { ChecklistItem } from '../../core/services/checklist/checklist.interface';
+import { ChecklistService } from '../../core/services/checklist/checklist.service';
+import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 
 import { ChecklistRequestContainerService } from './services/checklist-request-container.service';
 

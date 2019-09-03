@@ -1,7 +1,10 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { BattleNetCharacterProfession, BattleNetCharacterProfessions } from 'src/app/services/battle-net/character/character.interface';
-import { CharacterInfo } from 'src/app/services/character-store/character-store.interface';
-import { ChecklistItemSecondaryProfession } from 'src/app/services/checklist/checklist.interface';
+import {
+    BattleNetCharacterProfession,
+    BattleNetCharacterProfessions,
+ } from 'src/app/core/services/battle-net/character/character.interface';
+import { CharacterInfo } from 'src/app/core/services/character-store/character-store.interface';
+import { ChecklistItemSecondaryProfession } from 'src/app/core/services/checklist/checklist.interface';
 
 import { ChecklistHandler } from './_handler';
 

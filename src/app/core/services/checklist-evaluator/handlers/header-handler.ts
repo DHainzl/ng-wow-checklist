@@ -1,6 +1,6 @@
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ChecklistItem, ChecklistItemHeader } from 'src/app/services/checklist/checklist.interface';
+import { ChecklistItem, ChecklistItemHeader } from 'src/app/core/services/checklist/checklist.interface';
 
 import { ChecklistHandler } from './_handler';
 import { CompletionStatus } from './_handler.interface';

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { BattleNetEquipmentItem } from '../services/battle-net/character/types/battlenet-equipment';
+import { BattleNetEquipmentItem } from '../../core/services/battle-net/character/types/battlenet-equipment';
 
 @Pipe({
     name: 'hoaLevel',

@@ -1,7 +1,7 @@
 import { Observable, of, Subscription } from 'rxjs';
-import { flatMap, mapTo } from 'rxjs/operators';
-import { CharacterId } from 'src/app/checklist/services/checklist-request-container.service';
-import { ChecklistItemManual } from 'src/app/services/checklist/checklist.interface';
+import { flatMap } from 'rxjs/operators';
+import { ChecklistItemManual } from 'src/app/core/services/checklist/checklist.interface';
+import { CharacterId } from 'src/app/pages/checklist/services/checklist-request-container.service';
 
 import { CharacterInfo } from '../../character-store/character-store.interface';
 

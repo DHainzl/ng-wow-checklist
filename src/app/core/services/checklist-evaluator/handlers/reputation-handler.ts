@@ -1,7 +1,7 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { BattleNetCharacterReputation } from 'src/app/services/battle-net/character/character.interface';
-import { CharacterInfo } from 'src/app/services/character-store/character-store.interface';
-import { ChecklistItemReputation } from 'src/app/services/checklist/checklist.interface';
+import { BattleNetCharacterReputation } from 'src/app/core/services/battle-net/character/character.interface';
+import { CharacterInfo } from 'src/app/core/services/character-store/character-store.interface';
+import { ChecklistItemReputation } from 'src/app/core/services/checklist/checklist.interface';
 
 import { ChecklistHandler } from './_handler';
 
