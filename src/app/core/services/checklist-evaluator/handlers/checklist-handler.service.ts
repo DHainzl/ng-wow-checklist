@@ -1,5 +1,5 @@
 import { Injectable, Injector, Type } from '@angular/core';
-import { ChecklistRequestContainerService } from 'src/app/checklist/services/checklist-request-container.service';
+import { ChecklistRequestContainerService } from 'src/app/pages/checklist/services/checklist-request-container.service';
 
 import { CharacterStoreService } from '../../character-store/character-store.service';
 import { ChecklistItem } from '../../checklist/checklist.interface';

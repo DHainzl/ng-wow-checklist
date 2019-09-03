@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, merge, Observable } from 'rxjs';
 import { filter, map, mapTo, pluck, tap } from 'rxjs/operators';
-import { Region } from 'src/app/services/battle-net/battle-net.interface';
-import { BattleNetCharacterProfessions, BattleNetCharacterReputation } from 'src/app/services/battle-net/character/character.interface';
-import { BattleNetCharacterService } from 'src/app/services/battle-net/character/character.service';
-import { BattleNetAchievements } from 'src/app/services/battle-net/character/types/battlenet-achievement';
-import { BattleNetEquipment } from 'src/app/services/battle-net/character/types/battlenet-equipment';
-import { BattleNetMedia } from 'src/app/services/battle-net/character/types/battlenet-media';
-import { BattleNetProfile } from 'src/app/services/battle-net/character/types/battlenet-profile';
-import { CharacterInfo, CharacterInfoOverride } from 'src/app/services/character-store/character-store.interface';
-import { CharacterStoreService } from 'src/app/services/character-store/character-store.service';
+import { Region } from 'src/app/core/services/battle-net/battle-net.interface';
+import {
+    BattleNetCharacterProfessions,
+    BattleNetCharacterReputation,
+} from 'src/app/core/services/battle-net/character/character.interface';
+import { BattleNetCharacterService } from 'src/app/core/services/battle-net/character/character.service';
+import { BattleNetAchievements } from 'src/app/core/services/battle-net/character/types/battlenet-achievement';
+import { BattleNetEquipment } from 'src/app/core/services/battle-net/character/types/battlenet-equipment';
+import { BattleNetMedia } from 'src/app/core/services/battle-net/character/types/battlenet-media';
+import { BattleNetProfile } from 'src/app/core/services/battle-net/character/types/battlenet-profile';
+import { CharacterInfo } from 'src/app/core/services/character-store/character-store.interface';
+import { CharacterStoreService } from 'src/app/core/services/character-store/character-store.service';
 
 export interface CharacterId {
     region: Region;

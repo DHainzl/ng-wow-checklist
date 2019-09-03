@@ -1,19 +1,14 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { AppComponent } from './app.component';
-import { CharactersComponent } from './characters/characters.component';
-import { ChecklistComponent } from './checklist/checklist.component';
 
 const routes: Routes = [
     {
         path: 'character',
-        component: CharactersComponent,
+        loadChildren: () => import('./pages/characters/characters.module').then(m => m.CharactersModule),
     },
     {
         path: 'character/:region/:realm/:name',
-        component: ChecklistComponent,
+        loadChildren: () => import('./pages/checklist/checklist.module').then(m => m.ChecklistModule),
     },
     {
         path: '',

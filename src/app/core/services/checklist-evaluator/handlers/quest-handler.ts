@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItemQuest } from 'src/app/services/checklist/checklist.interface';
+import { ChecklistItemQuest } from 'src/app/core/services/checklist/checklist.interface';
 
 import { ChecklistHandler } from './_handler';
 

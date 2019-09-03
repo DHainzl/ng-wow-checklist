@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItemLevel } from 'src/app/services/checklist/checklist.interface';
+import { ChecklistItemLevel } from 'src/app/core/services/checklist/checklist.interface';
 
 import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';
 

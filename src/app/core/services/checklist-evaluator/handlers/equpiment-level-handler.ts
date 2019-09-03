@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItemEquipmentLevel } from 'src/app/services/checklist/checklist.interface';
+import { ChecklistItemEquipmentLevel } from 'src/app/core/services/checklist/checklist.interface';
 
 import { BattleNetEquipment } from '../../battle-net/character/types/battlenet-equipment';
 

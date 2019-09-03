@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ChecklistRequestContainerService } from 'src/app/checklist/services/checklist-request-container.service';
-import { ChecklistItem, ChecklistItemHeader } from 'src/app/services/checklist/checklist.interface';
+import { ChecklistItem, ChecklistItemHeader } from 'src/app/core/services/checklist/checklist.interface';
+import { ChecklistRequestContainerService } from 'src/app/pages/checklist/services/checklist-request-container.service';
 
 import { CharacterStoreService } from '../../character-store/character-store.service';
 
