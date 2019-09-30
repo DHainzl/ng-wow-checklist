@@ -47,6 +47,10 @@ const data: Checklist = {
         { key: 'wareffort-riseofazshara-themachagonianthreat', name: 'The Mechagonian Threat', type: 'achievement', id: 13700 },
         { key: 'wareffort-riseofazshara-stayofexecution', name: 'Stay of Execution', type: 'quest', id: 55779 },
 
+        { key: 'wareffort-thefourthwar', name: 'War Campaign: The Fourth War', type: 'header', id: 0, level: 1 },
+        { key: 'wareffort-thefourthwar-thecircleofstars', name: 'The Circle of Stars', type: 'achievement', id: 13725 },
+        { key: 'wareffort-thefourthwar-thefourthwar', name: 'The Fourth War', type: 'achievement', id: 13924 },
+
         { key: 'wareffort-heartofazeroth', name: 'Heart of Azeroth', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-heartofazeroth-heartforge', name: 'The Heart Forge', type: 'quest', id: 55618 },
         { key: 'wareffort-heartofazeroth-crucible-1', name: 'The Crucible of Flame - Rank 1', type: 'quest', id: 57010 },
@@ -55,6 +59,7 @@ const data: Checklist = {
         { key: 'wareffort-heartofazeroth-crucible-3', name: 'The Crucible of Flame - Rank 3 (Heart Level 60)', type: 'quest', id: 55657 },
         { key: 'wareffort-heartofazeroth-anoldscar', name: 'An Old Scar (Heart Level 65)', type: 'quest', id: 55732 },
         { key: 'wareffort-heartofazeroth-crucible-4', name: 'The Crucible of Flame - Rank 4 (Heart Level 70)', type: 'quest', id: -1 },
+        { key: 'wareffort-heartofazeroth-wrathionsjournal', name: 'Wrathion\'s Journal', type: 'quest', id: 56504 },
 
         { key: 'wareffort-zandalarforever', name: 'Zandalar Forever!', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-zandalarforever-toldagor', name: 'A Bargain of Blood', type: 'achievement', id: 12480 },
