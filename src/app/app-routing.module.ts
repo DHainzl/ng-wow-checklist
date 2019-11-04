@@ -7,6 +7,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/characters/characters.module').then(m => m.CharactersModule),
     },
     {
+        path: 'characters-edit',
+        loadChildren: () => import('./pages/characters-edit/characters-edit.module').then(m => m.CharactersEditModule),
+    },
+    {
         path: 'character/:region/:realm/:name',
         loadChildren: () => import('./pages/checklist/checklist.module').then(m => m.ChecklistModule),
     },
