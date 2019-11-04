@@ -1,5 +1,10 @@
 @import '../../../styles/variables';
 
+:host {
+    display: block;
+    margin-bottom: 30px;
+}
+
 .card-container {
     text-align: left;
     width: 100%;
@@ -9,10 +14,6 @@
 
 mat-card {
     margin: 10px 10px;
-
-    [mat-card-avatar] {
-        background-size: cover;
-    }
 }
 
 mat-card-actions {
@@ -23,14 +24,56 @@ button[mat-button] {
     text-transform: uppercase;
 }
 
-.characters {
+.character {
     display: flex;
-    flex-wrap: wrap;
+    margin: 10px 0;
+    background-color: #424242;
 
-    mat-card-title {
+    .cc-icon {
+        width: 40px;
+        height: 40px;
+        background-size: cover;
+    }
+
+    .cc {
         text-transform: capitalize;
+        width: 150px;
+        padding: 0 10px;
+        line-height: 40px;
+        font-size: 16px;
+    }
+
+    .progress-bar {
+        flex: 1;
+        border: 1px solid white;
+        margin: 8px 10px;
+        position: relative;
+
+        .progress-level {
+            display: block;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            background: rgb(50,1,46);
+            background: linear-gradient(0deg, rgba(50,1,46,1) 0%, rgba(113,25,101,1) 100%);        }
+
+        .heart-level {
+            display: block;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            background: rgb(182,168,123);
+            background: linear-gradient(180deg, rgba(182,168,123,1) 0%, rgba(106,94,78,1) 100%);
+        }
+
+        .progress-name {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+        }
     }
 }
+
 
 .error {
     color: $accent;

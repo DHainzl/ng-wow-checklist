@@ -3,16 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
     {
-        path: 'character',
+        path: 'home',
         loadChildren: () => import('./pages/characters/characters.module').then(m => m.CharactersModule),
     },
     {
-        path: 'character/:region/:realm/:name',
+        path: ':region/:realm/:name/checklist',
         loadChildren: () => import('./pages/checklist/checklist.module').then(m => m.ChecklistModule),
     },
     {
         path: '',
-        redirectTo: 'character',
+        redirectTo: 'home',
         pathMatch: 'full',
     },
 ];

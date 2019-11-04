@@ -1,47 +1,51 @@
-<ng-container *ngIf="!loading; else loadingDiv">
-    <ng-container *ngIf="characterData.length; else noCharacters">
-        <div class="page-actions">
-            <button mat-icon-button (click)="refresh()" aria-label="Refresh All">
-                <mat-icon>refresh</mat-icon>
-            </button>
-        </div>
-
-        <div class="characters">
-            <div *ngFor="let result of characterData" class="card-container">
-                <mat-card>
-                    <mat-card-header>
-                        <div mat-card-avatar [style.background-image]="result?.media?.avatar_url | safeBackgroundImage"></div>
-                        <mat-card-title>{{ result.info.name }}</mat-card-title>
-                        <mat-card-subtitle *ngIf="!result.loading && !result.error">
-                            Level {{ result.profile.level }}
-                            {{ result.profile.race.name }}
-                            <span class="cc cc-{{ result.profile.character_class.id }}">{{ result.profile.character_class.name }}</span>
-                        </mat-card-subtitle>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <p *ngIf="!result.loading && !result.error">
-                            <strong>Item Level:</strong> {{ result.profile.equipped_item_level }}<br>
-                            <strong>Heart of Azeroth Level:</strong> {{ result.equipment.equipped_items | hoaLevel }}
-                        </p>
-                        <p *ngIf="!result.loading && result.error" class="error">
-                            There was an error loading this character. Ensure that it exists and you have logged in recently.
-                        </p>
-                        <ng-container *ngIf="result.loading; then loadingDiv"></ng-container>
-                    </mat-card-content>
-                    <mat-card-actions>
-                        <ng-container>
-                            <button mat-button color="accent" [routerLink]="[ result.info.region, result.info.realm, result.info.name ]">Checklist</button>
-                        </ng-container>
-                    </mat-card-actions>
-                </mat-card>
+<div class="page-container">
+    <ng-container *ngIf="!loading; else loadingDiv">
+        <ng-container *ngIf="characterData.length; else noCharacters">
+            <div class="page-actions">
+                <button mat-icon-button (click)="refresh()" aria-label="Refresh All">
+                    <mat-icon>refresh</mat-icon>
+                </button>
             </div>
-        </div>
+    
+            <div class="characters">
+                <div *ngFor="let result of characterData" class="character">
+                    <ng-container *ngIf="!result.error">
+                        <span class="cc-icon" [style.background-image]="result?.media?.avatar_url | safeBackgroundImage"></span>
+                        <span class="cc cc-{{ result?.profile?.character_class.id }}">{{ result.info.name }}</span>
+                        <span class="progress-bar">
+                            <ng-container  *ngIf="!result.loading; else loadingDivSmall">
+                                <span class="progress-level" [style.width]="((result.profile.level / MAX_LEVEL) * 100) + '%'"></span>
+                                <span class="heart-level" [style.width]="(((result.equipment.equipped_items | hoaLevel) / MAX_HEART_LEVEL) * 100) + '%'"></span>
+                                <span class="progress-name">
+                                    <span *ngIf="result.profile.level < MAX_LEVEL">Level {{ result.profile.level }}</span>
+                                    <span *ngIf="result.profile.level == MAX_LEVEL">Heart Level {{ result.equipment.equipped_items | hoaLevel }}</span>
+                                </span>
+                            </ng-container>
+                        </span>        
+                        <span class="actions">
+                            <button mat-icon-button [routerLink]="[ '/', result.info.region, result.info.realm, result.info.name, 'checklist' ]">
+                                <mat-icon>playlist_add_check</mat-icon>
+                            </button>
+                        </span>
+                    </ng-container>
+                    <div *ngIf="!result.loading && result.error">
+                        There was an error loading this character. Ensure that it exists and you have logged in recently.
+                    </div>
+                    <!-- <ng-container *ngIf="result.loading; then loadingDiv"></ng-container> -->
+                </div>
+            </div>
+        </ng-container>
     </ng-container>
-</ng-container>
+</div>
 
 <ng-template #loadingDiv>
     <div class="centered">
         <mat-spinner diameter="30" color="accent"></mat-spinner>
+    </div>
+</ng-template>
+<ng-template #loadingDivSmall>
+    <div class="centered">
+        <mat-spinner diameter="10" color="accent"></mat-spinner>
     </div>
 </ng-template>
 <ng-template #noCharacters>
