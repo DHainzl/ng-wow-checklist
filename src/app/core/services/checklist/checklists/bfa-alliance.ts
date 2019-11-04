@@ -48,7 +48,6 @@ const data: Checklist = {
         { key: 'wareffort-riseofazshara-stayofexecution', name: 'Stay of Execution', type: 'quest', id: 55783 },
 
         { key: 'wareffort-thefourthwar', name: 'War Campaign: The Fourth War', type: 'header', id: 0, level: 1 },
-        { key: 'wareffort-thefourthwar-thecircleofstars', name: 'The Circle of Stars', type: 'achievement', id: 13725 },
         { key: 'wareffort-thefourthwar-thefourthwar', name: 'The Fourth War', type: 'achievement', id: 13925 },
 
         { key: 'wareffort-heartofazeroth', name: 'Heart of Azeroth', type: 'header', id: 0, level: 1 },
@@ -58,7 +57,7 @@ const data: Checklist = {
         { key: 'wareffort-heartofazeroth-afreshtrauma', name: 'A Fresh Trauma (Heart Level 55)', type: 'quest', id: 55521},
         { key: 'wareffort-heartofazeroth-crucible-3', name: 'The Crucible of Flame - Rank 3 (Heart Level 60)', type: 'quest', id: 55657 },
         { key: 'wareffort-heartofazeroth-anoldscar', name: 'An Old Scar (Heart Level 65)', type: 'quest', id: 55732 },
-        { key: 'wareffort-heartofazeroth-crucible-4', name: 'The Crucible of Flame - Rank 4 (Heart Level 70)', type: 'quest', id: -1 },
+        { key: 'wareffort-heartofazeroth-crucible-4', name: 'The Crucible of Flame - Rank 4 (Heart Level 70)', type: 'quest', id: 56401 },
         { key: 'wareffort-heartofazeroth-wrathionsjournal', name: 'Wrathion\'s Journal', type: 'quest', id: 56504 },
 
         { key: 'wareffort-anationunited', name: 'A Nation United', type: 'header', id: 0, level: 1 },
