@@ -1,0 +1,77 @@
+<div class="page-container">
+    <div class="page-actions cf">
+        <div class="right">
+            <button mat-icon-button (click)="enableSortMode()" aria-label="Sort" *ngIf="!sortMode">
+                <mat-icon>reorder</mat-icon>
+            </button>
+            <button mat-icon-button (click)="cancelSortMode(false)" aria-label="Cancel" *ngIf="sortMode">
+                <mat-icon>close</mat-icon>
+            </button>
+            <button mat-icon-button (click)="saveSortMode(true)" aria-label="Save" *ngIf="sortMode">
+                <mat-icon>check</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <mat-card *ngIf="!loading; else loadingDiv">
+        <mat-card-content>
+            <div class="row header">
+                <div>Name</div>
+                <div>Server</div>
+                <div>Checklist</div>
+            </div>
+            <div cdkDropList (cdkDropListDropped)="drop($event)">
+                <ng-container *ngIf="sortMode">
+                    <div class="row character mat-typography" *ngFor="let character of characters" cdkDrag>
+                        <div class="name">{{ character.name }}</div>
+                        <div class="server">
+                            <span class="region">{{ character.region }}</span>-{{ character.realm }}
+                        </div>
+                        <div>
+                            {{ character.checklistId }}
+                        </div>
+                        <div>
+                            <ng-container *ngIf="sortMode">
+                                <button mat-icon-button cdkDragHandle>
+                                    <mat-icon>reorder</mat-icon>
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="!sortMode">
+                                <button mat-icon-button (click)="removeEntry(character)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!sortMode">
+                    <div class="row character mat-typography" *ngFor="let character of characters">
+                        <div class="name">{{ character.name }}</div>
+                        <div class="server">
+                            <span class="region">{{ character.region }}</span>-{{ character.realm }}
+                        </div>
+                        <div>
+                            {{ character.checklistId }}
+                        </div>
+                        <div>
+                            <ng-container *ngIf="sortMode">
+                                <button mat-icon-button cdkDragHandle>
+                                    <mat-icon>reorder</mat-icon>
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="!sortMode">
+                                <button mat-icon-button (click)="removeEntry(character)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<ng-template #loadingDiv>
+    Loading ...
+</ng-template>
