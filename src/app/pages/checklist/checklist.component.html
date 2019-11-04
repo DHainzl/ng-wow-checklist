@@ -1,48 +1,51 @@
 <mat-toolbar class="character-quick-switch">
     <ng-container *ngIf="allCharacters; else loadingDiv2">
-        <div class="character" routerLink="../../..">
+        <div class="character" routerLink="/">
             <mat-icon>chevron_left</mat-icon>
         </div>
-        <div *ngFor="let character of allCharacters" class="character" [routerLink]="[ '../../..', character.region, character.realm, character.name ]" routerLinkActive="active">
+        <div *ngFor="let character of allCharacters" class="character" [routerLink]="[ '/', character.region, character.realm, character.name, 'checklist' ]" routerLinkActive="active">
             {{ character.name }}
         </div>
     </ng-container>
 </mat-toolbar>
 
-<ng-container *ngIf="!error; else errorDiv">
-    <div class="page-actions group">
-        <div class="pull-left">
-            <button mat-icon-button (click)="refresh()" aria-label="Refresh All" [disabled]="loading">
-                <mat-icon>refresh</mat-icon>
-            </button>
+<div class="page-container">
+    <ng-container *ngIf="!error; else errorDiv">
+        <div class="page-actions group">
+            <div class="pull-left">
+                <button mat-icon-button (click)="refresh()" aria-label="Refresh All" [disabled]="loading">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </div>
+
+            <div class="pull-right">
+                <mat-checkbox [(ngModel)]="hideCompleted" (ngModelChange)="hideCompletedChange($event)">Hide completed items</mat-checkbox>
+            </div>
         </div>
 
-        <div class="pull-right">
-            <mat-checkbox [(ngModel)]="hideCompleted" (ngModelChange)="hideCompletedChange($event)">Hide completed items</mat-checkbox>
-        </div>
-    </div>
+        <mat-card>
+            <ng-container *ngIf="!loading; else loadingDiv">
+                <mat-card-header>
+                    <div mat-card-avatar [style.background-image]="media.avatar_url | safeBackgroundImage"></div>
+                    <mat-card-title>{{ profile.name }}</mat-card-title>
+                    <mat-card-subtitle>
+                        Level {{ profile.level }}
+                        {{ profile.race.name }}
+                        <span class="cc cc-{{ profile.character_class.id }}">{{ profile.character_class.name }}</span><br>
+                        Item Level: {{ profile.equipped_item_level }}<br>
+                        Heart of Azeroth Level: {{ equipment.equipped_items | hoaLevel }}
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <ng-container *ngFor="let item of checklist">
+                        <checklist-line [handler]="item.handler" [hideCompleted]="hideCompleted"></checklist-line>
+                    </ng-container>
+                </mat-card-content>
+            </ng-container>
+        </mat-card>
+    </ng-container>
+</div>
 
-    <mat-card>
-        <ng-container *ngIf="!loading; else loadingDiv">
-            <mat-card-header>
-                <div mat-card-avatar [style.background-image]="media.avatar_url | safeBackgroundImage"></div>
-                <mat-card-title>{{ profile.name }}</mat-card-title>
-                <mat-card-subtitle>
-                    Level {{ profile.level }}
-                    {{ profile.race.name }}
-                    <span class="cc cc-{{ profile.character_class.id }}">{{ profile.character_class.name }}</span><br>
-                    Item Level: {{ profile.equipped_item_level }}<br>
-                    Heart of Azeroth Level: {{ equipment.equipped_items | hoaLevel }}
-                </mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-                <ng-container *ngFor="let item of checklist">
-                    <checklist-line [handler]="item.handler" [hideCompleted]="hideCompleted"></checklist-line>
-                </ng-container>
-            </mat-card-content>
-        </ng-container>
-    </mat-card>
-</ng-container>
 
 <ng-template #loadingDiv>
     <div class="loading centered">

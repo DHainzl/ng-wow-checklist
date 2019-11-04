@@ -38,6 +38,15 @@ h2, h3 {
     float: right;
 }
 
+.cf:before,
+.cf:after {
+  content: " "; /* 1 */
+  display: table; /* 2 */
+}
+
+.cf:after {
+  clear: both;
+}
 
 .centered {
     width: 100%;
@@ -59,4 +68,9 @@ h2, h3 {
         left: 50%;
         transform: translateX(-50%);
     }
+}
+
+.page-container {
+    width: 100%;
+    max-width: 800px;
 }

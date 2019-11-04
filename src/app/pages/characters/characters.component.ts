@@ -24,6 +24,9 @@ interface CharacterDataForList {
     styleUrls: [ './characters.component.scss' ],
 })
 export class CharactersComponent implements OnInit {
+    readonly MAX_LEVEL = 120;
+    readonly MAX_HEART_LEVEL = 70;
+
     loading: boolean = true;
 
     characterData: CharacterDataForList[] = [];
@@ -101,7 +104,10 @@ export class CharactersComponent implements OnInit {
             { region: 'eu', realm: 'antonidas', name: 'bastrik', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'antonidas', name: 'cerulia', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'antonidas', name: 'jaspia', checklistId: 'bfa-alliance', overrides: {} },
+            { region: 'eu', realm: 'antonidas', name: 'ametho', checklistId: 'bfa-alliance', overrides: {} },
+            { region: 'eu', realm: 'antonidas', name: 'emeraldia', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'antonidas', name: 'rhoren', checklistId: 'bfa-alliance', overrides: {} },
+            { region: 'eu', realm: 'antonidas', name: 'tanzanon', checklistId: 'bfa-alliance', overrides: {} },
             { region: 'eu', realm: 'blackrock', name: 'andesina', checklistId: 'bfa-horde', overrides: {
                 'reputation-zandalariempire': { type: 'reputation', max: 7 },
             } },
