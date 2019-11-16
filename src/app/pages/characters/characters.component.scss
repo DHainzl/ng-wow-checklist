@@ -93,4 +93,10 @@ button[mat-button] {
 
 .error {
     color: $accent;
+
+    &.error-message {
+        line-height: 40px;
+        margin: 0 10px;
+        flex: 1;
+    }
 }

@@ -32,10 +32,13 @@
                             </button>
                         </span>
                     </ng-container>
-                    <div *ngIf="!result.loading && result.error">
-                        There was an error loading this character. Ensure that it exists and you have logged in recently.
-                    </div>
-                    <!-- <ng-container *ngIf="result.loading; then loadingDiv"></ng-container> -->
+                    <ng-container *ngIf="!result.loading && result.error">
+                        <span class="cc-icon"></span>
+                        <span class="cc error">{{ result.info.name }}</span>
+                        <span class="error error-message">
+                            Error loading character. Ensure that it exists and you have logged in recently.
+                        </span>
+                    </ng-container>
                 </div>
             </div>
         </ng-container>
