@@ -3,8 +3,10 @@ import {
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatDialogModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
     MatSidenavModule,
     MatToolbarModule,
 } from '@angular/material';
@@ -18,6 +20,8 @@ import {
         MatCardModule,
         MatCheckboxModule,
         MatProgressSpinnerModule,
+        MatDialogModule,
+        MatSelectModule,
     ],
     exports: [
         MatToolbarModule,
@@ -27,6 +31,8 @@ import {
         MatCardModule,
         MatCheckboxModule,
         MatProgressSpinnerModule,
+        MatDialogModule,
+        MatSelectModule,
     ],
 })
 export class MaterialCommonModule { }

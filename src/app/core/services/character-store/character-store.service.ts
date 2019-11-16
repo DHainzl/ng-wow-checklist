@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, tap } from 'rxjs/operators';
 
 import { Region } from '../battle-net/battle-net.interface';
 import { LocalStorageService } from '../local-storage/local-storage.service';
@@ -34,6 +34,13 @@ export class CharacterStoreService {
         }
 
         return of(character);
+    }
+
+    addCharacter(character: CharacterInfo): Observable<undefined> {
+        return this.getCharacters().pipe(
+            tap(allCharacters => allCharacters.push(character)),
+            flatMap(allCharacters => this.setCharacters(allCharacters)),
+        );
     }
 
     setCharacters(characters: CharacterInfo[]): Observable<undefined> {

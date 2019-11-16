@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Add character</h1>
+
+<div mat-dialog-content [formGroup]="form">
+    <mat-form-field color="accent">
+        <mat-label>Region</mat-label>
+        <mat-select formControlName="region">
+            <mat-option *ngFor="let region of regions" [value]="region">
+                {{ region | uppercase}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field color="accent">
+        <mat-label>
+            {{ getCharacterLabel() }}
+        </mat-label>
+        <mat-select formControlName="character">
+            <mat-optgroup *ngFor="let realmWithCharacters of charactersByRealm" [label]="realmWithCharacters.realm">
+                <mat-option *ngFor="let character of realmWithCharacters.characters" [value]="character" [disabled]="characterAdded(character)">
+                    {{ character.name }}
+                </mat-option>
+            </mat-optgroup>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="addCharacter()" [disabled]="form.invalid">Add</button>
+</div>
