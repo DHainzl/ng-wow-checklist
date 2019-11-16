@@ -22,8 +22,6 @@ export interface CharacterId {
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistRequestContainerService {
-    private static readonly FIELDS = [ 'reputation', 'quests', 'professions' ];
-
     private _characterChanged$: BehaviorSubject<CharacterId | undefined> = new BehaviorSubject(undefined);
     private _questsChanged$: BehaviorSubject<number[]> = new BehaviorSubject(undefined);
     private _professionsChanged$: BehaviorSubject<BattleNetCharacterProfessions> = new BehaviorSubject(undefined);
@@ -78,7 +76,7 @@ export class ChecklistRequestContainerService {
         this._mediaChanged$.next(undefined);
         this._profileChanged$.next(undefined);
 
-        const character$ = this.characterService.getCharacter(region, realm, name, ChecklistRequestContainerService.FIELDS, cached).pipe(
+        const character$ = this.characterService.getCharacter(region, realm, name, cached).pipe(
             tap(characterData => {
                 this._questsChanged$.next(characterData.quests);
                 this._professionsChanged$.next(characterData.professions);

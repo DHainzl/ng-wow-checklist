@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { Subscription } from 'rxjs';
 
+import { UserInfo } from './core/services/battle-net/userinfo/types/userinfo.interface';
+import { UserInfoService } from './core/services/battle-net/userinfo/userinfo.service';
 import { ResponsiveService, ScreenSize } from './core/services/responsive/responsive.service';
 
 @Component({
@@ -11,6 +13,7 @@ import { ResponsiveService, ScreenSize } from './core/services/responsive/respon
 })
 export class AppComponent implements OnInit, OnDestroy {
     isMobile: boolean = true;
+    userinfo: UserInfo;
 
     subscriptions: Subscription = new Subscription();
 
@@ -21,12 +24,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
     constructor(
         private responsiveService: ResponsiveService,
+        private userInfoService: UserInfoService,
     ) { }
 
     ngOnInit(): void {
         this.subscriptions.add(this.responsiveService.sizeChanged.subscribe(screenSize => {
             this.isMobile = screenSize === 's' || screenSize === 'm';
             this.isOpened = !this.isMobile;
+        }));
+        this.subscriptions.add(this.userInfoService.getLatestUserInfo().subscribe(userInfo => {
+            this.userinfo = userInfo;
         }));
     }
 
