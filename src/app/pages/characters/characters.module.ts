@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+import { AddCharacterComponent } from './add-character/add-character.component';
 import { CharactersComponent } from './characters.component';
 
 @NgModule({
@@ -12,8 +13,12 @@ import { CharactersComponent } from './characters.component';
         CommonModule,
         SharedModule,
     ],
+    entryComponents: [
+        AddCharacterComponent,
+    ],
     declarations: [
         CharactersComponent,
+        AddCharacterComponent,
     ],
 })
 export class CharactersModule {}

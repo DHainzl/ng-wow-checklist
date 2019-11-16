@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { forkJoin } from 'rxjs';
 
 import { BattleNetCharacterService } from '../../core/services/battle-net/character/character.service';
@@ -9,7 +10,9 @@ import { CharacterInfo } from '../../core/services/character-store/character-sto
 import { CharacterStoreService } from '../../core/services/character-store/character-store.service';
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 
-interface CharacterDataForList {
+import { AddCharacterComponent } from './add-character/add-character.component';
+
+export interface CharacterDataForList {
     info: CharacterInfo;
     loading: boolean;
     error?: boolean;
@@ -35,6 +38,7 @@ export class CharactersComponent implements OnInit {
         private characterService: BattleNetCharacterService,
         private characterStoreService: CharacterStoreService,
         private localStorageService: LocalStorageService,
+        private dialog: MatDialog,
     ) { }
 
     ngOnInit(): void {
@@ -78,6 +82,19 @@ export class CharactersComponent implements OnInit {
                     characterData.loading = false;
                 });
             });
+        });
+    }
+
+    openAddModal(): void {
+        const dialogRef = this.dialog.open(AddCharacterComponent, {
+            width: '400px',
+            data: this.characterData,
+        });
+
+        dialogRef.afterClosed().subscribe(hasChanged => {
+            if (hasChanged) {
+                this.fetch();
+            }
         });
     }
 
