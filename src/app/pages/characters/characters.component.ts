@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { Title } from '@angular/platform-browser';
 import { forkJoin } from 'rxjs';
 
 import { BattleNetCharacterService } from '../../core/services/battle-net/character/character.service';
@@ -39,10 +40,12 @@ export class CharactersComponent implements OnInit {
         private characterStoreService: CharacterStoreService,
         private localStorageService: LocalStorageService,
         private dialog: MatDialog,
+        private titleService: Title,
     ) { }
 
     ngOnInit(): void {
         this.fetch();
+        this.titleService.setTitle('Characters');
     }
 
     refresh(): void {
