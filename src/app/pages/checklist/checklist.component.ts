@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { of, Subscription } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { combineLatest, Observable, of, Subscription } from 'rxjs';
+import { distinctUntilChanged, flatMap, map } from 'rxjs/operators';
 
 import { Region } from '../../core/services/battle-net/battle-net.interface';
 import { BattleNetEquipment } from '../../core/services/battle-net/character/types/battlenet-equipment';
@@ -31,6 +31,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     realm: string;
     name: string;
 
+    allCompleted: boolean = false;
     hideCompleted: boolean = this.localStorageService.get('hideCompleted') || false;
 
     allCharacters: CharacterInfo[];
@@ -52,6 +53,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
         private localStorageService: LocalStorageService,
 
         private titleService: Title,
+        private changeDetectorRef: ChangeDetectorRef,
     ) { }
 
     ngOnInit(): void {
@@ -109,9 +111,34 @@ export class ChecklistComponent implements OnInit, OnDestroy {
                 return this.checklistService.getChecklist(characterInfo.checklistId);
             }),
         ).subscribe(checklist => {
+            const completedChanged: Observable<boolean>[] = [];
+
             checklist.items.forEach(item => {
                 item.handler = this.checklistHandlerService.getHandler(item, checklist.items);
+
+                const completedAndVisible$ = combineLatest(
+                    item.handler.completed.pipe(distinctUntilChanged()),
+                    item.handler.shown.pipe(distinctUntilChanged()),
+                ).pipe(
+                    map(([ completionStatus, isShown ]) => {
+                        if (!isShown) {
+                            return true;
+                        }
+
+                        return completionStatus === 'complete';
+                    }),
+                );
+
+                completedChanged.push(completedAndVisible$);
             });
+
+            this.subscriptions.add(combineLatest(completedChanged).pipe(
+                map(completionStatus => completionStatus.every(status => status)),
+                distinctUntilChanged(),
+            ).subscribe(allCompleted => {
+                this.allCompleted = allCompleted;
+                this.changeDetectorRef.detectChanges();
+            }));
 
             this.checklist = checklist.items;
         },

@@ -24,6 +24,13 @@ table {
     }
 }
 
+.completion-alert {
+    background-color: $primary;
+    text-align: center;
+    padding: 12px 10px;
+    margin-bottom: 20px;
+}
+
 .character-quick-switch {
     margin: -10px 0 0 -20px;
     width: calc(100% + 40px);
