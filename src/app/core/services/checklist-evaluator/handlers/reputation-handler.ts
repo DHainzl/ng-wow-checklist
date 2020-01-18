@@ -1,7 +1,8 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { BattleNetCharacterReputation } from 'src/app/core/services/battle-net/character/character.interface';
 import { CharacterInfo } from 'src/app/core/services/character-store/character-store.interface';
 import { ChecklistItemReputation } from 'src/app/core/services/checklist/checklist.interface';
+
+import { BattleNetCharacterReputation, BattleNetCharacterReputations } from '../../battle-net/character/types/battlenet-reputation';
 
 import { ChecklistHandler } from './_handler';
 
@@ -21,7 +22,7 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
         this.subscription.unsubscribe();
     }
 
-    private evaluate(reputations: BattleNetCharacterReputation[], overrides: CharacterInfo['overrides']): void {
+    private evaluate(reputations: BattleNetCharacterReputations, overrides: CharacterInfo['overrides']): void {
         if (!reputations || !overrides) {
             this._completed$.next('loading');
             this._note$.next(undefined);
@@ -36,7 +37,7 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
             return;
         }
 
-        const isCompleted = reputation.standing >= max;
+        const isCompleted = reputation.standing.tier >= max;
 
         this._label$.next(this.getLabel(overrides, max));
 
@@ -47,7 +48,7 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
             this._completed$.next('incomplete');
             this._note$.next({
                 type: 'text',
-                text: `${reputation.value} / ${reputation.max}`,
+                text: `${reputation.standing.value} / ${reputation.standing.max}`,
             });
         }
 
@@ -56,11 +57,11 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
     private getLabel(overrides: CharacterInfo['overrides'], max: number): string {
         const reputationNames = [ 'Hated', 'Hostile', 'Unfriendly', 'Neutral', 'Friendly', 'Honored', 'Revered', 'Exalted' ];
 
-        return `${this.item.name} / ${reputationNames[max]}`;
+        return `${this.item.name}: ${reputationNames[max]}`;
     }
 
-    private getReputation(reputations: BattleNetCharacterReputation[]): BattleNetCharacterReputation {
-        return reputations.find(reputation => reputation.id === this.item.id);
+    private getReputation(reputations: BattleNetCharacterReputations): BattleNetCharacterReputation {
+        return reputations.reputations.find(reputation => reputation.faction.id === this.item.id);
     }
 
     private getMax(item: ChecklistItemReputation, overrides: CharacterInfo['overrides']): number {

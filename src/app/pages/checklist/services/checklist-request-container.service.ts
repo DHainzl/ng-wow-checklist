@@ -2,15 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, merge, Observable } from 'rxjs';
 import { filter, map, mapTo, pluck, tap } from 'rxjs/operators';
 import { Region } from 'src/app/core/services/battle-net/battle-net.interface';
-import {
-    BattleNetCharacterProfessions,
-    BattleNetCharacterReputation,
-} from 'src/app/core/services/battle-net/character/character.interface';
+import { BattleNetCharacterProfessions } from 'src/app/core/services/battle-net/character/character.interface';
 import { BattleNetCharacterService } from 'src/app/core/services/battle-net/character/character.service';
 import { BattleNetAchievements } from 'src/app/core/services/battle-net/character/types/battlenet-achievement';
 import { BattleNetEquipment } from 'src/app/core/services/battle-net/character/types/battlenet-equipment';
 import { BattleNetMedia } from 'src/app/core/services/battle-net/character/types/battlenet-media';
 import { BattleNetProfile } from 'src/app/core/services/battle-net/character/types/battlenet-profile';
+import { BattleNetCharacterReputations } from 'src/app/core/services/battle-net/character/types/battlenet-reputation';
 import { CharacterInfo } from 'src/app/core/services/character-store/character-store.interface';
 import { CharacterStoreService } from 'src/app/core/services/character-store/character-store.service';
 
@@ -25,7 +23,7 @@ export class ChecklistRequestContainerService {
     private _characterChanged$: BehaviorSubject<CharacterId | undefined> = new BehaviorSubject(undefined);
     private _questsChanged$: BehaviorSubject<number[]> = new BehaviorSubject(undefined);
     private _professionsChanged$: BehaviorSubject<BattleNetCharacterProfessions> = new BehaviorSubject(undefined);
-    private _reputationChanged$: BehaviorSubject<BattleNetCharacterReputation[]> = new BehaviorSubject(undefined);
+    private _reputationChanged$: BehaviorSubject<BattleNetCharacterReputations> = new BehaviorSubject(undefined);
     private _achievementsChanged$: BehaviorSubject<BattleNetAchievements> = new BehaviorSubject(undefined);
     private _equipmentChanged$: BehaviorSubject<BattleNetEquipment> = new BehaviorSubject(undefined);
     private _mediaChanged$: BehaviorSubject<BattleNetMedia> = new BehaviorSubject(undefined);
@@ -35,7 +33,7 @@ export class ChecklistRequestContainerService {
     get characterChanged(): Observable<CharacterId | undefined> { return this._characterChanged$.asObservable(); }
     get questsChanged(): Observable<number[]> { return this._questsChanged$.asObservable(); }
     get professionsChanged(): Observable<BattleNetCharacterProfessions> { return this._professionsChanged$.asObservable(); }
-    get reputationChanged(): Observable<BattleNetCharacterReputation[]> { return this._reputationChanged$.asObservable(); }
+    get reputationChanged(): Observable<BattleNetCharacterReputations> { return this._reputationChanged$.asObservable(); }
     get achievementsChanged(): Observable<BattleNetAchievements> { return this._achievementsChanged$.asObservable(); }
     get equipmentChanged(): Observable<BattleNetEquipment> { return this._equipmentChanged$.asObservable(); }
     get mediaChanged(): Observable<BattleNetMedia> { return this._mediaChanged$.asObservable(); }
@@ -80,7 +78,6 @@ export class ChecklistRequestContainerService {
             tap(characterData => {
                 this._questsChanged$.next(characterData.quests);
                 this._professionsChanged$.next(characterData.professions);
-                this._reputationChanged$.next(characterData.reputation);
             }),
         );
         const achievement$ = this.characterService.getAchievement(region, realm, name, cached).pipe(
@@ -95,8 +92,11 @@ export class ChecklistRequestContainerService {
         const profile$ = this.characterService.getProfile(region, realm, name, cached).pipe(
             tap(profile => this._profileChanged$.next(profile)),
         );
+        const reputation$ = this.characterService.getReputations(region, realm, name, cached).pipe(
+            tap(reputations => this._reputationChanged$.next(reputations)),
+        );
 
-        return forkJoin(character$, achievement$, equipment$, media$, profile$).pipe(
+        return forkJoin(character$, achievement$, equipment$, media$, profile$, reputation$).pipe(
             mapTo(undefined),
         );
     }

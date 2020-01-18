@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -12,6 +11,7 @@ import { BattleNetAchievements } from './types/battlenet-achievement';
 import { BattleNetEquipment } from './types/battlenet-equipment';
 import { BattleNetMedia } from './types/battlenet-media';
 import { BattleNetProfile } from './types/battlenet-profile';
+import { BattleNetCharacterReputations } from './types/battlenet-reputation';
 
 @Injectable({ providedIn: 'root' })
 export class BattleNetCharacterService {
@@ -43,6 +43,11 @@ export class BattleNetCharacterService {
 
     public getProfile(region: Region, realm: string, characterName: string, cached: boolean = true): Observable<BattleNetProfile> {
         return this.getCharacterData(region, realm, characterName, cached, '');
+    }
+
+    public getReputations(region: Region, realm: string, characterName: string, cached: boolean = true)
+        : Observable<BattleNetCharacterReputations> {
+        return this.getCharacterData(region, realm, characterName, cached, '/reputations');
     }
 
     private getCharacterData<T>(region: Region, realm: string, characterName: string, cached: boolean, endpoint: string): Observable<T> {
