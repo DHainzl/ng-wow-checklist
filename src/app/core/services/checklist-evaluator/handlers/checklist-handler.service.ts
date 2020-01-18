@@ -6,7 +6,8 @@ import { ChecklistItem } from '../../checklist/checklist.interface';
 
 import { ChecklistHandler } from './_handler';
 import { ChecklistAchievementHandler } from './achievement-handler';
-import { ChecklistEquipmentHandler } from './equpiment-level-handler';
+import { ChecklistAverageEquipmentHandler } from './average-equipment-level-handler';
+import { ChecklistEquipmentHandler } from './equipment-level-handler';
 import { ChecklistHeaderHandler } from './header-handler';
 import { ChecklistLevelHandler } from './level-handler';
 import { ChecklistManualHandler } from './manual-handler';
@@ -25,8 +26,9 @@ export class ChecklistHandlerService {
         'profession-primary': ChecklistPrimaryProfessionHandler,
         'profession-secondary': ChecklistSecondaryProfessionHandler,
         level: ChecklistLevelHandler,
-        'item-level': ChecklistEquipmentHandler,
+        'avg-item-level': ChecklistAverageEquipmentHandler,
         manual: ChecklistManualHandler,
+        'item-level': ChecklistEquipmentHandler,
     };
 
     private handlerInjector: Injector;
