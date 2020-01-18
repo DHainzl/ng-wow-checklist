@@ -15,7 +15,6 @@ export interface BattleNetCharacter {
 
     professions?: BattleNetCharacterProfessions;
     quests?: number[];
-    reputation?: BattleNetCharacterReputation[];
 }
 
 // tslint:disable-next-line:no-any
@@ -33,12 +32,4 @@ export interface BattleNetCharacterProfession {
     name: string;
     rank: number;
     recipes: number[];
-}
-
-export interface BattleNetCharacterReputation {
-    id: number;
-    max: number;
-    name: string;
-    standing: number;
-    value: number;
 }
