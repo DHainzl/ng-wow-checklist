@@ -18,8 +18,8 @@
                         <span class="cc cc-{{ result?.profile?.character_class.id }}">{{ result.info.name }}</span>
                         <span class="progress-bar">
                             <ng-container  *ngIf="!result.loading; else loadingDivSmall">
-                                <span class="progress-level" [style.width]="((result.profile.level / MAX_LEVEL) * 100) + '%'"></span>
-                                <span class="heart-level" [style.width]="(((result.equipment.equipped_items | hoaLevel) / MAX_HEART_LEVEL) * 100) + '%'"></span>
+                                <span class="progress-level" [style.width]="result.profile.level | barPercentage:MAX_LEVEL"></span>
+                                <span class="heart-level" [style.width]="result.equipment.equipped_items | hoaLevel | barPercentage:MAX_HEART_LEVEL"></span>
                                 <span class="progress-name">
                                     <span *ngIf="result.profile.level < MAX_LEVEL">Level {{ result.profile.level }}</span>
                                     <span *ngIf="result.profile.level == MAX_LEVEL">Heart Level {{ result.equipment.equipped_items | hoaLevel }}</span>

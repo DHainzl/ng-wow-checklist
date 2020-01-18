@@ -50,6 +50,10 @@ const data: Checklist = {
         { key: 'wareffort-thefourthwar', name: 'War Campaign: The Fourth War', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-thefourthwar-thefourthwar', name: 'The Fourth War', type: 'achievement', id: 13924 },
 
+        { key: 'wareffort-visionsofnzoth', name: 'War Campaign: Visions of N\'Zoth', type: 'header', id: 0, level: 1 },
+        { key: 'wareffort-visionsofnzoth-thehiddenneed', name: 'The Hidden Need', type: 'quest', id: 57376 },
+        { key: 'wareffort-visionsofnzoth-nyalotha', name: 'Ny\'alotha, the Waking City: The Corruptor\'s End', type: 'quest', id: 58632 },
+
         { key: 'wareffort-heartofazeroth', name: 'Heart of Azeroth', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-heartofazeroth-heartforge', name: 'The Heart Forge', type: 'quest', id: 55618 },
         { key: 'wareffort-heartofazeroth-crucible-1', name: 'The Crucible of Flame - Rank 1', type: 'quest', id: 57010 },
@@ -59,14 +63,20 @@ const data: Checklist = {
         { key: 'wareffort-heartofazeroth-anoldscar', name: 'An Old Scar (Heart Level 65)', type: 'quest', id: 55732 },
         { key: 'wareffort-heartofazeroth-crucible-4', name: 'The Crucible of Flame - Rank 4 (Heart Level 70)', type: 'quest', id: 56401 },
         { key: 'wareffort-heartofazeroth-wrathionsjournal', name: 'Wrathion\'s Journal', type: 'quest', id: 56504 },
+        { key: 'wareffort-heartofazeroth-intodreams', name: 'Into Dreams', type: 'quest', id: 58631 },
+        { key: 'wareffort-heartofazeroth-level80', name: 'Heart Level 80', type: 'item-level', id: 0, slot: 'NECK', level: 493 },
+
+        { key: 'wareffort-cloak', name: 'Ashjra\'kamas, Shroud of Resolve', type: 'header', id: 0, level: 1 },
+        { key: 'wareffort-cloak-level', name: 'Cloak Rank 15', type: 'item-level', id: 0, slot: 'BACK', level: 500 },
+        { key: 'wareffort-cloak-upgrades', name: 'All Cloak Upgrades', type: 'achievement', id: 14061 },
 
         { key: 'wareffort-zandalarforever', name: 'Zandalar Forever!', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-zandalarforever-toldagor', name: 'A Bargain of Blood', type: 'achievement', id: 12480 },
         { key: 'wareffort-zandalarforever-shrineofthestorm', name: 'The Final Seal', type: 'achievement', id: 12481 },
 
         { key: 'wareffort-gear', name: 'Gear', type: 'header', id: 0, level: 1 },
-        { key: 'wareffort-gear-310', name: 'iLvl 310 / Superior', type: 'item-level', id: 0, max: 310 },
-        { key: 'wareffort-gear-385', name: 'iLvl 385 / Benthic', type: 'item-level', id: 0, max: 385 },
+        { key: 'wareffort-gear-310', name: 'iLvl 310 / Superior', type: 'avg-item-level', id: 0, max: 310 },
+        { key: 'wareffort-gear-385', name: 'iLvl 385 / Benthic', type: 'avg-item-level', id: 0, max: 385 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', id: 0, level: 0 },
 
@@ -78,6 +88,8 @@ const data: Checklist = {
         { key: 'reputation-tortollanseekers', type: 'reputation', name: 'Tortollan Seekers', id: 2163, max: 6 },
         { key: 'reputation-unshackled', type: 'reputation', name: 'The Unshackled', id: 2373, max: 6 },
         { key: 'reputation-rustbolt', type: 'reputation', name: 'Rustbolt Resistance', id: 2391, max: 6 },
+        { key: 'reputation-rajani', type: 'reputation', name: 'Rajani', id: 2415, max: 6 },
+        { key: 'reputation-uldumaccord', type: 'reputation', name: 'Uldum Accord', id: 2417, max: 6 },
 
         { key: 'professions', name: 'Professions', type: 'header', id: 0, level: 0 },
 

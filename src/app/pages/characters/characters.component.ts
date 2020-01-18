@@ -29,7 +29,7 @@ export interface CharacterDataForList {
 })
 export class CharactersComponent implements OnInit {
     readonly MAX_LEVEL = 120;
-    readonly MAX_HEART_LEVEL = 70;
+    readonly MAX_HEART_LEVEL = 80;
 
     loading: boolean = true;
 

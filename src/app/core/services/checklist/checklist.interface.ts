@@ -9,8 +9,8 @@ export interface ChecklistItemBase {
     id: number;
     key: string;
     name: string;
-    type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'item-level' |
-        'manual';
+    type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'avg-item-level' |
+        'manual' | 'item-level';
     handler?: ChecklistHandler<ChecklistItem>;
 }
 
@@ -40,14 +40,20 @@ export interface ChecklistItemLevel extends ChecklistItemBase {
     type: 'level';
     max: number;
 }
-export interface ChecklistItemEquipmentLevel extends ChecklistItemBase {
-    type: 'item-level';
+export interface ChecklistItemAverageEquipmentLevel extends ChecklistItemBase {
+    type: 'avg-item-level';
     max: number;
 }
 export interface ChecklistItemManual extends ChecklistItemBase {
     type: 'manual';
 }
+export interface ChecklistItemEquipmentLevel extends ChecklistItemBase {
+    type: 'item-level';
+    slot: 'HEAD' | 'NECK' | 'SHOULDER' | 'SHIRT' | 'CHEST' | 'WAIST' | 'LEGS' | 'FEET' | 'WRIST' | 'HANDS' |
+        'FINGER_1' | 'FINGER_2' | 'TRINKET_1' | 'TRINKET_2' | 'BACK' | 'MAIN_HAND' | 'OFF_HAND' | 'TABARD';
+    level: number;
+}
 
 export type ChecklistItem = ChecklistItemHeader | ChecklistItemAchievement | ChecklistItemQuest | ChecklistItemReputation |
-    ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemEquipmentLevel |
-    ChecklistItemManual;
+    ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemAverageEquipmentLevel |
+    ChecklistItemManual | ChecklistItemEquipmentLevel;

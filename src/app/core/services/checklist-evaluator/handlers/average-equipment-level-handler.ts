@@ -1,11 +1,11 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItemEquipmentLevel } from 'src/app/core/services/checklist/checklist.interface';
+import { ChecklistItemAverageEquipmentLevel } from 'src/app/core/services/checklist/checklist.interface';
 
 import { BattleNetEquipment } from '../../battle-net/character/types/battlenet-equipment';
 
 import { ChecklistHandler } from './_handler';
 
-export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEquipmentLevel> {
+export class ChecklistAverageEquipmentHandler extends ChecklistHandler<ChecklistItemAverageEquipmentLevel> {
     subscription: Subscription = new Subscription();
 
     handlerInit(): void {
