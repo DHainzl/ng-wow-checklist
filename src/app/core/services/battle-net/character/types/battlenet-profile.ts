@@ -1,4 +1,4 @@
-import { BattleNetCharacterRef, BattleNetNamedRef, BattleNetSelfRef, TypeName } from './battlenet-general';
+import { BattleNetCharacterRef, BattleNetHref, BattleNetNamedRef, BattleNetSelfRef, TypeName } from './battlenet-general';
 
 export interface BattleNetProfile {
     achievement_points: number;
@@ -28,8 +28,4 @@ export interface BattleNetProfile {
     statistics: BattleNetHref;
     titles: BattleNetHref;
     _self: BattleNetSelfRef;
-}
-
-export interface BattleNetHref {
-    href: string;
 }

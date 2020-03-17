@@ -6,11 +6,12 @@ import { LocalForageService } from '../../local-forage/local-forage.service';
 import { Region } from '../battle-net.interface';
 import { CachedRequestService } from '../cached-request.service';
 
-import { BattleNetCharacter } from './character.interface';
 import { BattleNetAchievements } from './types/battlenet-achievement';
 import { BattleNetEquipment } from './types/battlenet-equipment';
 import { BattleNetMedia } from './types/battlenet-media';
+import { BattleNetProfessions } from './types/battlenet-profession';
 import { BattleNetProfile } from './types/battlenet-profile';
+import { BattleNetQuests } from './types/battlenet-quest';
 import { BattleNetCharacterReputations } from './types/battlenet-reputation';
 
 @Injectable({ providedIn: 'root' })
@@ -19,15 +20,6 @@ export class BattleNetCharacterService {
         private cachedRequestService: CachedRequestService,
         private localForageService: LocalForageService,
     ) { }
-
-    public getCharacter(
-        region: Region,
-        realm: string,
-        characterName: string,
-        cached: boolean = false,
-    ): Observable<BattleNetCharacter> {
-        return this.getCharacterData(region, realm, characterName, cached, '/community');
-    }
 
     public getAchievement(region: Region, realm: string, characterName: string, cached: boolean = true): Observable<BattleNetAchievements> {
         return this.getCharacterData(region, realm, characterName, cached, '/achievements');
@@ -48,6 +40,16 @@ export class BattleNetCharacterService {
     public getReputations(region: Region, realm: string, characterName: string, cached: boolean = true)
         : Observable<BattleNetCharacterReputations> {
         return this.getCharacterData(region, realm, characterName, cached, '/reputations');
+    }
+
+    public getCompletedQuests(region: Region, realm: string, characterName: string, cached: boolean = true)
+        : Observable<BattleNetQuests> {
+        return this.getCharacterData(region, realm, characterName, cached, '/quests/completed');
+    }
+
+    public getProfessions(region: Region, realm: string, characterName: string, cached: boolean = true)
+        : Observable<BattleNetProfessions> {
+        return this.getCharacterData(region, realm, characterName, cached, '/professions');
     }
 
     private getCharacterData<T>(region: Region, realm: string, characterName: string, cached: boolean, endpoint: string): Observable<T> {

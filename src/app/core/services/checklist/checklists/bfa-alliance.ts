@@ -62,7 +62,6 @@ const data: Checklist = {
         { key: 'wareffort-heartofazeroth-crucible-3', name: 'The Crucible of Flame - Rank 3 (Heart Level 60)', type: 'quest', id: 55657 },
         { key: 'wareffort-heartofazeroth-anoldscar', name: 'An Old Scar (Heart Level 65)', type: 'quest', id: 55732 },
         { key: 'wareffort-heartofazeroth-crucible-4', name: 'The Crucible of Flame - Rank 4 (Heart Level 70)', type: 'quest', id: 56401 },
-        { key: 'wareffort-heartofazeroth-wrathionsjournal', name: 'Wrathion\'s Journal', type: 'quest', id: 56504 },
         { key: 'wareffort-heartofazeroth-intodreams', name: 'Into Dreams', type: 'quest', id: 58631 },
         { key: 'wareffort-heartofazeroth-level80', name: 'Heart Level 80', type: 'item-level', id: 0, slot: 'NECK', level: 493 },
 
