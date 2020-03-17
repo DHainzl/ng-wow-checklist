@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, forkJoin, merge, Observable } from 'rxjs';
+import { BehaviorSubject, forkJoin, merge, Observable, of } from 'rxjs';
 import { filter, map, mapTo, pluck, tap } from 'rxjs/operators';
 import { Region } from 'src/app/core/services/battle-net/battle-net.interface';
-import { BattleNetCharacterProfessions } from 'src/app/core/services/battle-net/character/character.interface';
 import { BattleNetCharacterService } from 'src/app/core/services/battle-net/character/character.service';
 import { BattleNetAchievements } from 'src/app/core/services/battle-net/character/types/battlenet-achievement';
 import { BattleNetEquipment } from 'src/app/core/services/battle-net/character/types/battlenet-equipment';
 import { BattleNetMedia } from 'src/app/core/services/battle-net/character/types/battlenet-media';
+import { BattleNetProfessions } from 'src/app/core/services/battle-net/character/types/battlenet-profession';
 import { BattleNetProfile } from 'src/app/core/services/battle-net/character/types/battlenet-profile';
+import { BattleNetQuests } from 'src/app/core/services/battle-net/character/types/battlenet-quest';
 import { BattleNetCharacterReputations } from 'src/app/core/services/battle-net/character/types/battlenet-reputation';
 import { CharacterInfo } from 'src/app/core/services/character-store/character-store.interface';
 import { CharacterStoreService } from 'src/app/core/services/character-store/character-store.service';
@@ -21,8 +22,8 @@ export interface CharacterId {
 @Injectable({ providedIn: 'root' })
 export class ChecklistRequestContainerService {
     private _characterChanged$: BehaviorSubject<CharacterId | undefined> = new BehaviorSubject(undefined);
-    private _questsChanged$: BehaviorSubject<number[]> = new BehaviorSubject(undefined);
-    private _professionsChanged$: BehaviorSubject<BattleNetCharacterProfessions> = new BehaviorSubject(undefined);
+    private _questsChanged$: BehaviorSubject<BattleNetQuests> = new BehaviorSubject(undefined);
+    private _professionsChanged$: BehaviorSubject<BattleNetProfessions> = new BehaviorSubject(undefined);
     private _reputationChanged$: BehaviorSubject<BattleNetCharacterReputations> = new BehaviorSubject(undefined);
     private _achievementsChanged$: BehaviorSubject<BattleNetAchievements> = new BehaviorSubject(undefined);
     private _equipmentChanged$: BehaviorSubject<BattleNetEquipment> = new BehaviorSubject(undefined);
@@ -31,8 +32,8 @@ export class ChecklistRequestContainerService {
     private _characterInfo$: BehaviorSubject<CharacterInfo[]> = new BehaviorSubject([]);
 
     get characterChanged(): Observable<CharacterId | undefined> { return this._characterChanged$.asObservable(); }
-    get questsChanged(): Observable<number[]> { return this._questsChanged$.asObservable(); }
-    get professionsChanged(): Observable<BattleNetCharacterProfessions> { return this._professionsChanged$.asObservable(); }
+    get questsChanged(): Observable<BattleNetQuests> { return this._questsChanged$.asObservable(); }
+    get professionsChanged(): Observable<BattleNetProfessions> { return this._professionsChanged$.asObservable(); }
     get reputationChanged(): Observable<BattleNetCharacterReputations> { return this._reputationChanged$.asObservable(); }
     get achievementsChanged(): Observable<BattleNetAchievements> { return this._achievementsChanged$.asObservable(); }
     get equipmentChanged(): Observable<BattleNetEquipment> { return this._equipmentChanged$.asObservable(); }
@@ -74,12 +75,6 @@ export class ChecklistRequestContainerService {
         this._mediaChanged$.next(undefined);
         this._profileChanged$.next(undefined);
 
-        const character$ = this.characterService.getCharacter(region, realm, name, cached).pipe(
-            tap(characterData => {
-                this._questsChanged$.next(characterData.quests);
-                this._professionsChanged$.next(characterData.professions);
-            }),
-        );
         const achievement$ = this.characterService.getAchievement(region, realm, name, cached).pipe(
             tap(achievements => this._achievementsChanged$.next(achievements)),
         );
@@ -95,8 +90,28 @@ export class ChecklistRequestContainerService {
         const reputation$ = this.characterService.getReputations(region, realm, name, cached).pipe(
             tap(reputations => this._reputationChanged$.next(reputations)),
         );
+        const completedQuests$ = this.characterService.getCompletedQuests(region, realm, name, cached).pipe(
+            tap(quests => this._questsChanged$.next(quests)),
+        );
+        // TODO Replace with real endpoint call when it is online
+        const professions$ = of({
+            _links: { self: { href: '' } },
+            character: {
+                key: { href: '' },
+                name: '',
+                id: 0,
+                realm: {
+                    key: { href: '' },
+                    name: '',
+                    id: 0,
+                    slug: '',
+                },
+            },
+        }).pipe(
+            tap(professions => this._professionsChanged$.next(professions)),
+        );
 
-        return forkJoin(character$, achievement$, equipment$, media$, profile$, reputation$).pipe(
+        return forkJoin(achievement$, equipment$, media$, profile$, reputation$, completedQuests$, professions$).pipe(
             mapTo(undefined),
         );
     }

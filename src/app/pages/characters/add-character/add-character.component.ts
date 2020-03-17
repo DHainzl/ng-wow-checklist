@@ -2,15 +2,13 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { from, of, Subscription, throwError, zip } from 'rxjs';
-import { filter, flatMap, groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
+import { flatMap, groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
 import { Region } from 'src/app/core/services/battle-net/battle-net.interface';
 import { CharactersService } from 'src/app/core/services/battle-net/characters/characters.service';
-import { CharacterListEntry } from 'src/app/core/services/battle-net/characters/types/characters.interface';
+import { BattleNetCharacterListEntry } from 'src/app/core/services/battle-net/characters/types/characters.interface';
 import { CharacterStoreService } from 'src/app/core/services/character-store/character-store.service';
 
 import { CharacterDataForList } from '../characters.component';
-
-import { CharacterFactionService } from './character-faction.service';
 
 @Component({
     templateUrl: './add-character.component.html',
@@ -25,7 +23,8 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
     regions: Region[] = [ 'us', 'eu',  'kr', 'tw', 'cn' ];
 
     private charactersLoading: boolean = true;
-    charactersByRealm: { realm: string, characters: CharacterListEntry[] }[] = [];
+    private charactersLoadingError: boolean = false;
+    charactersByRealm: { realm: string, characters: BattleNetCharacterListEntry[] }[] = [];
 
     private subscriptions: Subscription = new Subscription();
 
@@ -35,7 +34,6 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
 
         private charactersService: CharactersService,
         private characterStoreService: CharacterStoreService,
-        private characterFactionService: CharacterFactionService,
     ) { }
 
     ngOnInit(): void {
@@ -54,10 +52,10 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
     }
 
     addCharacter(): void {
-        const selected: CharacterListEntry = this.form.get('character').value;
+        const selected: BattleNetCharacterListEntry = this.form.get('character').value;
         if (!selected) return this.close(false);
 
-        this.characterFactionService.getFaction(selected.race).pipe(
+        of(selected.faction.type).pipe(
             flatMap(faction => {
                 if (faction === 'ALLIANCE') return of('bfa-alliance');
                 if (faction === 'HORDE') return of('bfa-horde');
@@ -66,7 +64,7 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
             map(checklistId => ({
                 region: this.form.get('region').value,
                 name: selected.name.toLowerCase(),
-                realm: selected.realm.toLowerCase(),
+                realm: selected.realm.slug,
                 checklistId,
                 overrides: {},
             })),
@@ -88,6 +86,10 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
             return 'Loading character list ...';
         }
 
+        if (this.charactersLoadingError) {
+            return 'Error loading characters (wrong region?)';
+        }
+
         if (this.charactersByRealm.length === 0) {
             return 'No characters found';
         }
@@ -95,10 +97,10 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
         return 'Character';
     }
 
-    characterAdded(character: CharacterListEntry): boolean {
+    characterAdded(character: BattleNetCharacterListEntry): boolean {
         return this.data.some(c => {
             return c.info.region === this.form.get('region').value
-                && c.info.realm === character.realm.toLowerCase()
+                && c.info.realm === character.realm.slug
                 && c.info.name === character.name.toLowerCase();
         });
     }
@@ -110,19 +112,24 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
 
         this.form.get('character').setValue('');
         this.charactersLoading = true;
+        this.charactersLoadingError = false;
 
         this.charactersService.getCharacters(region).subscribe(characterList => {
-            from(characterList).pipe(
-                groupBy(character => character.realm),
+            from(characterList.wow_accounts).pipe(
+                mergeMap(account => account.characters),
+                groupBy(character => character.realm.name),
                 mergeMap(group => zip(of(group.key), group.pipe(toArray()))),
                 toArray(),
-                map(groups => groups.map(group => ({ realm: group[0], characters: group[1] }))),
+                map(groups => groups.map(([ realm, characters ]) => ({ realm, characters }))),
                 map(groups => groups.sort((a, b) => b.characters.length - a.characters.length)),
                 tap(groups => groups.forEach(group => group.characters.sort((a, b) => a.name.localeCompare(b.name)))),
             ).subscribe(charactersByRealm => {
                 this.charactersByRealm = charactersByRealm;
                 this.charactersLoading = false;
             });
+        }, error => {
+            this.charactersLoading = false;
+            this.charactersLoadingError = true;
         });
     }
 }
