@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { from, of, Subscription, throwError, zip } from 'rxjs';
 import { flatMap, groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
 import { Region } from 'src/app/core/services/battle-net/battle-net.interface';

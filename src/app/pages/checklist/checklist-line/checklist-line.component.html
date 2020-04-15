@@ -5,8 +5,8 @@
         </a>
     </div>
     <div class="column-note" [ngSwitch]="note?.type">
-        <ng-container *ngSwitchCase="'text'">{{ note.text }}</ng-container>
-        <button mat-button *ngSwitchCase="'button'" (click)="runOnClick()">{{ note.label }}</button>
+        <ng-container *ngSwitchCase="'text'">{{ $any(note).text }}</ng-container>
+        <button mat-button *ngSwitchCase="'button'" (click)="runOnClick()">{{ $any(note).label }}</button>
     </div>
     <div class="column-completed">
         <mat-icon *ngIf="completed === 'complete'">check</mat-icon>

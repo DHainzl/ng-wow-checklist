@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 
 import { UserInfo } from './core/services/battle-net/userinfo/types/userinfo.interface';
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     isOpened: boolean = true;
 
-    @ViewChild(MatSidenav, { static: false })
+    @ViewChild(MatSidenav)
     sidenav: MatSidenav;
 
     constructor(
