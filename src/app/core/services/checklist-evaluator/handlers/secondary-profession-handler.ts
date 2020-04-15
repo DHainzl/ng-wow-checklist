@@ -24,7 +24,7 @@ export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<Checkl
     }
 
     private evaluate(professions: BattleNetProfessions, overrides: CharacterInfo['overrides']): void {
-        if (!professions || !overrides) {
+        if (!professions || !professions.secondaries || !overrides) {
             this._shown$.next(false);
             this._note$.next(undefined);
             this._completed$.next('loading');

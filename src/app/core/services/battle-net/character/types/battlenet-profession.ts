@@ -2,8 +2,8 @@ import { BattleNetNamedRef, BattleNetSelfRef } from './battlenet-general';
 
 export interface BattleNetProfessions {
     _links: BattleNetSelfRef;
-    primaries: BattleNetProfession[];
-    secondaries: BattleNetProfession[];
+    primaries?: BattleNetProfession[];
+    secondaries?: BattleNetProfession[];
 }
 
 export interface BattleNetTieredProfession {
