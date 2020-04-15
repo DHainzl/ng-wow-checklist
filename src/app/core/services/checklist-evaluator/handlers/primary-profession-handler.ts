@@ -40,7 +40,7 @@ export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<Checklis
     }
 
     private evaluate(professions: BattleNetProfessions): void {
-        if (!professions) {
+        if (!professions || !professions.primaries) {
             this._completed$.next('loading');
             this._shown$.next(false);
             this._note$.next(undefined);
