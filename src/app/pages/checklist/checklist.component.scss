@@ -1,4 +1,5 @@
 @import '../../../styles/variables';
+@import '~@angular/material/theming';
 
 :host {
     display: block;
@@ -25,10 +26,13 @@ table {
 }
 
 .completion-alert {
-    background-color: $primary;
+    background-color: mat-color(mat-palette($mat-light-green, 300));;
     text-align: center;
     padding: 12px 10px;
     margin-bottom: 20px;
+    color: black;
+    border: 1px solid black;
+    font-weight: 500;
 }
 
 .character-quick-switch {
