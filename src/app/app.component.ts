@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     isOpened: boolean = true;
 
-    @ViewChild(MatSidenav, { static: false })
+    @ViewChild(MatSidenav)
     sidenav: MatSidenav;
 
     constructor(
