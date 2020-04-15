@@ -30,11 +30,9 @@ export interface ChecklistItemReputation extends ChecklistItemBase {
 }
 export interface ChecklistItemPrimaryProfession extends ChecklistItemBase {
     type: 'profession-primary';
-    max: number;
 }
 export interface ChecklistItemSecondaryProfession extends ChecklistItemBase {
     type: 'profession-secondary';
-    max: number;
 }
 export interface ChecklistItemLevel extends ChecklistItemBase {
     type: 'level';

@@ -93,21 +93,7 @@ export class ChecklistRequestContainerService {
         const completedQuests$ = this.characterService.getCompletedQuests(region, realm, name, cached).pipe(
             tap(quests => this._questsChanged$.next(quests)),
         );
-        // TODO Replace with real endpoint call when it is online
-        const professions$ = of({
-            _links: { self: { href: '' } },
-            character: {
-                key: { href: '' },
-                name: '',
-                id: 0,
-                realm: {
-                    key: { href: '' },
-                    name: '',
-                    id: 0,
-                    slug: '',
-                },
-            },
-        }).pipe(
+        const professions$ = this.characterService.getProfessions(region, realm, name, cached).pipe(
             tap(professions => this._professionsChanged$.next(professions)),
         );
 

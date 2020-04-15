@@ -1,8 +1,17 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItem, ChecklistItemPrimaryProfession } from 'src/app/core/services/checklist/checklist.interface';
+import {
+    ChecklistItem,
+    ChecklistItemPrimaryProfession,
+    ChecklistItemSecondaryProfession,
+} from 'src/app/core/services/checklist/checklist.interface';
 import { ChecklistRequestContainerService } from 'src/app/pages/checklist/services/checklist-request-container.service';
 
-import { BattleNetProfessions } from '../../battle-net/character/types/battlenet-profession';
+import {
+    BattleNetProfession,
+    BattleNetProfessions,
+    BattleNetProfessionSkill,
+    isTieredProfession,
+} from '../../battle-net/character/types/battlenet-profession';
 import { CharacterStoreService } from '../../character-store/character-store.service';
 
 import { ChecklistHandler } from './_handler';
@@ -31,35 +40,47 @@ export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<Checklis
     }
 
     private evaluate(professions: BattleNetProfessions): void {
-        // TODO Remove this when professions endpoint has been migrated and we know the API
-        this._shown$.next(false);
-        return;
+        if (!professions) {
+            this._completed$.next('loading');
+            this._shown$.next(false);
+            this._note$.next(undefined);
+            return;
+        }
 
-        // if (!professions) {
-        //     this._completed$.next('loading');
-        //     this._shown$.next(false);
-        //     this._note$.next(undefined);
-        //     return;
-        // }
+        const profession = getProfession(professions.primaries, this.item);
 
-        // const profession = this.getProfession(professions);
+        if (!profession) {
+            this._shown$.next(false);
+            return;
+        }
 
-        // if (!profession) {
-        //     this._shown$.next(false);
-        //     return;
-        // }
+        const isComplete = profession.skill_points >= profession.max_skill_points;
 
-        // const isComplete = profession.rank >= this.item.max;
+        this._shown$.next(true);
+        this._note$.next({
+            type: 'text',
+            text: `${profession.skill_points} / ${profession.max_skill_points}`,
+        });
+        this._completed$.next(isComplete ? 'complete' : 'incomplete');
+    }
+}
 
-        // this._shown$.next(true);
-        // this._note$.next({
-        //     type: 'text',
-        //     text: `${profession.rank} / ${this.item.max}`,
-        // });
-        // this._completed$.next(isComplete ? 'complete' : 'incomplete');
+export function getProfession(
+    professions: BattleNetProfession[],
+    item: ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession,
+): BattleNetProfessionSkill {
+    for (const profession of professions) {
+        if (isTieredProfession(profession)) {
+            const prof = profession.tiers.find(tier => tier.tier.id === item.id);
+            if (prof) {
+                return prof;
+            }
+        } else {
+            if (profession.profession.id === item.id) {
+                return profession;
+            }
+        }
     }
 
-    // private getProfession(professions: BattleNetProfessions): BattleNetCharacterProfession {
-    //     return professions.primary.find(profession => profession.id === this.item.id);
-    // }
+    return null;
 }
