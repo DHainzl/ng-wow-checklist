@@ -71,7 +71,6 @@ const data: Checklist = {
 
         { key: 'wareffort-cloak', name: 'Ashjra\'kamas, Shroud of Resolve', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-cloak-level', name: 'Cloak Rank 15', type: 'item-level', id: 0, slot: 'BACK', level: 500 },
-        { key: 'wareffort-cloak-upgrades', name: 'All Cloak Upgrades', type: 'achievement', id: 14061 },
 
         { key: 'wareffort-anationunited', name: 'A Nation United', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-anationunited-toldagor', name: 'Tol Dagor: The Fourth Key', type: 'quest', id: 52445 },

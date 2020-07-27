@@ -71,7 +71,6 @@ const data: Checklist = {
 
         { key: 'wareffort-cloak', name: 'Ashjra\'kamas, Shroud of Resolve', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-cloak-level', name: 'Cloak Rank 15', type: 'item-level', id: 0, slot: 'BACK', level: 500 },
-        { key: 'wareffort-cloak-upgrades', name: 'All Cloak Upgrades', type: 'achievement', id: 14061 },
 
         { key: 'wareffort-zandalarforever', name: 'Zandalar Forever!', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-zandalarforever-toldagor', name: 'A Bargain of Blood', type: 'achievement', id: 12480 },
