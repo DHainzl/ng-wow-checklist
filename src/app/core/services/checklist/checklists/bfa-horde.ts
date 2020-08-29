@@ -56,7 +56,6 @@ const data: Checklist = {
         { key: 'wareffort-visionsofnzoth-mantidassault', name: 'Mantid Assault Introduction', type: 'quest', id: 56647 },
         { key: 'wareffort-visionsofnzoth-aquirassault', name: 'Aqir Assault Introduction', type: 'quest', id: 58009 },
         { key: 'wareffort-visionsofnzoth-amathetassault', name: 'Amathet Assault Introduction', type: 'quest', id: 58645 },
-        { key: 'wareffort-visionsofnzoth-nyalotha', name: 'Ny\'alotha, the Waking City: The Corruptor\'s End', type: 'quest', id: 58632 },
 
         { key: 'wareffort-heartofazeroth', name: 'Heart of Azeroth', type: 'header', id: 0, level: 1 },
         { key: 'wareffort-heartofazeroth-heartforge', name: 'The Heart Forge', type: 'quest', id: 55618 },
