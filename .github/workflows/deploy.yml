@@ -1,0 +1,38 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs: 
+      IMAGE_SHA_NAME: ${{ steps.docker.outputs.IMAGE_SHA_NAME }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: dhainzl/gpr-docker-publish@master
+      id: docker
+      with:
+        IMAGE_NAME: 'wow-checklist-frontend'
+        TAG: 'dev'
+        BUILD_PARAMS: '--build-arg configuration=production'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: garygrossgarten/github-action-ssh@release
+      with:
+        command: docker pull ${{ needs.build.outputs.IMAGE_SHA_NAME }} &&
+          docker stop wow-checklist-frontend-dev &&
+          docker run --rm --name wow-checklist-frontend-dev -p 8091:80 -d ${{ needs.build.outputs.IMAGE_SHA_NAME }}
+        host: ${{ secrets.DEV_HOST }}
+        port: ${{ secrets.DEV_PORT }}
+        username: ${{ secrets.DEV_USER }}
+        passphrase: ${{ secrets.DEV_SSHPASS }}
+        privateKey: ${{ secrets.DEV_SSHKEY }}
