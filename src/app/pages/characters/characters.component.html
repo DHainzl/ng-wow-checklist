@@ -14,7 +14,7 @@
             <div class="characters">
                 <div *ngFor="let result of characterData" class="character">
                     <ng-container *ngIf="!result.error">
-                        <span class="cc-icon" [style.background-image]="result?.media?.avatar_url | safeBackgroundImage"></span>
+                        <span class="cc-icon" [style.background-image]="result?.media | mediaAsset:'avatar' | safeBackgroundImage"></span>
                         <span class="cc cc-{{ result?.profile?.character_class.id }}">{{ result.info.name }}</span>
                         <span class="progress-bar">
                             <ng-container  *ngIf="!result.loading; else loadingDivSmall">
