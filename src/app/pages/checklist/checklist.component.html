@@ -27,13 +27,13 @@
             <ng-container *ngIf="!loading; else loadingDiv">
                 <mat-card-header>
                     <div mat-card-avatar [style.background-image]="media | mediaAsset:'avatar' | safeBackgroundImage"></div>
-                    <mat-card-title>{{ profile.name }}</mat-card-title>
+                    <mat-card-title>{{ profile.name | addTitle:profile.active_title }}</mat-card-title>
                     <mat-card-subtitle>
                         Level {{ profile.level }}
                         {{ profile.race.name }}
                         <span class="cc cc-{{ profile.character_class.id }}">{{ profile.character_class.name }}</span><br>
                         Item Level: {{ profile.equipped_item_level }}<br>
-                        Heart of Azeroth Level: {{ equipment.equipped_items | hoaLevel }}
+                        <ng-container *ngIf="profile.covenant_progress">Renown: {{ profile.covenant_progress?.renown_level }}</ng-container>
                     </mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>

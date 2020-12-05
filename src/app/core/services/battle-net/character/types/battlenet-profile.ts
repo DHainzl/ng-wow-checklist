@@ -1,31 +1,47 @@
 import { BattleNetCharacterRef, BattleNetHref, BattleNetNamedRef, BattleNetSelfRef, TypeName } from './battlenet-general';
 
 export interface BattleNetProfile {
+    _links: BattleNetSelfRef;
+    id: number;
+    name: string;
+    gender: TypeName;
+    faction: TypeName;
+    race: BattleNetNamedRef;
+    character_class: BattleNetNamedRef;
+    active_spec: BattleNetNamedRef;
+    realm: BattleNetCharacterRef['realm'];
+    guild: BattleNetCharacterRef;
+    level: number;
+    experience: number;
     achievement_points: number;
     achievements: BattleNetHref;
-    active_spec: BattleNetNamedRef;
-    appearance: BattleNetHref;
-    average_item_level: number;
-    character_class: BattleNetNamedRef;
-    collections: BattleNetHref;
-    equipment: BattleNetHref;
-    equipped_item_level: number;
-    experience: number;
-    faction: TypeName;
-    gender: TypeName;
-    guild: BattleNetCharacterRef;
-    id: number;
-    last_login_timestamp: number;
-    level: number;
-    media: BattleNetHref;
-    mythic_keystone_profile: BattleNetHref;
-    name: string;
+    titles: BattleNetHref;
     pvp_summary: BattleNetHref;
-    race: BattleNetNamedRef;
-    raid_progression: BattleNetHref;
-    realm: BattleNetCharacterRef['realm'];
+    encounters: BattleNetHref;
+    media: BattleNetHref;
+    last_login_timestamp: number;
+    average_item_level: number;
+    equipped_item_level: number;
     specializations: BattleNetHref;
     statistics: BattleNetHref;
-    titles: BattleNetHref;
-    _self: BattleNetSelfRef;
+    mythic_keystone_profile: BattleNetHref;
+    equipment: BattleNetHref;
+    appearance: BattleNetHref;
+    collections: BattleNetHref;
+    active_title?: BattleNetProfileTitle;
+    reputations: BattleNetHref;
+    quests: BattleNetHref;
+    achievements_statistics: BattleNetHref;
+    professions: BattleNetHref;
+    covenant_progress?: BattleNetProfileCovenant;
+}
+
+export interface BattleNetProfileTitle extends BattleNetNamedRef {
+    display_string: string;
+}
+
+export interface BattleNetProfileCovenant {
+    chosen_covenant: BattleNetNamedRef;
+    renown_level: number;
+    soulbinds: BattleNetHref;
 }
