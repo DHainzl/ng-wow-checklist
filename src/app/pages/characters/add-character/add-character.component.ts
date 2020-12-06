@@ -57,8 +57,8 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
 
         of(selected.faction.type).pipe(
             flatMap(faction => {
-                if (faction === 'ALLIANCE') return of('bfa-alliance');
-                if (faction === 'HORDE') return of('bfa-horde');
+                if (faction === 'ALLIANCE') return of('sl-alliance');
+                if (faction === 'HORDE') return of('sl-horde');
                 return throwError('Unsupported faction ' + faction);
             }),
             map(checklistId => ({
