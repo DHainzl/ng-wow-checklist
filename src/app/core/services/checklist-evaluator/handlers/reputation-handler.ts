@@ -3,17 +3,19 @@ import { CharacterInfo } from 'src/app/core/services/character-store/character-s
 import { ChecklistItemReputation } from 'src/app/core/services/checklist/checklist.interface';
 
 import { BattleNetCharacterReputation, BattleNetCharacterReputations } from '../../battle-net/character/types/battlenet-reputation';
+import { ReputationTiersService } from '../../reputation-tiers/reputation-tiers.service';
 
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemReputation> {
     subscription: Subscription = new Subscription();
+    tiersService: ReputationTiersService = new ReputationTiersService();
 
     handlerInit(): void {
-        this.subscription = combineLatest(
+        this.subscription = combineLatest([
             this.checklistRequestContainer.reputationChanged,
             this.checklistRequestContainer.overridesChanged,
-        ).subscribe(([ reputations, overrides ]) => {
+        ]).subscribe(([ reputations, overrides ]) => {
             this.evaluate(reputations, overrides);
         });
     }
@@ -28,9 +30,10 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
             this._note$.next(undefined);
             return;
         }
-
+        
         const max = this.getMax(this.item, overrides);
         const reputation = this.getReputation(reputations);
+        this._label$.next(this.getLabel(this.item.id, max));
 
         if (!reputation) {
             this._completed$.next('incomplete');
@@ -39,7 +42,6 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
 
         const isCompleted = reputation.standing.tier >= max;
 
-        this._label$.next(this.getLabel(overrides, max));
 
         if (isCompleted) {
             this._completed$.next('complete');
@@ -54,10 +56,10 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
 
     }
 
-    private getLabel(overrides: CharacterInfo['overrides'], max: number): string {
-        const reputationNames = [ 'Hated', 'Hostile', 'Unfriendly', 'Neutral', 'Friendly', 'Honored', 'Revered', 'Exalted' ];
+    private getLabel(factionId: number, max: number): string {
+        const tiers = this.tiersService.getTiers(factionId);
 
-        return `${this.item.name}: ${reputationNames[max]}`;
+        return `${this.item.name}: ${tiers.tiers[max].name}`;
     }
 
     private getReputation(reputations: BattleNetCharacterReputations): BattleNetCharacterReputation {

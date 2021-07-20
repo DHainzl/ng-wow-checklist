@@ -15,6 +15,7 @@ import { ChecklistPrimaryProfessionHandler } from './primary-profession-handler'
 import { ChecklistQuestHandler } from './quest-handler';
 import { ChecklistReputationHandler } from './reputation-handler';
 import { ChecklistSecondaryProfessionHandler } from './secondary-profession-handler';
+import { ChecklistRenownHandler } from './renown-handler';
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistHandlerService {
@@ -29,6 +30,7 @@ export class ChecklistHandlerService {
         'avg-item-level': ChecklistAverageEquipmentHandler,
         manual: ChecklistManualHandler,
         'item-level': ChecklistEquipmentHandler,
+        renown: ChecklistRenownHandler,
     };
 
     private handlerInjector: Injector;

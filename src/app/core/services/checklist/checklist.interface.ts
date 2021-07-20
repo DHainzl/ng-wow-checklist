@@ -10,7 +10,7 @@ export interface ChecklistItemBase {
     key: string;
     name: string;
     type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'avg-item-level' |
-        'manual' | 'item-level';
+        'manual' | 'item-level' | 'renown';
     handler?: ChecklistHandler<ChecklistItem>;
 }
 
@@ -42,6 +42,10 @@ export interface ChecklistItemAverageEquipmentLevel extends ChecklistItemBase {
     type: 'avg-item-level';
     max: number;
 }
+export interface ChecklistItemRenown extends ChecklistItemBase {
+    type: 'renown',
+    threshold: number;
+}
 export interface ChecklistItemManual extends ChecklistItemBase {
     type: 'manual';
 }
@@ -54,4 +58,4 @@ export interface ChecklistItemEquipmentLevel extends ChecklistItemBase {
 
 export type ChecklistItem = ChecklistItemHeader | ChecklistItemAchievement | ChecklistItemQuest | ChecklistItemReputation |
     ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemAverageEquipmentLevel |
-    ChecklistItemManual | ChecklistItemEquipmentLevel;
+    ChecklistItemManual | ChecklistItemEquipmentLevel | ChecklistItemRenown;

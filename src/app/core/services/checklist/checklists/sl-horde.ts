@@ -40,13 +40,24 @@ const data: Checklist = {
         { key: 'campaign-renown40', name: 'Champion of the Covenant', type: 'achievement', id: 14631 },
         { key: 'campaign-finished', name: 'Covenant Campaign', type: 'achievement', id: 14790 },
 
+        { key: 'chainsofdomination', name: 'Chains of Domination', type: 'header', id: 0, level: 0 },
+        { key: 'chainsofdomination-renown-50', name: 'Renown 50', type: 'renown', id: 0, threshold: 50 },
+        { key: 'chainsofdomination-renown-60', name: 'Renown 60', type: 'renown', id: 0, threshold: 60 },
+        { key: 'chainsofdomination-renown-70', name: 'Renown 70', type: 'renown', id: 0, threshold: 70 },
+        { key: 'chainsofdomination-renown-80', name: 'Renown 80', type: 'renown', id: 0, threshold: 80 },
+        { key: 'chainsofdomination-united-front', name: 'United Front', type: 'achievement', id: 15000 },
+        { key: 'chainsofdomination-story', name: 'Chains of Domination', type: 'achievement', id: 14961 },
+        { key: 'chainsofdomination-reliquary-restauration', name: 'Reliquary Restauration', type: 'achievement', id: 15066 },
+
         { key: 'reputation', name: 'Reputation', type: 'header', id: 0, level: 0 },
         { key: 'reputation-ascended', type: 'reputation', name: 'The Ascended', id: 2407, max: 6 },
         { key: 'reputation-undyingarmy', type: 'reputation', name: 'The Undying Army', id: 2410, max: 6 },
         { key: 'reputation-wildhunt', type: 'reputation', name: 'The Wild Hunt', id: 2465, max: 6 },
         { key: 'reputation-courtofharvesters', type: 'reputation', name: 'Court of Harvesters', id: 2413, max: 6 },
-        // { key: 'reputation-venari', type: 'reputation', name: 'Ve\'nari', id: 2432, max: 6 },
-
+        { key: 'reputation-venari', type: 'reputation', name: 'Ve\'nari', id: 2432, max: 4 },
+        { key: 'reputation-deaths-advance', type: 'reputation', name: 'Death\'s Advance', id: 2470, max: 6 },
+        { key: 'reputation-archivists-codex', type: 'reputation', name: 'The Archivists Codex', id: 2472, max: 4 },
+        
         { key: 'professions', name: 'Professions', type: 'header', id: 0, level: 0 },
 
         { key: 'professions-herbalism', type: 'profession-primary', name: 'Shadowlands Herbalism', id: 2760 },
