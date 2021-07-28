@@ -100,37 +100,38 @@ export class ChecklistComponent implements OnInit, OnDestroy {
             flatMap(characterInfo => {
                 this.characterInfo = characterInfo;
 
-                this.checklistRequestContainerService.load(this.region, this.realm, this.name, this.characterInfo, cached).subscribe(() => {
-                    this.loading = false;
-                }, error => {
-                    this.error = error;
-                    this.loading = false;
-                    return of();
-                });
-
-                return this.checklistService.getChecklist(characterInfo.checklistId);
+                return this.checklistRequestContainerService.load(this.region, this.realm, this.name, this.characterInfo, cached);
+            }),
+            flatMap(() => {
+                this.loading = false;
+                return this.checklistService.getChecklist(this.characterInfo.checklistId);
             }),
         ).subscribe(checklist => {
+            this.loading = false;
             const completedChanged: Observable<boolean>[] = [];
 
-            checklist.items.forEach(item => {
-                item.handler = this.checklistHandlerService.getHandler(item, checklist.items);
+            const items = checklist.items
+                .filter(item => this.isInRightCovenant(item))
 
-                const completedAndVisible$ = combineLatest(
-                    item.handler.completed.pipe(distinctUntilChanged()),
-                    item.handler.shown.pipe(distinctUntilChanged()),
-                ).pipe(
-                    map(([ completionStatus, isShown ]) => {
-                        if (!isShown) {
-                            return true;
-                        }
+            items
+                .forEach(item => {
+                    item.handler = this.checklistHandlerService.getHandler(item, items);
 
-                        return completionStatus === 'complete';
-                    }),
-                );
+                    const completedAndVisible$ = combineLatest([
+                        item.handler.completed.pipe(distinctUntilChanged()),
+                        item.handler.shown.pipe(distinctUntilChanged()),
+                    ]).pipe(
+                        map(([ completionStatus, isShown ]) => {
+                            if (!isShown) {
+                                return true;
+                            }
 
-                completedChanged.push(completedAndVisible$);
-            });
+                            return completionStatus === 'complete';
+                        }),
+                    );
+
+                    completedChanged.push(completedAndVisible$);
+                });
 
             this.subscriptions.add(combineLatest(completedChanged).pipe(
                 map(completionStatus => completionStatus.every(status => status)),
@@ -140,7 +141,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
                 this.changeDetectorRef.detectChanges();
             }));
 
-            this.checklist = checklist.items;
+            this.checklist = items;
         },
         error => {
             this.error = error;
@@ -149,5 +150,17 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
     hideCompletedChange(value: boolean): void {
         this.localStorageService.set('hideCompleted', value);
+    }
+
+    private isInRightCovenant(item: ChecklistItem): boolean {
+        if (!item.covenant) {
+            return true;
+        }
+
+        if (!this.profile) {
+            return false;
+        }
+
+        return item.covenant === this.profile.covenant_progress?.chosen_covenant?.name;
     }
 }

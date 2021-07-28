@@ -1,5 +1,7 @@
 import { ChecklistHandler } from '../checklist-evaluator/handlers/_handler';
 
+export type ChecklistCovenant = 'Kyrian' | 'Necrolord' | 'Night Fae' | 'Venthyr';
+
 export class Checklist {
     id: string;
     items: ChecklistItem[];
@@ -11,6 +13,7 @@ export interface ChecklistItemBase {
     name: string;
     type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'avg-item-level' |
         'manual' | 'item-level' | 'renown';
+    covenant?: ChecklistCovenant;
     handler?: ChecklistHandler<ChecklistItem>;
 }
 

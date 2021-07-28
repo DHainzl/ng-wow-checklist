@@ -38,7 +38,11 @@ const data: Checklist = {
         { key: 'campaign-renown20', name: 'Gaining Respect', type: 'achievement', id: 14629 },
         { key: 'campaign-renown30', name: 'Becoming a Hero', type: 'achievement', id: 14630 },
         { key: 'campaign-renown40', name: 'Champion of the Covenant', type: 'achievement', id: 14631 },
-        { key: 'campaign-finished', name: 'Covenant Campaign', type: 'achievement', id: 14790 },
+        { key: 'campaign-torghast', name: 'The Captive King', type: 'quest', id: 61730 },
+        { key: 'campaign-finished-kyrian', name: 'Covenant Campaign', covenant: 'Kyrian', type: 'quest', id: 62557 },
+        { key: 'campaign-finished-necrolords', name: 'Covenant Campaign', covenant: 'Necrolord', type: 'quest', id: 62406 },
+        { key: 'campaign-finished-nightfae', name: 'Covenant Campaign', covenant: 'Night Fae', type: 'quest', id: 60108 },
+        { key: 'campaign-finished-venthyr', name: 'Covenant Campaign', covenant: 'Venthyr', type: 'quest', id: 58407 },
 
         { key: 'chainsofdomination', name: 'Chains of Domination', type: 'header', id: 0, level: 0 },
         { key: 'chainsofdomination-renown-50', name: 'Renown 50', type: 'renown', id: 0, threshold: 50 },
@@ -48,6 +52,7 @@ const data: Checklist = {
         { key: 'chainsofdomination-united-front', name: 'United Front', type: 'achievement', id: 15000 },
         { key: 'chainsofdomination-story', name: 'Chains of Domination', type: 'achievement', id: 14961 },
         { key: 'chainsofdomination-reliquary-restauration', name: 'Reliquary Restauration', type: 'achievement', id: 15066 },
+        { key: 'chainsofdomination-boxofmanythings', name: 'Box of Many Things', type: 'quest', id: 64216 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', id: 0, level: 0 },
         { key: 'reputation-ascended', type: 'reputation', name: 'The Ascended', id: 2407, max: 6 },

@@ -1,4 +1,4 @@
-import { combineLatest, Observable, of, Subscription } from 'rxjs';
+import { combineLatest, from, Observable, of, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChecklistItem, ChecklistItemHeader } from 'src/app/core/services/checklist/checklist.interface';
 
@@ -9,9 +9,14 @@ export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader
     subscription: Subscription = new Subscription();
 
     handlerInit(): void {
-        this._label$.next(this.getHeader());
+        const subitems = this.findSubitems();
 
-        this.subscription = combineLatest(this.getSubitemSubscriptions()).subscribe(allStatus => {
+        if (subitems.length === 0) {
+            this._shown$.next(false);
+        }
+
+        this._label$.next(this.getHeader());
+        this.subscription = combineLatest(this.getSubitemSubscriptions(subitems)).subscribe(allStatus => {
             const isLoading = allStatus.includes('loading');
             if (isLoading) {
                 this._completed$.next('loading');
@@ -32,9 +37,9 @@ export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader
         return `<${tag}>${this.item.name}</${tag}>`;
     }
 
-    private getSubitemSubscriptions(): Observable<CompletionStatus>[] {
-        return this.findSubitems().map(subitem => {
-            return combineLatest(subitem.handler.shown, subitem.handler.completed).pipe(
+    private getSubitemSubscriptions(subitems: ChecklistItem[]): Observable<CompletionStatus>[] {
+        return subitems.map(subitem => {
+            return combineLatest([ subitem.handler.shown, subitem.handler.completed ]).pipe(
                 map(([ shown, completed ]) => {
                     if (!shown) {
                         // If it's not shown we assume completed to not taint summary
