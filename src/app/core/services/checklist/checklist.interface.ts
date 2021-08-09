@@ -8,7 +8,6 @@ export class Checklist {
 }
 
 export interface ChecklistItemBase {
-    id: number;
     key: string;
     name: string;
     type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'avg-item-level' |
@@ -22,19 +21,24 @@ export interface ChecklistItemHeader extends ChecklistItemBase {
     level: number;
 }
 export interface ChecklistItemAchievement extends ChecklistItemBase {
+    id: number;
     type: 'achievement';
 }
 export interface ChecklistItemQuest extends ChecklistItemBase {
+    id: number;
     type: 'quest';
 }
 export interface ChecklistItemReputation extends ChecklistItemBase {
+    id: number;
     type: 'reputation';
     max: number;
 }
 export interface ChecklistItemPrimaryProfession extends ChecklistItemBase {
+    id: number;
     type: 'profession-primary';
 }
 export interface ChecklistItemSecondaryProfession extends ChecklistItemBase {
+    id: number;
     type: 'profession-secondary';
 }
 export interface ChecklistItemLevel extends ChecklistItemBase {
