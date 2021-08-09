@@ -34,16 +34,19 @@ const data: Checklist = {
 
         { key: 'campaign', name: 'Covenant Campaign', type: 'header', id: 0, level: 0 },
         { key: 'campaign-choosingyourpurpose', name: 'Choosing Your Purpose', type: 'achievement', id: 14627 },
-        { key: 'campaign-renown10', name: 'The Road to Renown', type: 'achievement', id: 14628 },
-        { key: 'campaign-renown20', name: 'Gaining Respect', type: 'achievement', id: 14629 },
-        { key: 'campaign-renown30', name: 'Becoming a Hero', type: 'achievement', id: 14630 },
-        { key: 'campaign-renown40', name: 'Champion of the Covenant', type: 'achievement', id: 14631 },
+        { key: 'campaign-renown10', name: 'Renown 10', type: 'renown', id: 0, threshold: 10 },
+        { key: 'campaign-renown20', name: 'Renown 20', type: 'renown', id: 0, threshold: 20 },
+        { key: 'campaign-renown30', name: 'Renown 30', type: 'renown', id: 0, threshold: 30 },
+        { key: 'campaign-renown40', name: 'Renown 40', type: 'renown', id: 0, threshold: 40 },
         { key: 'campaign-torghast', name: 'The Captive King', type: 'quest', id: 61730 },
         { key: 'campaign-finished-kyrian', name: 'Covenant Campaign', covenant: 'Kyrian', type: 'quest', id: 62557 },
         { key: 'campaign-finished-necrolords', name: 'Covenant Campaign', covenant: 'Necrolord', type: 'quest', id: 62406 },
         { key: 'campaign-finished-nightfae', name: 'Covenant Campaign', covenant: 'Night Fae', type: 'quest', id: 60108 },
         { key: 'campaign-finished-venthyr', name: 'Covenant Campaign', covenant: 'Venthyr', type: 'quest', id: 58407 },
         { key: 'chainsofdomination-boxofmanythings', name: 'Box of Many Things', type: 'quest', id: 64216 },
+        { key: 'chainsofdomination-tazavesh-intro', name: 'The Veiled Market', type: 'quest', id: 63985 },
+        { key: 'chainsofdomination-establishing-the-archive', name: 'Establishing the Archive', type: 'quest', id: 63738 },
+        { key: 'chainsofdomination-they-could-be-anyone', name: 'They Could Be Anyone', type: 'quest', id: 63763 },
 
         { key: 'chainsofdomination', name: 'Chains of Domination', type: 'header', id: 0, level: 0 },
         { key: 'chainsofdomination-renown-50', name: 'Renown 50', type: 'renown', id: 0, threshold: 50 },
@@ -52,7 +55,6 @@ const data: Checklist = {
         { key: 'chainsofdomination-renown-80', name: 'Renown 80', type: 'renown', id: 0, threshold: 80 },
         { key: 'chainsofdomination-united-front', name: 'United Front', type: 'achievement', id: 15000 },
         { key: 'chainsofdomination-story', name: 'Chains of Domination', type: 'achievement', id: 14961 },
-        { key: 'chainsofdomination-reliquary-restauration', name: 'Reliquary Restauration', type: 'achievement', id: 15066 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', id: 0, level: 0 },
         { key: 'reputation-ascended', type: 'reputation', name: 'The Ascended', id: 2407, max: 6 },
@@ -61,8 +63,8 @@ const data: Checklist = {
         { key: 'reputation-courtofharvesters', type: 'reputation', name: 'Court of Harvesters', id: 2413, max: 6 },
         { key: 'reputation-venari', type: 'reputation', name: 'Ve\'nari', id: 2432, max: 4 },
         { key: 'reputation-deaths-advance', type: 'reputation', name: 'Death\'s Advance', id: 2470, max: 6 },
-        { key: 'reputation-archivists-codex', type: 'reputation', name: 'The Archivists Codex', id: 2472, max: 4 },
-        
+        { key: 'reputation-archivists-codex', type: 'reputation', name: 'The Archivists Codex', id: 2472, max: 3 },
+
         { key: 'professions', name: 'Professions', type: 'header', id: 0, level: 0 },
 
         { key: 'professions-herbalism', type: 'profession-primary', name: 'Shadowlands Herbalism', id: 2760 },
@@ -84,8 +86,7 @@ const data: Checklist = {
         { key: 'sanctum-travelnetwork', name: 'Master Navigator', type: 'achievement', id: 14633 },
         { key: 'sanctum-animaconductor', name: 'Conducting Anima', type: 'achievement', id: 14632 },
         { key: 'sanctum-adventures', name: 'Adventurer in Chief', type: 'achievement', id: 14636 },
-        { key: 'sanctum-special', name: 'Your Covenant\'s Favor', type: 'achievement', id: 14637 },
-        { key: 'sanctum-heroes', name: 'Adventures: Harmony of Purpose', type: 'achievement', id: 14843 },
+        { key: 'sanctum-special', name: 'Your Covenant\'s Favor', type: 'manual', id: 0 },
     ],
 };
 

@@ -46,7 +46,7 @@ export interface ChecklistItemAverageEquipmentLevel extends ChecklistItemBase {
     max: number;
 }
 export interface ChecklistItemRenown extends ChecklistItemBase {
-    type: 'renown',
+    type: 'renown';
     threshold: number;
 }
 export interface ChecklistItemManual extends ChecklistItemBase {
