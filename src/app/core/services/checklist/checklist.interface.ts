@@ -11,7 +11,7 @@ export interface ChecklistItemBase {
     key: string;
     name: string;
     type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'avg-item-level' |
-        'manual' | 'item-level' | 'renown';
+        'manual' | 'item-level' | 'renown' | 'any-quest';
     covenant?: ChecklistCovenant;
     handler?: ChecklistHandler<ChecklistItem>;
 }
@@ -27,6 +27,13 @@ export interface ChecklistItemAchievement extends ChecklistItemBase {
 export interface ChecklistItemQuest extends ChecklistItemBase {
     id: number;
     type: 'quest';
+}
+export interface ChecklistItemAnyQuest extends ChecklistItemBase {
+    type: 'any-quest';
+    quests: {
+        id: number;
+        name: string;
+    }[];
 }
 export interface ChecklistItemReputation extends ChecklistItemBase {
     id: number;
@@ -65,4 +72,4 @@ export interface ChecklistItemEquipmentLevel extends ChecklistItemBase {
 
 export type ChecklistItem = ChecklistItemHeader | ChecklistItemAchievement | ChecklistItemQuest | ChecklistItemReputation |
     ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemAverageEquipmentLevel |
-    ChecklistItemManual | ChecklistItemEquipmentLevel | ChecklistItemRenown;
+    ChecklistItemManual | ChecklistItemEquipmentLevel | ChecklistItemRenown | ChecklistItemAnyQuest;
