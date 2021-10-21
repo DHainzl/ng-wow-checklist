@@ -44,18 +44,18 @@ const data: Checklist = {
         { key: 'campaign-finished-necrolords', name: 'Covenant Campaign', covenant: 'Necrolord', type: 'quest', id: 62406 },
         { key: 'campaign-finished-nightfae', name: 'Covenant Campaign', covenant: 'Night Fae', type: 'quest', id: 60108 },
         { key: 'campaign-finished-venthyr', name: 'Covenant Campaign', covenant: 'Venthyr', type: 'quest', id: 58407 },
-        { key: 'chainsofdomination-boxofmanythings', name: 'Box of Many Things', type: 'quest', id: 64216 },
-        { key: 'chainsofdomination-tazavesh-intro', name: 'The Veiled Market', type: 'quest', id: 63985 },
-        { key: 'chainsofdomination-establishing-the-archive', name: 'Establishing the Archive', type: 'quest', id: 63738 },
-        { key: 'chainsofdomination-they-could-be-anyone', name: 'They Could Be Anyone', type: 'quest', id: 63763 },
-
+        
         { key: 'chainsofdomination', name: 'Chains of Domination', type: 'header', level: 0 },
         { key: 'chainsofdomination-renown-50', name: 'Renown 50', type: 'renown', threshold: 50 },
         { key: 'chainsofdomination-renown-60', name: 'Renown 60', type: 'renown', threshold: 60 },
         { key: 'chainsofdomination-renown-70', name: 'Renown 70', type: 'renown', threshold: 70 },
         { key: 'chainsofdomination-renown-80', name: 'Renown 80', type: 'renown', threshold: 80 },
-        { key: 'chainsofdomination-united-front', name: 'United Front', type: 'achievement', id: 15000 },
         { key: 'chainsofdomination-story', name: 'Chains of Domination', type: 'achievement', id: 14961 },
+        { key: 'chainsofdomination-boxofmanythings', name: 'Box of Many Things', type: 'quest', id: 64216 },
+        { key: 'chainsofdomination-tazavesh-intro', name: 'The Veiled Market', type: 'quest', id: 63985 },
+        { key: 'chainsofdomination-establishing-the-archive', name: 'Establishing the Archive', type: 'quest', id: 63738 },
+        { key: 'chainsofdomination-they-could-be-anyone', name: 'They Could Be Anyone', type: 'quest', id: 63763 },
+        { key: 'chainsofdomination-reliquary-restoration', name: 'Reliquary Restoration', type: 'achievement', id: 15066 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', level: 0 },
         { key: 'reputation-ascended', type: 'reputation', name: 'The Ascended', id: 2407, max: 6 },
@@ -176,7 +176,7 @@ const data: Checklist = {
         { key: 'sanctum-follower-venthyr-thela', name: 'Follower: Thela Soulsipper', type: 'quest', covenant: 'Venthyr', id: 61217 },
         { key: 'sanctum-follower-venthyr-vulca', name: 'Follower: Vulca', type: 'quest', covenant: 'Venthyr', id: 61790 },
 
-        { key: 'sanctum-follower-general-ben-howell', name: 'Follower: Ben Howell', type: 'quest', id: 64654 },
+        // { key: 'sanctum-follower-general-ben-howell', name: 'Follower: Ben Howell', type: 'quest', id: 64654 },
         { key: 'sanctum-follower-general-croman', name: 'Follower: Croman', type: 'quest', id: 62999 },
         { key: 'sanctum-follower-general-meatball', name: 'Follower: Meatball', type: 'quest', id: 60651 },
     ],
