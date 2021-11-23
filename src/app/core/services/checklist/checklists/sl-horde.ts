@@ -131,10 +131,10 @@ const data: Checklist = {
         { key: 'sanctum-follower-necrolord-rathan', name: 'Rathan', type: 'sanctum-follower', covenant: 'Necrolord' },
         { key: 'sanctum-follower-necrolord-rattlebag', name: 'Rattlebag', type: 'sanctum-follower', covenant: 'Necrolord' },
         { key: 'sanctum-follower-necrolord-rencissa', name: 'Rencissa the Dynamo', type: 'sanctum-follower', covenant: 'Necrolord' },
-        { key: 'sanctum-follower-necrolord-ruyja', name: 'Ruyja Shockfist', type: 'sanctum-follower', covenant: 'Necrolord' },
+        { key: 'sanctum-follower-necrolord-ryuyja', name: 'Ryuja Shockfist', type: 'sanctum-follower', covenant: 'Necrolord' },
         { key: 'sanctum-follower-necrolord-mevix', name: 'Secutor Mevix', type: 'sanctum-follower', covenant: 'Necrolord' },
         { key: 'sanctum-follower-necrolord-talethi', name: 'Talethi', type: 'sanctum-follower', covenant: 'Necrolord' },
-        { key: 'sanctum-follower-necrolord-velkein', name: 'Theotar', type: 'sanctum-follower', covenant: 'Necrolord' },
+        { key: 'sanctum-follower-necrolord-velkein', name: 'Velkein', type: 'sanctum-follower', covenant: 'Necrolord' },
 
         { key: 'sanctum-follower-nightfae-niya', name: 'Niya', type: 'sanctum-follower', covenant: 'Night Fae' },
         { key: 'sanctum-follower-nightfae-dreamweaver', name: 'Dreamweaver', type: 'sanctum-follower', covenant: 'Night Fae' },
