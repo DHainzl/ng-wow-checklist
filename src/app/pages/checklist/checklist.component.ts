@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, of, Subscription } from 'rxjs';
@@ -14,6 +15,7 @@ import { ChecklistHandlerService } from '../../core/services/checklist-evaluator
 import { ChecklistItem } from '../../core/services/checklist/checklist.interface';
 import { ChecklistService } from '../../core/services/checklist/checklist.service';
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
+import { IngameImportDialogComponent } from './import-dialog/ingame-import-dialog.component';
 
 import { ChecklistRequestContainerService } from './services/checklist-request-container.service';
 
@@ -51,6 +53,8 @@ export class ChecklistComponent implements OnInit, OnDestroy {
         private characterStoreService: CharacterStoreService,
         private localStorageService: LocalStorageService,
 
+        private dialog: MatDialog,
+
         private titleService: Title,
         private changeDetectorRef: ChangeDetectorRef,
     ) { }
@@ -84,6 +88,22 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
     refresh(): void {
         this.loadData(false);
+    }
+
+    import(): void {
+        const dialogRef = this.dialog.open(IngameImportDialogComponent, {
+            data: {
+                region: this.region,
+                realm: this.realm,
+                name: this.name,
+            },
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.loadData();
+            }
+        });
     }
 
     private loadData(cached: boolean = true): void {

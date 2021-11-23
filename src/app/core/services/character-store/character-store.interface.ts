@@ -26,3 +26,23 @@ export interface CharacterInfoManualOverride extends CharacterInfoBaseOverride {
 
 export type CharacterInfoOverride = CharacterInfoReputationOverride | CharacterInfoSecondaryProfessionOverride |
     CharacterInfoManualOverride;
+
+export interface CharacterIngameData {
+    character: {
+        region: string;
+        realm: string;
+        name: string;
+    };
+    sanctum: {
+        transport: number;
+        conductor: number;
+        missions: number;
+        special: number;
+    };
+    followers: {
+        [ followerName: string ]: {
+            collected: boolean;
+            level: number;
+        };
+    };
+}

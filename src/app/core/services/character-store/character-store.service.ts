@@ -5,7 +5,7 @@ import { flatMap, tap } from 'rxjs/operators';
 import { Region } from '../battle-net/battle-net.interface';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
-import { CharacterInfo } from './character-store.interface';
+import { CharacterInfo, CharacterIngameData } from './character-store.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CharacterStoreService {
@@ -70,5 +70,28 @@ export class CharacterStoreService {
                 return this.setCharacters(allCharacters);
             }),
         );
+    }
+
+    getIngameData(region: Region, realm: string, name: string): CharacterIngameData {
+        const allData: CharacterIngameData[] = this.localStorage.get('ingame-data') || [];
+        return allData
+            .find(c => c.character.region === region && c.character.realm === realm && c.character.name === name);
+    }
+
+    setIngameData(ingameData: CharacterIngameData): void {
+        let existingData: CharacterIngameData[] = this.localStorage.get('ingame-data') || [];
+
+        ingameData.character.region = ingameData.character.region.toLocaleLowerCase();
+        ingameData.character.realm = ingameData.character.realm.toLocaleLowerCase();
+        ingameData.character.name = ingameData.character.name.toLocaleLowerCase();
+
+        existingData = existingData
+            .filter(c => !(c.character.region === ingameData.character.region &&
+                c.character.realm === ingameData.character.realm &&
+                c.character.name === ingameData.character.name));
+
+        existingData.push(ingameData);
+
+        this.localStorage.set('ingame-data', existingData);
     }
 }

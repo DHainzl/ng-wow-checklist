@@ -11,7 +11,7 @@ export interface ChecklistItemBase {
     key: string;
     name: string;
     type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'avg-item-level' |
-        'manual' | 'item-level' | 'renown' | 'any-quest';
+        'manual' | 'item-level' | 'renown' | 'any-quest' | 'sanctum-talent' | 'sanctum-follower' | 'sanctum-follower-any';
     covenant?: ChecklistCovenant;
     handler?: ChecklistHandler<ChecklistItem>;
 }
@@ -69,7 +69,18 @@ export interface ChecklistItemEquipmentLevel extends ChecklistItemBase {
         'FINGER_1' | 'FINGER_2' | 'TRINKET_1' | 'TRINKET_2' | 'BACK' | 'MAIN_HAND' | 'OFF_HAND' | 'TABARD';
     level: number;
 }
+export interface ChecklistItemSanctumTalent extends ChecklistItemBase {
+    type: 'sanctum-talent';
+    talentName: 'transport' | 'conductor' | 'missions' | 'special';
+}
+export interface ChecklistItemSanctumFollower extends ChecklistItemBase {
+    type: 'sanctum-follower';
+}
+export interface ChecklistItemSanctumFollowerAny extends ChecklistItemBase {
+    type: 'sanctum-follower-any';
+    followers: string[];
+}
 
 export type ChecklistItem = ChecklistItemHeader | ChecklistItemAchievement | ChecklistItemQuest | ChecklistItemReputation |
     ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemAverageEquipmentLevel |
-    ChecklistItemManual | ChecklistItemEquipmentLevel | ChecklistItemRenown | ChecklistItemAnyQuest;
+    ChecklistItemManual | ChecklistItemEquipmentLevel | ChecklistItemRenown | ChecklistItemAnyQuest | ChecklistItemSanctumTalent | ChecklistItemSanctumFollower | ChecklistItemSanctumFollowerAny;

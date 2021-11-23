@@ -10,7 +10,7 @@ import { BattleNetProfessions } from 'src/app/core/services/battle-net/character
 import { BattleNetProfile } from 'src/app/core/services/battle-net/character/types/battlenet-profile';
 import { BattleNetQuests } from 'src/app/core/services/battle-net/character/types/battlenet-quest';
 import { BattleNetCharacterReputations } from 'src/app/core/services/battle-net/character/types/battlenet-reputation';
-import { CharacterInfo } from 'src/app/core/services/character-store/character-store.interface';
+import { CharacterInfo, CharacterIngameData } from 'src/app/core/services/character-store/character-store.interface';
 import { CharacterStoreService } from 'src/app/core/services/character-store/character-store.service';
 
 export interface CharacterId {
@@ -30,6 +30,7 @@ export class ChecklistRequestContainerService {
     private _mediaChanged$: BehaviorSubject<BattleNetMedia> = new BehaviorSubject(undefined);
     private _profileChanged$: BehaviorSubject<BattleNetProfile> = new BehaviorSubject(undefined);
     private _characterInfo$: BehaviorSubject<CharacterInfo[]> = new BehaviorSubject([]);
+    private _ingameDataChanged$: BehaviorSubject<CharacterIngameData> = new BehaviorSubject(undefined);
 
     get characterChanged(): Observable<CharacterId | undefined> { return this._characterChanged$.asObservable(); }
     get questsChanged(): Observable<BattleNetQuests> { return this._questsChanged$.asObservable(); }
@@ -55,6 +56,7 @@ export class ChecklistRequestContainerService {
             pluck('overrides'),
         );
     }
+    get ingameDataChanged(): Observable<CharacterIngameData> { return this._ingameDataChanged$.asObservable(); }
 
     constructor(
         private characterService: BattleNetCharacterService,
@@ -66,6 +68,7 @@ export class ChecklistRequestContainerService {
             region, realm, name,
         });
         this._characterInfo$.next([ characterInfo ]);
+        this._ingameDataChanged$.next(this.characterStoreService.getIngameData(region, realm, name));
 
         this._questsChanged$.next(undefined);
         this._professionsChanged$.next(undefined);

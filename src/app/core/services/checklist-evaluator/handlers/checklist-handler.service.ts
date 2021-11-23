@@ -17,6 +17,9 @@ import { ChecklistQuestHandler } from './quest-handler';
 import { ChecklistRenownHandler } from './renown-handler';
 import { ChecklistReputationHandler } from './reputation-handler';
 import { ChecklistSecondaryProfessionHandler } from './secondary-profession-handler';
+import { ChecklistSanctumTalentHandler } from './sanctum-talent-handler';
+import { ChecklistSanctumFollowerHandler } from './sanctum-follower-handler';
+import { ChecklistSanctumFollowerAnyHandler } from './sanctum-follower-any-handler';
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistHandlerService {
@@ -33,6 +36,9 @@ export class ChecklistHandlerService {
         manual: ChecklistManualHandler,
         'item-level': ChecklistEquipmentHandler,
         renown: ChecklistRenownHandler,
+        'sanctum-talent': ChecklistSanctumTalentHandler,
+        'sanctum-follower': ChecklistSanctumFollowerHandler,
+        'sanctum-follower-any': ChecklistSanctumFollowerAnyHandler,
     };
 
     private handlerInjector: Injector;

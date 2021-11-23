@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Subscription } from "rxjs";
 import { CharacterStoreService } from "src/app/core/services/character-store/character-store.service";
-import { LocalStorageService } from "src/app/core/services/local-storage/local-storage.service";
 
 @Component({
     templateUrl: './import.component.html',
@@ -33,7 +32,7 @@ export class ImportComponent implements OnInit, OnDestroy {
 
     import() {
         if (!this.importData) {
-            this.snackBar.open("Please enter some data to import");
+            this.snackBar.open('Please enter some data to import', 'OK');
             return;
         }
 
@@ -45,9 +44,9 @@ export class ImportComponent implements OnInit, OnDestroy {
             this.exportData = this.importData;
             this.importData = '';
 
-            this.snackBar.open("Data imported successfully!");
+            this.snackBar.open('Data imported successfully!', 'OK');
         } catch (ex) {
-            this.snackBar.open("Could not parse pasted data. Please verify it is correct!");
+            this.snackBar.open('Could not parse pasted data. Please verify it is correct!', 'OK');
         }
 
     }

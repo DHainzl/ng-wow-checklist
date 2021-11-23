@@ -5,6 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
 import { ChecklistLineComponent } from './checklist-line/checklist-line.component';
 import { ChecklistComponent } from './checklist.component';
+import { IngameImportDialogComponent } from './import-dialog/ingame-import-dialog.component';
 
 @NgModule({
     imports: [
@@ -16,6 +17,8 @@ import { ChecklistComponent } from './checklist.component';
     declarations: [
         ChecklistComponent,
         ChecklistLineComponent,
+
+        IngameImportDialogComponent,
     ],
 })
 export class ChecklistModule { }
