@@ -16,6 +16,10 @@
                 <span class="character">{{ character.name }}</span>
             </a>
         </div>
+        <a class="link" routerLink="import" routerLinkActive="active" (click)="closeSidenav()">
+            <mat-icon>sync_alt</mat-icon>
+            <span>Import / Export</span>
+        </a>
     </mat-sidenav>
     <mat-sidenav-content>
         <router-outlet></router-outlet>

@@ -9,7 +9,7 @@ import { CharacterInfo } from './character-store.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CharacterStoreService {
-    private _charactersChanged$: BehaviorSubject<CharacterInfo[]> = new BehaviorSubject(undefined);
+    private _charactersChanged$: BehaviorSubject<CharacterInfo[]> = new BehaviorSubject([]);
 
     get charactersChanged(): Observable<CharacterInfo[]> { return this._charactersChanged$.asObservable(); }
 
@@ -19,7 +19,13 @@ export class CharacterStoreService {
 
     getCharacters(): Observable<CharacterInfo[]> {
         const characters: CharacterInfo[] = this.localStorage.get('characters');
-        if (!characters) { return of([]); }
+
+        if (!characters) {
+            this._charactersChanged$.next([]);
+            return of([]);
+        }
+
+        this._charactersChanged$.next(characters);
         return of(characters);
     }
 

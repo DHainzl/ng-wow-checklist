@@ -39,9 +39,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.userInfoService.getLatestUserInfo().subscribe(userInfo => {
             this.userinfo = userInfo;
         }));
-        this.characterStoreService.getCharacters().subscribe(characters => {
+
+        this.subscriptions.add(this.characterStoreService.charactersChanged.subscribe(characters => {
             this.allCharacters = characters;
-        });
+        }));
+        this.characterStoreService.getCharacters();
     }
 
     ngOnDestroy(): void {
