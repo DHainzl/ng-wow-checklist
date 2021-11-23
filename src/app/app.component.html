@@ -9,8 +9,13 @@
     <mat-sidenav opened class="mat-elevation-z6" [mode]="isMobile ? 'over' : 'side'" [fixedInViewport]="isMobile" [(opened)]="isOpened">
         <a class="link" routerLink="home" routerLinkActive="active" (click)="closeSidenav()">
             <mat-icon>home</mat-icon>
-            <span>Home</span>
+            <span>Checklist</span>
         </a>
+        <div class="submenu">
+            <a *ngFor="let character of allCharacters" class="small-link" routerLinkActive="active" [routerLink]="[ '/', character.region, character.realm, character.name, 'checklist' ]" (click)="closeSidenav()">
+                <span class="character">{{ character.name }}</span>
+            </a>
+        </div>
     </mat-sidenav>
     <mat-sidenav-content>
         <router-outlet></router-outlet>

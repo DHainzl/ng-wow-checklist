@@ -40,6 +40,22 @@ mat-sidenav {
             font-weight: 500;
         }
     }
+
+    .small-link {
+        height: 24px;
+        line-height: 24px;
+
+        span {
+            padding-left: 55px;
+        }
+    }
+
+
+    .submenu {
+        .character {
+            text-transform: capitalize;
+        }
+    }
 }
 
 mat-sidenav-content {

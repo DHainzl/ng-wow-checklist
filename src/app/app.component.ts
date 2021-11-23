@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 
 import { UserInfo } from './core/services/battle-net/userinfo/types/userinfo.interface';
 import { UserInfoService } from './core/services/battle-net/userinfo/userinfo.service';
+import { CharacterInfo } from './core/services/character-store/character-store.interface';
+import { CharacterStoreService } from './core/services/character-store/character-store.service';
 import { ResponsiveService, ScreenSize } from './core/services/responsive/responsive.service';
 
 @Component({
@@ -18,6 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
     subscriptions: Subscription = new Subscription();
 
     isOpened: boolean = true;
+    allCharacters: CharacterInfo[] = [];
 
     @ViewChild(MatSidenav)
     sidenav: MatSidenav;
@@ -25,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
     constructor(
         private responsiveService: ResponsiveService,
         private userInfoService: UserInfoService,
+        private characterStoreService: CharacterStoreService,
     ) { }
 
     ngOnInit(): void {
@@ -35,6 +39,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.userInfoService.getLatestUserInfo().subscribe(userInfo => {
             this.userinfo = userInfo;
         }));
+        this.characterStoreService.getCharacters().subscribe(characters => {
+            this.allCharacters = characters;
+        });
     }
 
     ngOnDestroy(): void {

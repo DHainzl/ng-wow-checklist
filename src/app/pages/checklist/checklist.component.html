@@ -1,14 +1,3 @@
-<mat-toolbar class="character-quick-switch">
-    <ng-container *ngIf="allCharacters; else loadingDiv2">
-        <div class="character" routerLink="/">
-            <mat-icon>chevron_left</mat-icon>
-        </div>
-        <div *ngFor="let character of allCharacters" class="character" [routerLink]="[ '/', character.region, character.realm, character.name, 'checklist' ]" routerLinkActive="active">
-            {{ character.name }}
-        </div>
-    </ng-container>
-</mat-toolbar>
-
 <div class="page-container">
     <ng-container *ngIf="!error; else errorDiv">
         <div class="page-actions group">

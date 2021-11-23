@@ -34,7 +34,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     allCompleted: boolean = false;
     hideCompleted: boolean = this.localStorageService.get('hideCompleted') || false;
 
-    allCharacters: CharacterInfo[];
     checklist: ChecklistItem[];
     characterInfo: CharacterInfo;
 
@@ -91,10 +90,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.error = '';
         this.titleService.setTitle(`WoW Checklist`);
-
-        this.characterStoreService.getCharacters().subscribe(characters => {
-            this.allCharacters = characters;
-        });
 
         this.characterStoreService.getCharacter(this.region, this.realm, this.name).pipe(
             flatMap(characterInfo => {
