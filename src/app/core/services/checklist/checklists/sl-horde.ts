@@ -56,6 +56,7 @@ const data: Checklist = {
         { key: 'chainsofdomination-establishing-the-archive', name: 'Establishing the Archive', type: 'quest', id: 63738 },
         { key: 'chainsofdomination-they-could-be-anyone', name: 'They Could Be Anyone', type: 'quest', id: 63763 },
         { key: 'chainsofdomination-reliquary-restoration', name: 'Reliquary Restoration', type: 'achievement', id: 15066 },
+        { key: 'chainsofdomination-a-unified-effort', name: 'A Unified Effort', type: 'quest', id: 64106 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', level: 0 },
         { key: 'reputation-ascended', type: 'reputation', name: 'The Ascended', id: 2407, max: 6 },
