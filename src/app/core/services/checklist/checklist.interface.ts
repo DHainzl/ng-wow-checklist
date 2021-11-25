@@ -1,6 +1,8 @@
 import { ChecklistHandler } from '../checklist-evaluator/handlers/_handler';
 
 export type ChecklistCovenant = 'Kyrian' | 'Necrolord' | 'Night Fae' | 'Venthyr';
+export type ChecklistWowClass = 'Death Knight' | 'Demon Hunter' | 'Druid' | 'Hunter' | 'Mage' | 'Monk' | 'Paladin' | 'Priest' |
+    'Rogue' | 'Shaman' | 'Warlock' | 'Warrior';
 
 export class Checklist {
     id: string;
@@ -11,8 +13,9 @@ export interface ChecklistItemBase {
     key: string;
     name: string;
     type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'avg-item-level' |
-        'manual' | 'item-level' | 'renown' | 'any-quest' | 'sanctum-talent' | 'sanctum-follower' | 'sanctum-follower-any';
+        'manual' | 'item-level' | 'renown' | 'any-quest' | 'sanctum-talent' | 'sanctum-follower' | 'sanctum-follower-any' | 'sanctum-conduit';
     covenant?: ChecklistCovenant;
+    classes?: ChecklistWowClass[];
     handler?: ChecklistHandler<ChecklistItem>;
 }
 
@@ -80,7 +83,11 @@ export interface ChecklistItemSanctumFollowerAny extends ChecklistItemBase {
     type: 'sanctum-follower-any';
     followers: string[];
 }
+export interface ChecklistItemSanctumConduit extends ChecklistItemBase {
+    type: 'sanctum-conduit';
+    conduitId: number;
+}
 
 export type ChecklistItem = ChecklistItemHeader | ChecklistItemAchievement | ChecklistItemQuest | ChecklistItemReputation |
     ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemAverageEquipmentLevel |
-    ChecklistItemManual | ChecklistItemEquipmentLevel | ChecklistItemRenown | ChecklistItemAnyQuest | ChecklistItemSanctumTalent | ChecklistItemSanctumFollower | ChecklistItemSanctumFollowerAny;
+    ChecklistItemManual | ChecklistItemEquipmentLevel | ChecklistItemRenown | ChecklistItemAnyQuest | ChecklistItemSanctumTalent | ChecklistItemSanctumFollower | ChecklistItemSanctumFollowerAny | ChecklistItemSanctumConduit;

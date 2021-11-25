@@ -127,6 +127,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
             const items = checklist.items
                 .filter(item => this.isInRightCovenant(item))
+                .filter(item => this.isRightClass(item));
 
             items
                 .forEach(item => {
@@ -177,5 +178,17 @@ export class ChecklistComponent implements OnInit, OnDestroy {
         }
 
         return item.covenant === this.profile.covenant_progress?.chosen_covenant?.name;
+    }
+
+    private isRightClass(item: ChecklistItem): boolean {
+        if (!item.classes?.length) {
+            return true;
+        }
+
+        if (!this.profile) {
+            return false;
+        }
+
+        return !!item.classes.find(cls => this.profile.character_class.name === cls);
     }
 }

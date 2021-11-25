@@ -45,4 +45,7 @@ export interface CharacterIngameData {
             level: number;
         };
     };
+    conduits: {
+        [ conduitId: string ]: number;
+    };
 }

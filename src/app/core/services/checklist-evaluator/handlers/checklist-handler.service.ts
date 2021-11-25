@@ -20,6 +20,7 @@ import { ChecklistSecondaryProfessionHandler } from './secondary-profession-hand
 import { ChecklistSanctumTalentHandler } from './sanctum-talent-handler';
 import { ChecklistSanctumFollowerHandler } from './sanctum-follower-handler';
 import { ChecklistSanctumFollowerAnyHandler } from './sanctum-follower-any-handler';
+import { ChecklistSanctumConduitHandler } from './sanctum-conduit-handler';
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistHandlerService {
@@ -39,6 +40,7 @@ export class ChecklistHandlerService {
         'sanctum-talent': ChecklistSanctumTalentHandler,
         'sanctum-follower': ChecklistSanctumFollowerHandler,
         'sanctum-follower-any': ChecklistSanctumFollowerAnyHandler,
+        'sanctum-conduit': ChecklistSanctumConduitHandler,
     };
 
     private handlerInjector: Injector;
