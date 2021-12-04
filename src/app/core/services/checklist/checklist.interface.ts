@@ -13,7 +13,8 @@ export interface ChecklistItemBase {
     key: string;
     name: string;
     type: 'header' | 'achievement' | 'quest' | 'reputation' | 'profession-primary' | 'profession-secondary' | 'level' | 'avg-item-level' |
-        'manual' | 'item-level' | 'renown' | 'any-quest' | 'sanctum-talent' | 'sanctum-follower' | 'sanctum-follower-any' | 'sanctum-conduit';
+        'manual' | 'item-level' | 'renown' | 'any-quest' | 'sanctum-talent' | 'sanctum-follower' | 'sanctum-follower-any' | 'sanctum-conduit' |
+        'sanctum-missions-count' | 'sanctum-legendary';
     covenant?: ChecklistCovenant;
     classes?: ChecklistWowClass[];
     handler?: ChecklistHandler<ChecklistItem>;
@@ -87,7 +88,16 @@ export interface ChecklistItemSanctumConduit extends ChecklistItemBase {
     type: 'sanctum-conduit';
     conduitId: number;
 }
+export interface ChecklistItemSanctumMissionsCount extends ChecklistItemBase {
+    type: 'sanctum-missions-count';
+}
+
+export interface ChecklistItemSanctumLegendary extends ChecklistItemBase {
+    type: 'sanctum-legendary';
+}
 
 export type ChecklistItem = ChecklistItemHeader | ChecklistItemAchievement | ChecklistItemQuest | ChecklistItemReputation |
     ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession | ChecklistItemLevel | ChecklistItemAverageEquipmentLevel |
-    ChecklistItemManual | ChecklistItemEquipmentLevel | ChecklistItemRenown | ChecklistItemAnyQuest | ChecklistItemSanctumTalent | ChecklistItemSanctumFollower | ChecklistItemSanctumFollowerAny | ChecklistItemSanctumConduit;
+    ChecklistItemManual | ChecklistItemEquipmentLevel | ChecklistItemRenown | ChecklistItemAnyQuest | ChecklistItemSanctumTalent |
+    ChecklistItemSanctumFollower | ChecklistItemSanctumFollowerAny | ChecklistItemSanctumConduit | ChecklistItemSanctumMissionsCount |
+    ChecklistItemSanctumLegendary;

@@ -48,4 +48,11 @@ export interface CharacterIngameData {
     conduits: {
         [ conduitId: string ]: number;
     };
+    powers: {
+        [ powerName: string ]: {
+            learned: boolean;
+            name: string;
+        }
+    };
+    missions: number;
 }

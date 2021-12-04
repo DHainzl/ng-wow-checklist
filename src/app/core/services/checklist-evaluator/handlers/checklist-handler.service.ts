@@ -21,6 +21,8 @@ import { ChecklistSanctumTalentHandler } from './sanctum-talent-handler';
 import { ChecklistSanctumFollowerHandler } from './sanctum-follower-handler';
 import { ChecklistSanctumFollowerAnyHandler } from './sanctum-follower-any-handler';
 import { ChecklistSanctumConduitHandler } from './sanctum-conduit-handler';
+import { ChecklistSanctumMissionsCountHandler } from './sanctum-missions-count.handler';
+import { ChecklistSanctumLegendaryHandler } from './sanctum-legendary.handler';
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistHandlerService {
@@ -41,6 +43,8 @@ export class ChecklistHandlerService {
         'sanctum-follower': ChecklistSanctumFollowerHandler,
         'sanctum-follower-any': ChecklistSanctumFollowerAnyHandler,
         'sanctum-conduit': ChecklistSanctumConduitHandler,
+        'sanctum-missions-count': ChecklistSanctumMissionsCountHandler,
+        'sanctum-legendary': ChecklistSanctumLegendaryHandler,
     };
 
     private handlerInjector: Injector;
