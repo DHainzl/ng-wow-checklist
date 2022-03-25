@@ -53,10 +53,23 @@ const data: Checklist = {
         { key: 'chainsofdomination-story', name: 'Chains of Domination', type: 'achievement', id: 14961 },
         { key: 'chainsofdomination-boxofmanythings', name: 'Box of Many Things', type: 'quest', id: 64216 },
         { key: 'chainsofdomination-tazavesh-intro', name: 'The Veiled Market', type: 'quest', id: 63985 },
+        { key: 'chainsofdomination-tazavesh', name: 'Tazavesh: Raiders of the Lost Artifact', type: 'quest', id: 63986 },
         { key: 'chainsofdomination-establishing-the-archive', name: 'Establishing the Archive', type: 'quest', id: 63738 },
         { key: 'chainsofdomination-they-could-be-anyone', name: 'They Could Be Anyone', type: 'quest', id: 63763 },
         { key: 'chainsofdomination-reliquary-restoration', name: 'Reliquary Restoration', type: 'achievement', id: 15066 },
         { key: 'chainsofdomination-a-unified-effort', name: 'A Unified Effort', type: 'quest', id: 64106 },
+
+        { key: 'eternitysend', name: 'Eternity\'s End', type: 'header', level: 0 },
+        { key: 'eternitysend-story', name: 'Eternity\'s End', type: 'achievement', id: 15259 },
+        { key: 'eternitysend-epilogue', name: 'Epilogue - Judgement', type: 'quest', id: 0 },
+        { key: 'eternitysend-sidequests', name: 'Path to Enlightenment', type: 'achievement', id: 15515 },
+        { key: 'eternitysend-cyphers', name: 'Cyphers of the First Ones', type: 'achievement', id: 15402 },
+        { key: 'eternitysend-jirotohero', name: 'Jiro to Hero', type: 'quest', id: 65219 },
+        { key: 'eternitysend-patientbufonid', name: 'The Patient Bufonid', type: 'quest', id: 65732 },
+        { key: 'eternitysend-reapwhatwehavesown', name: 'Reap what we have sown', type: 'quest', id: 64648 },
+        { key: 'eternitysend-protoform-pets', name: 'Protoform Synthesis - Pets', type: 'quest', id: 65419 },
+        { key: 'eternitysend-protoform-mounts', name: 'Protoform Synthesis - Mounts', type: 'quest', id: 65427 },
+        { key: 'eternitysend-jailersgauntlet', name: 'The Jailer\'s Gauntlet', type: 'quest', id: 65625 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', level: 0 },
         { key: 'reputation-ascended', type: 'reputation', name: 'The Ascended', id: 2407, max: 6 },
@@ -66,6 +79,7 @@ const data: Checklist = {
         { key: 'reputation-venari', type: 'reputation', name: 'Ve\'nari', id: 2432, max: 4 },
         { key: 'reputation-deaths-advance', type: 'reputation', name: 'Death\'s Advance', id: 2470, max: 6 },
         { key: 'reputation-archivists-codex', type: 'reputation', name: 'The Archivists Codex', id: 2472, max: 4 },
+        { key: 'reputation-enlightened', type: 'reputation', name: 'The Enlightened', id: 2478, max: 6 },
 
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
@@ -713,6 +727,7 @@ const data: Checklist = {
         { key: 'sanctum-legendaries-246', name: 'Nature\'s Fury', type: 'sanctum-legendary', covenant: 'Night Fae', classes: [ 'Warrior' ] },
         { key: 'sanctum-legendaries-247', name: 'Glory', type: 'sanctum-legendary', covenant: 'Necrolord', classes: [ 'Warrior' ] },
         { key: 'sanctum-legendaries-248', name: 'Sinful Surge', type: 'sanctum-legendary', covenant: 'Venthyr', classes: [ 'Warrior' ] },
+        { key: 'sanctum-legendaries-249', name: 'Unity', type: 'sanctum-legendary' },
     ],
 };
 
