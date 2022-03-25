@@ -5,7 +5,7 @@ import { ChecklistItemSanctumConduit } from 'src/app/core/services/checklist/che
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistSanctumConduitHandler extends ChecklistHandler<ChecklistItemSanctumConduit> {
-    private static readonly DESIRED_LEVEL = 226;
+    private static readonly DESIRED_LEVEL = 239;
 
     subscription: Subscription = new Subscription();
 
