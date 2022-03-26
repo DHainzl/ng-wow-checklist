@@ -53,7 +53,6 @@ const data: Checklist = {
         { key: 'chainsofdomination-story', name: 'Chains of Domination', type: 'achievement', id: 14961 },
         { key: 'chainsofdomination-boxofmanythings', name: 'Box of Many Things', type: 'quest', id: 64216 },
         { key: 'chainsofdomination-tazavesh-intro', name: 'The Veiled Market', type: 'quest', id: 63985 },
-        { key: 'chainsofdomination-tazavesh', name: 'Tazavesh: Raiders of the Lost Artifact', type: 'quest', id: 63986 },
         { key: 'chainsofdomination-establishing-the-archive', name: 'Establishing the Archive', type: 'quest', id: 63738 },
         { key: 'chainsofdomination-they-could-be-anyone', name: 'They Could Be Anyone', type: 'quest', id: 63763 },
         { key: 'chainsofdomination-reliquary-restoration', name: 'Reliquary Restoration', type: 'achievement', id: 15066 },
