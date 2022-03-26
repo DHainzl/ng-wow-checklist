@@ -8,17 +8,13 @@ import { CharactersComponent } from './characters.component';
 
 @NgModule({
     imports: [
-        RouterModule.forChild([ { path: '', component: CharactersComponent } ]),
-
+        RouterModule.forChild([{ path: '', component: CharactersComponent }]),
         CommonModule,
         SharedModule,
-    ],
-    entryComponents: [
-        AddCharacterComponent,
     ],
     declarations: [
         CharactersComponent,
         AddCharacterComponent,
-    ],
+    ]
 })
 export class CharactersModule {}
