@@ -1,6 +1,7 @@
+@use '~@angular/material' as mat;
 @import './variables';
 
-@include mat-core();
+@include mat.core();
 
-$material-theme: mat-dark-theme($primary-palette, $accent-palette);
-@include angular-material-theme($material-theme);
+$material-theme: mat.define-dark-theme($primary-palette, $accent-palette);
+@include mat.all-component-themes($material-theme);

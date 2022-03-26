@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 mat-form-field {
     width: 100%;
@@ -9,7 +9,7 @@ textarea {
 }
 
 .error-alert {
-    background-color: mat-color(mat-palette($mat-red, 300));;
+    background-color: mat.get-color-from-palette(mat.define-palette(mat.$red-palette, 300));;
     text-align: center;
     padding: 4px 10px;
     margin-top: 10px;

@@ -1,5 +1,5 @@
+@use '~@angular/material' as mat;
 @import '../../../styles/variables';
-@import '~@angular/material/theming';
 
 :host {
     display: block;
@@ -26,7 +26,7 @@ table {
 }
 
 .completion-alert {
-    background-color: mat-color(mat-palette($mat-light-green, 300));;
+    background-color: mat.get-color-from-palette(mat.define-palette(mat.$light-green-palette, 300));;
     text-align: center;
     padding: 12px 10px;
     margin-bottom: 20px;

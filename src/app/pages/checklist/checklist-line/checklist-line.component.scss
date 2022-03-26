@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 ::ng-deep h2, ::ng-deep h3, ::ng-deep h4 {
     font-weight: 500 !important;
@@ -11,13 +11,13 @@
     display: flex;
 
     &.incomplete {
-        background-color: mat-color(mat-palette($mat-orange, 200));
+        background-color: mat.get-color-from-palette(mat.define-palette(mat.$orange-palette, 200));
     }
     &.complete {
-        background-color: mat-color(mat-palette($mat-light-green, 300));
+        background-color: mat.get-color-from-palette(mat.define-palette(mat.$light-green-palette, 300));
     }
     &.subitem {
-        background-color: mat-color(mat-palette($mat-indigo, 200));
+        background-color: mat.get-color-from-palette(mat.define-palette(mat.$indigo-palette, 200));
     }
 
     > div {
