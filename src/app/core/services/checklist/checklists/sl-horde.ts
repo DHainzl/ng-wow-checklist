@@ -60,7 +60,7 @@ const data: Checklist = {
 
         { key: 'eternitysend', name: 'Eternity\'s End', type: 'header', level: 0 },
         { key: 'eternitysend-story', name: 'Eternity\'s End', type: 'achievement', id: 15259 },
-        { key: 'eternitysend-epilogue', name: 'Epilogue - Judgement', type: 'quest', id: 0 },
+        { key: 'eternitysend-epilogue', name: 'Epilogue - Judgement', type: 'quest', id: 65297 },
         { key: 'eternitysend-sidequests', name: 'Path to Enlightenment', type: 'achievement', id: 15515 },
         { key: 'eternitysend-cyphers', name: 'Cyphers of the First Ones', type: 'achievement', id: 15402 },
         { key: 'eternitysend-jirotohero', name: 'Jiro to Hero', type: 'quest', id: 65219 },
