@@ -9,7 +9,7 @@ export type ScreenSize = 's' | 'm' | 'l' | 'xl';
 export class ResponsiveService {
     sizeChanged: BehaviorSubject<ScreenSize> = new BehaviorSubject(this.getScreenSize());
 
-    private onResize: Subject<never> = new Subject();
+    private onResize: Subject<void> = new Subject();
 
     constructor(
          private eventManager: EventManager,
