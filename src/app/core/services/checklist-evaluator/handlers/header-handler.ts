@@ -1,11 +1,14 @@
 import { combineLatest, from, Observable, of, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { ChecklistItem, ChecklistItemHeader } from 'src/app/core/services/checklist/checklist.interface';
 
 import { ChecklistHandler } from './_handler';
 import { CompletionStatus } from './_handler.interface';
 
 export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader> {
+    private numItems: number = 0;
+    private completeItems: number = 0;
+
     subscription: Subscription = new Subscription();
 
     handlerInit(): void {
@@ -16,15 +19,23 @@ export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader
         }
 
         this._label$.next(this.getHeader());
-        this.subscription = combineLatest(this.getSubitemSubscriptions(subitems)).subscribe(allStatus => {
-            const isLoading = allStatus.includes('loading');
+        
+        this.subscription = combineLatest(this.getSubitemSubscriptions(subitems))
+        .subscribe(allStatus => {
+            const shownStatus = allStatus.filter(s => s.shown).map(s => s.completed);
+        
+            const isLoading = shownStatus.includes('loading');
             if (isLoading) {
                 this._completed$.next('loading');
                 return;
             }
 
-            const isCompleted = allStatus.every(c => c === 'complete');
+            this.numItems = shownStatus.length;
+            this.completeItems = shownStatus.filter(c => c === 'complete').length;
+            const isCompleted = shownStatus.every(c => c === 'complete');
+
             this._completed$.next(isCompleted ? 'complete' : 'incomplete');
+            this._label$.next(this.getHeader());
         });
     }
 
@@ -34,22 +45,17 @@ export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader
 
     private getHeader(): string {
         const tag = 'h' + (this.item.level + 2);
-        return `<${tag}>${this.item.name}</${tag}>`;
+        return `<${tag}>${this.item.name} (${this.completeItems} / ${this.numItems})</${tag}>`;
     }
 
-    private getSubitemSubscriptions(subitems: ChecklistItem[]): Observable<CompletionStatus>[] {
-        return subitems.map(subitem => {
-            return combineLatest([ subitem.handler.shown, subitem.handler.completed ]).pipe(
-                map(([ shown, completed ]) => {
-                    if (!shown) {
-                        // If it's not shown we assume completed to not taint summary
-                        const status: CompletionStatus = 'complete';
-                        return status;
-                    }
-                    return completed;
-                }),
-            );
-        });
+    private getSubitemSubscriptions(subitems: ChecklistItem[]): Observable<{ shown: boolean, completed: CompletionStatus }>[] {
+        return subitems
+            .filter(subitem => subitem.type !== 'header')
+            .map(subitem => {
+                return combineLatest([ subitem.handler.shown, subitem.handler.completed ]).pipe(
+                    map(([ shown, completed ]) => ({ shown, completed })),
+                );
+            });
     }
 
     private findSubitems(): ChecklistItem[] {
