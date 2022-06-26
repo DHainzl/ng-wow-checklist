@@ -70,6 +70,11 @@ const data: Checklist = {
         { key: 'eternitysend-protoform-mounts', name: 'Protoform Synthesis - Mounts', type: 'quest', id: 65427 },
         { key: 'eternitysend-jailersgauntlet', name: 'The Jailer\'s Gauntlet', type: 'quest', id: 65625 },
 
+        { key: 'sl-epilogue', name : 'Shadowlands Epilogue', type: 'header', level: 0 },
+        { key: 'sl-epilogue-silentvigil', name: 'Silent Vigil', type: 'quest', id: 66170 },
+        { key: 'sl-epilogue-lordaeron', name: 'Report to Greymane', type: 'quest', id: 65669 },
+        { key: 'sl-epilogue-giftofhope', name: 'A Gift of Hope', type: 'quest', id: 66243 },
+
         { key: 'reputation', name: 'Reputation', type: 'header', level: 0 },
         { key: 'reputation-ascended', type: 'reputation', name: 'The Ascended', id: 2407, max: 6 },
         { key: 'reputation-undyingarmy', type: 'reputation', name: 'The Undying Army', id: 2410, max: 6 },
