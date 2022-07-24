@@ -552,7 +552,7 @@ const data: Checklist = {
         { key: 'sanctum-legendaries-67', name: 'Unbridled Swarm', type: 'sanctum-legendary', covenant: 'Necrolord', classes: [ 'Druid' ] },
         { key: 'sanctum-legendaries-68', name: 'Sinful Hysteria', type: 'sanctum-legendary', covenant: 'Venthyr', classes: [ 'Druid' ] },
         { key: 'sanctum-legendaries-69', name: 'Call of the Wild', type: 'sanctum-legendary', classes: [ 'Hunter' ] },
-        { key: 'sanctum-legendaries-70', name: 'Nesingwary\'s Trapping Apparatus', type: 'sanctum-legendary', classes: [ 'Hunter' ] },
+        { key: 'sanctum-legendaries-70', name: 'Nessingwary\'s Trapping Apparatus', type: 'sanctum-legendary', classes: [ 'Hunter' ] },
         { key: 'sanctum-legendaries-71', name: 'Soulforge Embers', type: 'sanctum-legendary', classes: [ 'Hunter' ] },
         { key: 'sanctum-legendaries-72', name: 'Craven Strategem', type: 'sanctum-legendary', classes: [ 'Hunter' ] },
         { key: 'sanctum-legendaries-73', name: 'Dire Command', type: 'sanctum-legendary', classes: [ 'Hunter' ] },
