@@ -15,6 +15,8 @@ import { CharacterDataForList } from '../characters.component';
     styleUrls: [ './add-character.component.scss' ],
 })
 export class AddCharacterComponent implements OnInit, OnDestroy {
+    private static readonly DEFAULT_CHECKLIST = 'dragonflight';
+
     form: FormGroup = new FormGroup({
         region: new FormControl('us', [ Validators.required ]),
         character: new FormControl('', [ Validators.required ]),
@@ -55,26 +57,21 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
         const selected: BattleNetCharacterListEntry = this.form.get('character').value;
         if (!selected) return this.close(false);
 
-        of(selected.faction.type).pipe(
-            flatMap(faction => {
-                if (faction === 'ALLIANCE') return of('sl-alliance');
-                if (faction === 'HORDE') return of('sl-horde');
-                return throwError('Unsupported faction ' + faction);
-            }),
-            map(checklistId => ({
-                region: this.form.get('region').value,
-                name: selected.name.toLowerCase(),
-                realm: selected.realm.slug,
-                checklistId,
-                overrides: {},
-            })),
-            flatMap(character => this.characterStoreService.addCharacter(character)),
-        ).subscribe(() => {
+        const character = {
+            region: this.form.get('region').value,
+            name: selected.name.toLowerCase(),
+            realm: selected.realm.slug,
+            checklistId: AddCharacterComponent.DEFAULT_CHECKLIST,
+            overrides: {},
+        };
+
+        try {
+            this.characterStoreService.addCharacter(character);
             this.close(true);
-        }, error => {
+        } catch (error) {
             // TODO Better error handling ...
             alert('Could not add character: ' + error);
-        });
+        }
     }
 
     getCharacterLabel(): string {
