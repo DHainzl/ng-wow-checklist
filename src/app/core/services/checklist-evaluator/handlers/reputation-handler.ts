@@ -33,7 +33,7 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
         
         const max = this.getMax(this.item, overrides);
         const reputation = this.getReputation(reputations);
-        this._label$.next(this.getLabel(this.item.id, max));
+        this._label$.next(this.getLabel(max));
 
         if (!reputation) {
             this._completed$.next('incomplete');
@@ -41,7 +41,6 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
         }
 
         const isCompleted = reputation.standing.tier >= max;
-
 
         if (isCompleted) {
             this._completed$.next('complete');
@@ -56,8 +55,8 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
 
     }
 
-    private getLabel(factionId: number, max: number): string {
-        const tiers = this.tiersService.getTiers(factionId);
+    private getLabel(max: number): string {
+        const tiers = this.tiersService.getTiers(this.item.id);
 
         return `${this.item.name}: ${tiers.tiers[max].name}`;
     }

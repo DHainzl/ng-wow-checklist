@@ -19,10 +19,15 @@
                         <span class="progress-bar">
                             <ng-container  *ngIf="!result.loading; else loadingDivSmall">
                                 <span class="progress-level" [style.width]="result.profile.level | barPercentage:MAX_LEVEL"></span>
-                                <span class="covenant-level covenant-{{ result.profile.covenant_progress?.chosen_covenant.name }}" [style.width]="result.profile.covenant_progress?.renown_level | barPercentage:MAX_RENOWN"></span>
+                                <!--
+                                    <span class="progress-secondary" [style.width]="result.profile.covenant_progress?.renown_level | barPercentage:MAX_SECONDARY"></span>
+                                -->
                                 <span class="progress-name">
-                                    <span *ngIf="result.profile.level < MAX_LEVEL">Level {{ result.profile.level }}</span>
-                                    <span *ngIf="result.profile.level == MAX_LEVEL">Renown {{ result.profile.covenant_progress?.renown_level }}</span>
+                                    <span>Level {{ result.profile.level }}</span>
+                                    <!--
+                                        <span *ngIf="result.profile.level < MAX_LEVEL">Level {{ result.profile.level }}</span>
+                                        <span *ngIf="result.profile.level == MAX_LEVEL">Renown {{ result.profile.covenant_progress?.renown_level }}</span>
+                                    -->
                                 </span>
                             </ng-container>
                         </span>        

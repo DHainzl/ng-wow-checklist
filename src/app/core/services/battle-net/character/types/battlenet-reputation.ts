@@ -16,8 +16,9 @@ export interface BattleNetCharacterReputationStanding {
     name: string;
     value: number;
     max: number;
-    tier: number;
+    tier?: number;
     raw: number;
+    renown_level?: number;
 }
 
 export interface BattleNetCharacterReputationParagon {

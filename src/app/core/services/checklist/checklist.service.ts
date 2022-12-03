@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 
 import { Checklist } from './checklist.interface';
-import { data as bfaAllianceChecklist } from './checklists/bfa-alliance';
-import { data as bfaHordeChecklist } from './checklists/bfa-horde';
-import { data as slAllianceChecklist } from './checklists/sl-alliance';
-import { data as slHordeChecklist } from './checklists/sl-horde';
+import { data as bfaAllianceChecklist } from './checklists/08-bfa-alliance';
+import { data as bfaHordeChecklist } from './checklists/08-bfa-horde';
+import { data as slAllianceChecklist } from './checklists/09-sl-alliance';
+import { data as slHordeChecklist } from './checklists/09-sl-horde';
+import { data as dragonflightChecklist } from './checklists/10-dragonflight';
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistService {
@@ -14,6 +15,7 @@ export class ChecklistService {
         'bfa-horde': bfaHordeChecklist,
         'sl-alliance': slAllianceChecklist,
         'sl-horde': slHordeChecklist,
+        'dragonflight': dragonflightChecklist,
     };
 
     getChecklist(id: string): Observable<Checklist> {
