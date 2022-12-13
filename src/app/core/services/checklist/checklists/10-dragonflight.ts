@@ -24,13 +24,14 @@ const data: Checklist = {
         { key: 'story', name: 'Story Quests', type: 'header', level: 0 },
 
         { key: 'story-dragonflight', name: 'Dragonflight', type: 'header', level: 1 },
-        { key: 'story-dragonflight-emissary', name: 'Dragon Isles Emissary', type: 'quest', id: 0 },            // TODO
+        { key: 'story-dragonflight-emissary', name: 'Dragon Isles Emissary', type: 'quest', id: 72585 },
         { key: 'story-dragonflight-motheroathstone', name: 'The Mother Oathstone', type: 'quest', id: 0 },      // TODO
-        { key: 'story-dragonflight-chieftainsduty', name: 'The Chieftain\'s Duty', type: 'quest', id: 0 },      // TODO
-        { key: 'story-dragonflight-mysterysealed', name: 'A Mystery, Sealed', type: 'quest', id: 0 },           // TODO
-        { key: 'story-dragonflight-silverpurpose', name: 'The Silver Purpose', type: 'quest', id: 0 },          // TODO
-        { key: 'story-dragonflight-titanhalls', name: 'In the Halls of Titans', type: 'quest', id: 0 },         // TODO
-        { key: 'story-dragonflight-gardenofsecrets', name: 'Garden of Secrets', type: 'quest', id: 0 },         // TODO
+        { key: 'story-dragonflight-chieftainsduty', name: 'The Chieftain\'s Duty', type: 'quest', id: 66444 },
+        { key: 'story-dragonflight-mysterysealed', name: 'A Mystery, Sealed', type: 'quest', id: 66128 },
+        { key: 'story-dragonflight-silverpurpose', name: 'The Silver Purpose', type: 'quest', id: 67084 },
+        { key: 'story-dragonflight-titanhalls', name: 'In the Halls of Titans', type: 'quest', id: 66547 },
+        { key: 'story-dragonflight-gardenofsecrets', name: 'Garden of Secrets', type: 'quest', id: 66191 },
+        { key: 'story-dragonflight-sparkofingenuity', name: 'The Spark of Ingenuity', type: 'quest', id: 70900 },   // Probably?
 
         { key: 'reputation', name: 'Reputation', type: 'header', level: 0 },
         { key: 'reputation-dragonscaleexpedition', type: 'reputation-renown', name: 'Dragon Scale Expedition', id: 2507, max: 25 },
