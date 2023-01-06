@@ -25,7 +25,7 @@ const data: Checklist = {
 
         { key: 'story-dragonflight', name: 'Dragonflight', type: 'header', level: 1 },
         { key: 'story-dragonflight-emissary', name: 'Dragon Isles Emissary', type: 'quest', id: 72585 },
-        { key: 'story-dragonflight-motheroathstone', name: 'The Mother Oathstone', type: 'quest', id: 0 },      // TODO
+        { key: 'story-dragonflight-motheroathstone', name: 'The Mother Oathstone', type: 'quest', id: 67073 },
         { key: 'story-dragonflight-chieftainsduty', name: 'The Chieftain\'s Duty', type: 'quest', id: 66444 },
         { key: 'story-dragonflight-mysterysealed', name: 'A Mystery, Sealed', type: 'quest', id: 66128 },
         { key: 'story-dragonflight-silverpurpose', name: 'The Silver Purpose', type: 'quest', id: 67084 },
