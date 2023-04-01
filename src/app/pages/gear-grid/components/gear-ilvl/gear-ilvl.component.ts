@@ -9,7 +9,7 @@ import { BattleNetEquipmentItem } from "src/app/core/services/battle-net/charact
 export class GearIlvlComponent implements OnChanges {
     readonly GEAR_LOW = 385;     // Forbidden Reach Catchup ilvl base
     readonly GEAR_MID = 395;     // Forbidden Reach Catchup ilvl upgraded 
-    readonly GEAR_HIGH = 405;    // Timewalking / HC upgrade
+    readonly GEAR_HIGH = 402;    // Timewalking / HC upgrade
 
     @Input()
     equipment: BattleNetEquipmentItem[];
