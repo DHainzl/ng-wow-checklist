@@ -19,6 +19,11 @@ const routes: Routes = [
         canActivate: [ IsLoggedInGuard ],
     },
     {
+        path: 'gear-grid',
+        loadChildren: () => import('./pages/gear-grid/gear-grid.module').then(m => m.GearGridModule),
+        canActivate: [ IsLoggedInGuard ],
+    },
+    {
         path: 'import',
         loadChildren: () => import('./pages/import/import.module').then(m => m.ImportModule),
     },

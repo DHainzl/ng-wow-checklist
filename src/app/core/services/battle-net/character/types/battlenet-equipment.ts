@@ -39,6 +39,12 @@ export interface BattleNetEquipmentItem {
         };
         value: number;
     };
+    sockets: {
+        socket_type: TypeName;
+        item: BattleNetNamedRef;
+        display_string: string;
+        media: BattleNetRef;
+    }[];
     slot: TypeName;
     stats: {
         display_string: string;

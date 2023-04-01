@@ -5,6 +5,8 @@ import { BarPercentagePipe } from './bar-percentage.pipe';
 import { HoALevelPipe } from './hoa-level.pipe';
 import { MediaAssetPipe } from './media-asset.pipe';
 import { SafeBackgroundImagePipe } from './safe-background-image.pipe';
+import { IconPipe } from './icon.pipe';
+import { WowheadItemPipe } from './wowhead-item.pipe';
 
 @NgModule({
     exports: [
@@ -13,6 +15,8 @@ import { SafeBackgroundImagePipe } from './safe-background-image.pipe';
         BarPercentagePipe,
         MediaAssetPipe,
         AddTitlePipe,
+        IconPipe,
+        WowheadItemPipe,
     ],
     declarations: [
         HoALevelPipe,
@@ -20,6 +24,8 @@ import { SafeBackgroundImagePipe } from './safe-background-image.pipe';
         BarPercentagePipe,
         MediaAssetPipe,
         AddTitlePipe,
+        IconPipe,
+        WowheadItemPipe,
     ],
 })
 export class PipeModule {

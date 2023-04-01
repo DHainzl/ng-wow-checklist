@@ -1,0 +1,20 @@
+.gg-ilvl {
+    display: block;
+    width: 35px;
+    margin-right: 2px;
+    line-height: 40px;
+    text-align: center;
+
+    &.gg-red {
+        color: red;
+    }
+    &.gg-orange {
+        color: orange;
+    }
+    &.gg-yellow {
+        color: yellow;
+    }
+    &.gg-green {
+        color: green;
+    }
+}
