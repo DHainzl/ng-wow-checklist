@@ -55,4 +55,7 @@ export interface CharacterIngameData {
         }
     };
     missions: number;
+    quests?: {
+        [ questId: string ]: boolean;
+    };
 }
