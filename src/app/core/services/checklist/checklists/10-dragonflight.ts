@@ -7,15 +7,19 @@ const data: Checklist = {
 
         { key: 'leveling-wakingshores', name: 'The Waking Shores', type: 'header', level: 1 },
         { key: 'leveling-wakingshores-wakinghope', name: 'Waking Hope', type: 'achievement', id: 16334 },
+        { key: 'leveling-wakingshores-sojourner', name: 'Sojourner of the Waking Shores', type: 'achievement', id: 16401 },
 
         { key: 'leveling-ohnahranplains', name: 'Ohn\'ahran Plains', type: 'header', level: 1 },
         { key: 'leveling-ohnahranplains-ohnaroll', name: 'Ohn\'a\'Roll', type: 'achievement', id: 15394 },
+        { key: 'leveling-ohnahranplains-sojourner', name: 'Sojourner of the Oh\'nahran Plains', type: 'achievement', id: 16405 },
 
         { key: 'leveling-azurespan', name: 'The Azure Span', type: 'header', level: 1 },
         { key: 'leveling-azurespan-azurespanner', name: 'Azure Spanner', type: 'achievement', id: 16336 },
+        { key: 'leveling-azurespan-sojourner', name: 'Sojourner of the Azure Span', type: 'achievement', id: 16428 },
 
         { key: 'leveling-thaldraszus', name: 'Thaldraszus', type: 'header', level: 1 },
         { key: 'leveling-thaldraszus-spellit', name: 'Just Don\' Ask Me to Spell It', type: 'achievement', id: 16363 },
+        { key: 'leveling-thaldraszus-sojourner', name: 'Sojourner of Thaldraszus', type: 'achievement', id: 16398 },
 
         { key: 'leveling-general', name: 'General', type: 'header', level: 1 },
         { key: 'leveling-general-60', name: 'Level 60', type: 'level', max: 60 },
@@ -31,13 +35,37 @@ const data: Checklist = {
         { key: 'story-dragonflight-silverpurpose', name: 'The Silver Purpose', type: 'quest', id: 67084 },
         { key: 'story-dragonflight-titanhalls', name: 'In the Halls of Titans', type: 'quest', id: 72752 },
         { key: 'story-dragonflight-gardenofsecrets', name: 'Garden of Secrets', type: 'quest', id: 72759 },
+        { key: 'story-dragonflight-thedreamer', name: 'The Dreamer', type: 'quest', id: 72758 },
         { key: 'story-dragonflight-sparkofingenuity', name: 'The Spark of Ingenuity', type: 'quest', id: 70900 },
+        { key: 'story-dragonflight-baine', name: 'Baine\'s Rescue Mission', type: 'quest', id: 75258 },
+        { key: 'story-dragonflight-silvermettle', name: 'Silver Mettle', type: 'quest', id: 72444 },
+        { key: 'story-dragonflight-causewithoutarebel', name: 'Cause Without a Rebel', type: 'quest', id: 75230 },
+
+        { key: 'story-embersofneltharion', name: 'Embers of Neltharion', type: 'header', level: 1 },
+        { key: 'story-embersofneltharion-acrechedivided', name: 'A Creche Divided', type: 'quest', id: 73156 },
+        { key: 'story-embersofneltharion-breakingground', name: 'Breaking Ground', type: 'quest', id: 75644 },
+        { key: 'story-embersofneltharion-sunderedlegacy', name: 'Sundered Legacy', type: 'quest', id: 72965 },
+        { key: 'story-embersofneltharion-ancientbargain', name: 'The Ancient Bargain', type: 'quest', id: 75145 },
+        { key: 'story-embersofneltharion-inheritedsin', name: 'Inherited Sin', type: 'quest', id: 74563 },
+        { key: 'story-embersofneltharion-inevitableconfrontation', name: 'Inevitable Confrontation', type: 'quest', id: 72930 },
+        { key: 'story-embersofneltharion-aflameextinguished', name: 'A Flame, Extinguished', type: 'quest', id: 75417 },
+
+        { key: 'story-bluedragons', name: 'Blue Dragonflight Reunion', type: 'header', level: 1 },
+        { key: 'story-bluedragons-cleanup', name: 'Clean up the Veiled Ossuary', type: 'quest', id: 75023 },
+        { key: 'story-bluedragons-azuregos', name: 'Recruit Azuregos', type: 'quest', id: 72938 },
+        { key: 'story-bluedragons-lanigosa', name: 'Recruit Lanigosa', type: 'quest', id: 74783 },
+        { key: 'story-bluedragons-haleh', name: 'Recruit Haleh', type: 'quest', id: 74356 },
+        { key: 'story-bluedragons-surigosa', name: 'Recruit Surigosa', type: 'quest', id: 74335 },
+        { key: 'story-bluedragons-kirygosa', name: 'Recruit Kirygosa', type: 'quest', id: 74291 },
+        { key: 'story-bluedragons-zeros', name: 'Recruit Zeros', type: 'quest', id: 73181 },
+        { key: 'story-bluedragons-reunited', name: 'Reunited Again', type: 'quest', id: 72951 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', level: 0 },
         { key: 'reputation-dragonscaleexpedition', type: 'reputation-renown', name: 'Dragon Scale Expedition', id: 2507, max: 25 },
         { key: 'reputation-maruukcentaur', type: 'reputation-renown', name: 'Maruuk Centaur', id: 2503, max: 25 },
         { key: 'reputation-iskaaratuskarr', type: 'reputation-renown', name: 'Iskaara Tuskarr', id: 2511, max: 30 },
         { key: 'reputation-valdrakkenaccord', type: 'reputation-renown', name: 'Valdraken Accord', id: 2510, max: 30 },
+        { key: 'reputation-loammniffen', type: 'reputation-renown', name: 'Loamm Niffen', id: 2564, max: 20 },
 
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
