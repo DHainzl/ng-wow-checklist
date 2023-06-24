@@ -65,15 +65,10 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
             overrides: {},
         };
 
-        try {
-            this.characterStoreService.addCharacter(character).subscribe({
-                next: () => this.close(),
-                error: error => alert('Could not add character: ' + error),
-            });
-        } catch (error) {
-            // TODO Better error handling ...
-            
-        }
+        this.characterStoreService.addCharacter(character).subscribe({
+            next: () => this.close(),
+            error: error => alert('Could not add character: ' + error),
+        });
     }
 
     getCharacterLabel(): string {
