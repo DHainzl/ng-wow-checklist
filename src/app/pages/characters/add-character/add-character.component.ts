@@ -66,11 +66,13 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
         };
 
         try {
-            this.characterStoreService.addCharacter(character)
-                .subscribe(() => this.close());
+            this.characterStoreService.addCharacter(character).subscribe({
+                next: () => this.close(),
+                error: error => alert('Could not add character: ' + error),
+            });
         } catch (error) {
             // TODO Better error handling ...
-            alert('Could not add character: ' + error);
+            
         }
     }
 
