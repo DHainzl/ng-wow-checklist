@@ -37,7 +37,7 @@ const data: Checklist = {
         { key: 'story-dragonflight-gardenofsecrets', name: 'Garden of Secrets', type: 'quest', id: 72759 },
         { key: 'story-dragonflight-thedreamer', name: 'The Dreamer', type: 'quest', id: 72758 },
         { key: 'story-dragonflight-sparkofingenuity', name: 'The Spark of Ingenuity', type: 'quest', id: 70900 },
-        { key: 'story-dragonflight-baine', name: 'Baine\'s Rescue Mission', type: 'quest', id: 75258 },
+        { key: 'story-dragonflight-baine', name: 'A New Beginning', type: 'quest', id: 75258 },
         { key: 'story-dragonflight-silvermettle', name: 'Silver Mettle', type: 'quest', id: 72444 },
         { key: 'story-dragonflight-causewithoutarebel', name: 'Cause Without a Rebel', type: 'quest', id: 75230 },
 
