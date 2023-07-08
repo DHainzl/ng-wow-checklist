@@ -18,6 +18,7 @@ export class GearIlvlComponent implements OnChanges {
     slot: string;
 
     item: BattleNetEquipmentItem | undefined;
+    noNavHref = `${window?.location.href}#`;            // Necessary for wowhead tooltips
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.slot || changes.equipment) {

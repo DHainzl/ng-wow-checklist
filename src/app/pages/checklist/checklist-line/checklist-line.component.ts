@@ -25,6 +25,7 @@ export class ChecklistLineComponent implements OnInit, OnDestroy {
     subitems: string[];
     wowheadId: string;
     indention: number;
+    noNavHref = `${window?.location.href}#`;            // Necessary for wowhead tooltips
 
     private subscriptions: Subscription = new Subscription();
 

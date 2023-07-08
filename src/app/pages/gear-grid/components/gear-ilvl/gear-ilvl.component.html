@@ -4,4 +4,5 @@
     [class.gg-yellow]="item?.level.value >= GEAR_MID && item?.level.value < GEAR_HIGH"
     [class.gg-green]="item?.level.value >= GEAR_HIGH"
     [attr.data-wowhead]="item | wowheadItem"
+    [href]="noNavHref"
 >{{ item?.level.value }}</a>
