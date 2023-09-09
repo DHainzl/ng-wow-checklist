@@ -40,6 +40,9 @@ const data: Checklist = {
         { key: 'story-dragonflight-baine', name: 'A New Beginning', type: 'quest', id: 75258 },
         { key: 'story-dragonflight-silvermettle', name: 'Silver Mettle', type: 'quest', id: 72444 },
         { key: 'story-dragonflight-causewithoutarebel', name: 'Cause Without a Rebel', type: 'quest', id: 75230 },
+        { key: 'story-dragonflight-infinityandbeyond', name: 'Infinity and Beyond', type: 'quest', id: 76422 },
+        { key: 'story-dragonflight-onnewwings', name: 'On New Wings', type: 'quest', id: 76597 },
+        { key: 'story-dragonflight-dislocateddisc', name: 'Dislocated Disc Located', type: 'quest', id: 75638 },
 
         { key: 'story-embersofneltharion', name: 'Embers of Neltharion', type: 'header', level: 1 },
         { key: 'story-embersofneltharion-acrechedivided', name: 'A Creche Divided', type: 'quest', id: 73156 },
@@ -49,6 +52,9 @@ const data: Checklist = {
         { key: 'story-embersofneltharion-inheritedsin', name: 'Inherited Sin', type: 'quest', id: 74563 },
         { key: 'story-embersofneltharion-inevitableconfrontation', name: 'Inevitable Confrontation', type: 'quest', id: 72930 },
         { key: 'story-embersofneltharion-aflameextinguished', name: 'A Flame, Extinguished', type: 'quest', id: 75417 },
+
+        { key: 'story-guardiansofthedream', name: 'Guardians of the Dream', type: 'header', level: 1 },
+        { key: 'story-guardiansofthedream-coalition-of-flames', name: 'The Coalition of Flames', type: 'quest', id: 75923 },
 
         { key: 'story-bluedragons', name: 'Blue Dragonflight Reunion', type: 'header', level: 1 },
         { key: 'story-bluedragons-cleanup', name: 'Clean up the Veiled Ossuary', type: 'quest', id: 75023 },
@@ -61,7 +67,7 @@ const data: Checklist = {
         { key: 'story-bluedragons-reunited', name: 'Reunited Again', type: 'quest', id: 72951 },
 
         { key: 'reputation', name: 'Reputation', type: 'header', level: 0 },
-        { key: 'reputation-dragonscaleexpedition', type: 'reputation-renown', name: 'Dragon Scale Expedition', id: 2507, max: 25 },
+        { key: 'reputation-dragonscaleexpedition', type: 'reputation-renown', name: 'Dragonscale Expedition', id: 2507, max: 25 },
         { key: 'reputation-maruukcentaur', type: 'reputation-renown', name: 'Maruuk Centaur', id: 2503, max: 25 },
         { key: 'reputation-iskaaratuskarr', type: 'reputation-renown', name: 'Iskaara Tuskarr', id: 2511, max: 30 },
         { key: 'reputation-valdrakkenaccord', type: 'reputation-renown', name: 'Valdraken Accord', id: 2510, max: 30 },
