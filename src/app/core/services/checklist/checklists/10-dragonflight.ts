@@ -89,6 +89,14 @@ const data: Checklist = {
 
         { key: 'dragonisles-cooking', type: 'profession-secondary', name: 'Dragon Isles Cooking', id: 2824 },
         { key: 'dragonisles-fishing', type: 'profession-secondary', name: 'Dragon Isles Fishing', id: 2826 },
+
+        { key: 'exploration', name: 'Exploration', type: 'header', level: 0 },
+        
+        { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore the Waking Shores', id: 16400 },
+        { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore the Ohn\'ahran Plains', id: 16457 },
+        { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore the Azure Span', id: 16460 },
+        { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore Thaldraszus', id: 16518 },
+        { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore Zaralekk Cavern', id: 17766 },
     ],
 };
 
