@@ -25,7 +25,6 @@
                         {{ profile.race.name }}
                         <span class="cc cc-{{ profile.character_class.id }}">{{ profile.character_class.name }}</span><br>
                         Item Level: {{ profile.equipped_item_level }}<br>
-                        <ng-container *ngIf="profile.covenant_progress">Renown: {{ profile.covenant_progress?.renown_level }}</ng-container>
                     </mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
