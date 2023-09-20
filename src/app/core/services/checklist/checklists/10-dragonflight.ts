@@ -70,7 +70,7 @@ const data: Checklist = {
         { key: 'reputation-dragonscaleexpedition', type: 'reputation-renown', name: 'Dragonscale Expedition', id: 2507, max: 25 },
         { key: 'reputation-maruukcentaur', type: 'reputation-renown', name: 'Maruuk Centaur', id: 2503, max: 25 },
         { key: 'reputation-iskaaratuskarr', type: 'reputation-renown', name: 'Iskaara Tuskarr', id: 2511, max: 30 },
-        { key: 'reputation-valdrakkenaccord', type: 'reputation-renown', name: 'Valdraken Accord', id: 2510, max: 30 },
+        { key: 'reputation-valdrakkenaccord', type: 'reputation-renown', name: 'Valdrakken Accord', id: 2510, max: 30 },
         { key: 'reputation-loammniffen', type: 'reputation-renown', name: 'Loamm Niffen', id: 2564, max: 20 },
 
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
