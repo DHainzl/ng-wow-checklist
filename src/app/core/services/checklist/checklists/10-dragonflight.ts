@@ -93,10 +93,11 @@ const data: Checklist = {
         { key: 'exploration', name: 'Exploration', type: 'header', level: 0 },
         
         { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore the Waking Shores', id: 16400 },
-        { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore the Ohn\'ahran Plains', id: 16457 },
-        { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore the Azure Span', id: 16460 },
-        { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore Thaldraszus', id: 16518 },
-        { key: 'exploration-wakingshores', type: 'achievement', name: 'Explore Zaralekk Cavern', id: 17766 },
+        { key: 'exploration-ohnaranplains', type: 'achievement', name: 'Explore the Ohn\'ahran Plains', id: 16457 },
+        { key: 'exploration-azurespan', type: 'achievement', name: 'Explore the Azure Span', id: 16460 },
+        { key: 'exploration-thaldraszus', type: 'achievement', name: 'Explore Thaldraszus', id: 16518 },
+        { key: 'exploration-forbiddenreach', type: 'achievement', name: 'Explore the Forbidden Reach', id: 17534 },
+        { key: 'exploration-zaralekkcavern', type: 'achievement', name: 'Explore Zaralekk Cavern', id: 17766 },
     ],
 };
 
