@@ -97,7 +97,7 @@ const data: Checklist = {
         { key: 'exploration-azurespan', type: 'achievement', name: 'Explore the Azure Span', id: 16460 },
         { key: 'exploration-thaldraszus', type: 'achievement', name: 'Explore Thaldraszus', id: 16518 },
         { key: 'exploration-forbiddenreach', type: 'achievement', name: 'Explore the Forbidden Reach', id: 17534 },
-        { key: 'exploration-zaralekkcavern', type: 'achievement', name: 'Explore Zaralekk Cavern', id: 17766 },
+        { key: 'exploration-zaralekcavern', type: 'achievement', name: 'Explore Zaralek Cavern', id: 17766 },
     ],
 };
 
