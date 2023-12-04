@@ -43,6 +43,8 @@ const data: Checklist = {
         { key: 'story-dragonflight-infinityandbeyond', name: 'Infinity and Beyond', type: 'quest', id: 76422 },
         { key: 'story-dragonflight-onnewwings', name: 'On New Wings', type: 'quest', id: 76597 },
         { key: 'story-dragonflight-dislocateddisc', name: 'Dislocated Disc Located', type: 'quest', id: 75638 },
+        { key: 'story-dragonflight-timetoprocess', name: 'Time to Process', type: 'quest', id: 77344 },
+        { key: 'story-dragonflight-misfitdragons', name: 'Misfit Dragons', type: 'quest', id: 76465 },
 
         { key: 'story-embersofneltharion', name: 'Embers of Neltharion', type: 'header', level: 1 },
         { key: 'story-embersofneltharion-acrechedivided', name: 'A Creche Divided', type: 'quest', id: 73156 },
@@ -55,6 +57,12 @@ const data: Checklist = {
 
         { key: 'story-guardiansofthedream', name: 'Guardians of the Dream', type: 'header', level: 1 },
         { key: 'story-guardiansofthedream-coalition-of-flames', name: 'The Coalition of Flames', type: 'quest', id: 75923 },
+        { key: 'story-guardiansofthedream-enterthedream', name: 'Enter the Dream', type: 'quest', id: 77283 },
+        { key: 'story-guardiansofthedream-druidsoftheflame', name: 'Druids of the Flame', type: 'quest', id: 76443 },
+        { key: 'story-guardiansofthedream-iceandfire', name: 'Ice and Fire', type: 'quest', id: 77178 },
+        { key: 'story-guardiansofthedream-eyeofysera', name: 'Eye of Ysera', type: 'quest', id: 76337 },
+        { key: 'story-guardiansofthedream-adreamoffieldsandfire', name: 'A Dream of Fields and Fire', type: 'quest', id: 76401 },
+        { key: 'story-guardiansofthedream-newbeginnings', name: 'New Beginnings', type: 'quest', id: 76283 },
 
         { key: 'story-bluedragons', name: 'Blue Dragonflight Reunion', type: 'header', level: 1 },
         { key: 'story-bluedragons-cleanup', name: 'Clean up the Veiled Ossuary', type: 'quest', id: 75023 },
@@ -72,6 +80,7 @@ const data: Checklist = {
         { key: 'reputation-iskaaratuskarr', type: 'reputation-renown', name: 'Iskaara Tuskarr', id: 2511, max: 30 },
         { key: 'reputation-valdrakkenaccord', type: 'reputation-renown', name: 'Valdrakken Accord', id: 2510, max: 30 },
         { key: 'reputation-loammniffen', type: 'reputation-renown', name: 'Loamm Niffen', id: 2564, max: 20 },
+        { key: 'reputation-dreamwardens', type: 'reputation-renown', name: 'Dream Wardens', id: 2574, max: 20 },
 
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
@@ -98,6 +107,7 @@ const data: Checklist = {
         { key: 'exploration-thaldraszus', type: 'achievement', name: 'Explore Thaldraszus', id: 16518 },
         { key: 'exploration-forbiddenreach', type: 'achievement', name: 'Explore the Forbidden Reach', id: 17534 },
         { key: 'exploration-zaralekcavern', type: 'achievement', name: 'Explore Zaralek Cavern', id: 17766 },
+        { key: 'exploration-emeralddream', type: 'achievement', name: 'Explore the Emerald Dream', id: 19309 },
     ],
 };
 
