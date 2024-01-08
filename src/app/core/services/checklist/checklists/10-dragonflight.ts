@@ -44,6 +44,7 @@ const data: Checklist = {
         { key: 'story-dragonflight-onnewwings', name: 'On New Wings', type: 'quest', id: 76597 },
         { key: 'story-dragonflight-dislocateddisc', name: 'Dislocated Disc Located', type: 'quest', id: 75638 },
         { key: 'story-dragonflight-timetoprocess', name: 'Time to Process', type: 'quest', id: 77344 },
+        { key: 'story-dragonflight-logotyrapy', name: 'Logotyrapy', type: 'quest', id: 77341 },
         { key: 'story-dragonflight-misfitdragons', name: 'Misfit Dragons', type: 'quest', id: 76465 },
 
         { key: 'story-embersofneltharion', name: 'Embers of Neltharion', type: 'header', level: 1 },
