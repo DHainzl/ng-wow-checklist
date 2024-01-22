@@ -46,6 +46,7 @@ const data: Checklist = {
         { key: 'story-dragonflight-timetoprocess', name: 'Time to Process', type: 'quest', id: 77344 },
         { key: 'story-dragonflight-logotyrapy', name: 'Logotyrapy', type: 'quest', id: 77341 },
         { key: 'story-dragonflight-misfitdragons', name: 'Misfit Dragons', type: 'quest', id: 76465 },
+        { key: 'story-dragonflight-beginninganewdawn', name: 'Beginning a New Dawn', type: 'quest', id: 78189 },
 
         { key: 'story-embersofneltharion', name: 'Embers of Neltharion', type: 'header', level: 1 },
         { key: 'story-embersofneltharion-acrechedivided', name: 'A Creche Divided', type: 'quest', id: 73156 },
@@ -64,6 +65,7 @@ const data: Checklist = {
         { key: 'story-guardiansofthedream-eyeofysera', name: 'Eye of Ysera', type: 'quest', id: 76337 },
         { key: 'story-guardiansofthedream-adreamoffieldsandfire', name: 'A Dream of Fields and Fire', type: 'quest', id: 76401 },
         { key: 'story-guardiansofthedream-newbeginnings', name: 'New Beginnings', type: 'quest', id: 76283 },
+        { key: 'story-guardiansofthedream-thereturning', name: 'The Returning', type: 'quest', id: 78864 },
 
         { key: 'story-bluedragons', name: 'Blue Dragonflight Reunion', type: 'header', level: 1 },
         { key: 'story-bluedragons-cleanup', name: 'Clean up the Veiled Ossuary', type: 'quest', id: 75023 },
