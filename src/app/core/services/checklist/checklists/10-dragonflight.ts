@@ -65,7 +65,10 @@ const data: Checklist = {
         { key: 'story-guardiansofthedream-eyeofysera', name: 'Eye of Ysera', type: 'quest', id: 76337 },
         { key: 'story-guardiansofthedream-adreamoffieldsandfire', name: 'A Dream of Fields and Fire', type: 'quest', id: 76401 },
         { key: 'story-guardiansofthedream-newbeginnings', name: 'New Beginnings', type: 'quest', id: 76283 },
-        { key: 'story-guardiansofthedream-thereturning', name: 'The Returning', type: 'quest', id: 78864 },
+
+        { key: 'story-epilogue', name: 'Epilogue', type: 'header', level: 1 },
+        { key: 'story-epilogue-thereturning', name: 'The Returning', type: 'quest', id: 78864 },
+        { key: 'story-epilogue-siblingsuntiltheend', name: 'Siblings Until the End', type: 'quest', id: 78865 },
 
         { key: 'story-bluedragons', name: 'Blue Dragonflight Reunion', type: 'header', level: 1 },
         { key: 'story-bluedragons-cleanup', name: 'Clean up the Veiled Ossuary', type: 'quest', id: 75023 },
