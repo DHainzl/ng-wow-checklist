@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, merge, Observable, of } from 'rxjs';
-import { filter, map, mapTo, pluck, tap } from 'rxjs/operators';
+import { catchError, filter, map, mapTo, pluck, tap } from 'rxjs/operators';
 import { Region } from 'src/app/core/services/battle-net/battle-net.interface';
 import { BattleNetCharacterService } from 'src/app/core/services/battle-net/character/character.service';
 import { BattleNetAchievements } from 'src/app/core/services/battle-net/character/types/battlenet-achievement';
@@ -85,10 +85,12 @@ export class ChecklistRequestContainerService {
             tap(equipment => this._equipmentChanged$.next(equipment)),
         );
         const media$ = this.characterService.getMedia(region, realm, name, cached).pipe(
+            catchError(() => of(undefined)),
             tap(media => this._mediaChanged$.next(media)),
         );
         const profile$ = this.characterService.getProfile(region, realm, name, cached).pipe(
             tap(profile => this._profileChanged$.next(profile)),
+            tap(profile => this._mediaChanged$.next(this.characterService.getMediaMock(region, profile))),
         );
         const reputation$ = this.characterService.getReputations(region, realm, name, cached).pipe(
             tap(reputations => this._reputationChanged$.next(reputations)),

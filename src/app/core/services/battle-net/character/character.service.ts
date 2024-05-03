@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { LocalForageService } from '../../local-forage/local-forage.service';
@@ -31,6 +31,31 @@ export class BattleNetCharacterService {
 
     public getMedia(region: Region, realm: string, characterName: string, cached: boolean = true): Observable<BattleNetMedia> {
         return this.getCharacterData(region, realm, characterName, cached, '/character-media');
+    }
+
+    public getMediaMock(region: Region, profile: BattleNetProfile): BattleNetMedia {
+        // TODO 2024-05-03 /character-media endpoint returns 403 Forbidden, so we simply mock the response for now
+        return {
+            _links: {
+                self: {
+                    href: '',
+                },
+            },
+            character: {
+                id: profile.id,
+                key: {
+                    href: '',
+                },
+                name: profile.name,
+                realm: profile.realm,
+            },
+            assets: [
+                {
+                    key: 'avatar',
+                    value: `https://render.worldofwarcraft.com/${region}/character/${profile.realm.slug}/${profile.id % 256}/${profile.id}-avatar.jpg?alt=/shadow/avatar/${profile.race.id}-${profile.gender.type}.jpg`,
+                }
+            ],
+        };
     }
 
     public getProfile(region: Region, realm: string, characterName: string, cached: boolean = true): Observable<BattleNetProfile> {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { forkJoin } from "rxjs";
+import { catchError, forkJoin, of } from "rxjs";
 import { BattleNetCharacterService } from "src/app/core/services/battle-net/character/character.service";
 import { BattleNetEquipment } from "src/app/core/services/battle-net/character/types/battlenet-equipment";
 import { BattleNetMedia } from "src/app/core/services/battle-net/character/types/battlenet-media";
@@ -59,12 +59,14 @@ export class GearGridComponent implements OnInit {
 
                 forkJoin([
                     this.characterService.getProfile(char.region, char.realm, char.name, true),
-                    this.characterService.getMedia(char.region, char.realm, char.name, true),
+                    this.characterService.getMedia(char.region, char.realm, char.name, true).pipe(
+                        catchError(() => of(undefined)),
+                    ),
                     this.characterService.getEquipment(char.region, char.realm, char.name, true),
                 ]).subscribe({
                     next: ([ profile, media, equipment ]) => {
                         charData.profile = profile;
-                        charData.media = media;
+                        charData.media = media || this.characterService.getMediaMock(char.region, profile);;
                         charData.equipment = equipment;
                         charData.loading = false;
                     },

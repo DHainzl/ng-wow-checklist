@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { forkJoin } from 'rxjs';
+import { catchError, forkJoin, of } from 'rxjs';
 
 import { BattleNetCharacterService } from '../../core/services/battle-net/character/character.service';
 import { BattleNetEquipment } from '../../core/services/battle-net/character/types/battlenet-equipment';
@@ -71,18 +71,23 @@ export class CharactersComponent implements OnInit {
 
                 this.characterData.push(characterData);
 
-                forkJoin(
+                forkJoin([
                     this.characterService.getProfile(c.region, c.realm, c.name, true),
-                    this.characterService.getMedia(c.region, c.realm, c.name, true),
+                    this.characterService.getMedia(c.region, c.realm, c.name, true).pipe(
+                        catchError(() => of(undefined)),
+                    ),
                     this.characterService.getEquipment(c.region, c.realm, c.name, true),
-                ).subscribe(([ profile, media, equipment ]) => {
-                    characterData.profile = profile;
-                    characterData.media = media;
-                    characterData.equipment = equipment;
-                    characterData.loading = false;
-                }, error => {
-                    characterData.error = true;
-                    characterData.loading = false;
+                ]).subscribe({
+                    next: ([ profile, media, equipment ]) => {
+                        characterData.profile = profile;
+                        characterData.media = media || this.characterService.getMediaMock(c.region, profile);
+                        characterData.equipment = equipment;
+                        characterData.loading = false;
+                    },
+                    error: error => {
+                        characterData.error = true;
+                        characterData.loading = false;
+                    }
                 });
             });
         });
