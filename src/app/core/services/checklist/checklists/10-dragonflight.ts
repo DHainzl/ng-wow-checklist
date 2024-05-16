@@ -69,6 +69,7 @@ const data: Checklist = {
         { key: 'story-epilogue', name: 'Epilogue', type: 'header', level: 1 },
         { key: 'story-epilogue-thereturning', name: 'The Returning', type: 'quest', id: 78864 },
         { key: 'story-epilogue-siblingsuntiltheend', name: 'Siblings Until the End', type: 'quest', id: 78865 },
+        { key: 'story-epilogue-harbinger', name: 'The Harbinger', type: 'quest', id: 79021 },
 
         { key: 'story-bluedragons', name: 'Blue Dragonflight Reunion', type: 'header', level: 1 },
         { key: 'story-bluedragons-cleanup', name: 'Clean up the Veiled Ossuary', type: 'quest', id: 75023 },
