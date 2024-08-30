@@ -28,7 +28,7 @@ export interface CharacterDataForList {
     styleUrls: [ './characters.component.scss' ],
 })
 export class CharactersComponent implements OnInit {
-    readonly MAX_LEVEL = 70;
+    readonly MAX_LEVEL = 80;
     readonly MAX_SECONDARY = 80;
 
     loading: boolean = true;
