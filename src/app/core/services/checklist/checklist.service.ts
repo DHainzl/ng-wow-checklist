@@ -7,6 +7,7 @@ import { data as bfaHordeChecklist } from './checklists/08-bfa-horde';
 import { data as slAllianceChecklist } from './checklists/09-sl-alliance';
 import { data as slHordeChecklist } from './checklists/09-sl-horde';
 import { data as dragonflightChecklist } from './checklists/10-dragonflight';
+import { data as thewarwithinChecklist } from './checklists/11-thewarwithin';
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistService {
@@ -16,6 +17,7 @@ export class ChecklistService {
         'sl-alliance': slAllianceChecklist,
         'sl-horde': slHordeChecklist,
         'dragonflight': dragonflightChecklist,
+        'thewarwithin': thewarwithinChecklist,
     };
 
     getChecklist(id: string): Observable<Checklist> {
