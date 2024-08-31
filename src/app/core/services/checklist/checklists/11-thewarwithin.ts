@@ -6,18 +6,24 @@ const data: Checklist = {
         { key: 'leveling', name: 'Leveling', type: 'header', level: 0 },
 
         { key: 'leveling-isleofdorn', name: 'Isle of Dorn', type: 'header', level: 1 },
-        { key: 'leveling-isleofdorn-story-breakingpoint', name: 'Breaking Point', type: 'quest', id: 83548 },
+        { key: 'leveling-isleofdorn-story-breakingpoint', name: 'Breaking Point', type: 'quest', id: 78536 },
         { key: 'leveling-isleofdorn-story-earthenfissures', name: 'Earthen Fissures', type: 'quest', id: 78471 },
         { key: 'leveling-isleofdorn-story-thefirstblow', name: 'The First Blow', type: 'quest', id: 78546 },
 
         { key: 'leveling-ringingdeeps', name: 'The Ringing Deeps', type: 'header', level: 1 },
-        { key: 'leveling-ringingdeeps-levelingstory', name: 'Leveling Storyline', type: 'achievement', id: 19560 },
+        { key: 'leveling-ringingdeeps-story-bycandlelight', name: 'By Candlelight', type: 'quest', id: 80082 },
+        { key: 'leveling-ringingdeeps-story-darkrevelation', name: 'Dark Revelation', type: 'quest', id: 78706 },
+        { key: 'leveling-ringingdeeps-story-themonsterandthemachine', name: 'The Monster and the Machine', type: 'quest', id: 81689 },
 
         { key: 'leveling-hallowfall', name: 'Hallowfall', type: 'header', level: 1 },
-        { key: 'leveling-hallowfall-levelingstory', name: 'Leveling Storyline', type: 'achievement', id: 20598 },
+        { key: 'leveling-hallowfall-story-theguidingstar', name: 'The Guiding Star', type: 'quest', id: 78671 },
+        { key: 'leveling-hallowfall-story-gatheringshadows', name: 'Gathering Shadows', type: 'quest', id: 78954 },
+        { key: 'leveling-hallowfall-story-hopeinsolidarity', name: 'Hope in Solidarity', type: 'quest', id: 78630 },
 
         { key: 'leveling-azjkahet', name: 'Azh-Kahet', type: 'header', level: 1 },
-        { key: 'leveling-azjkahet-levelingstory', name: 'Leveling Storyline', type: 'achievement', id: 19559 },
+        { key: 'leveling-azjkahet-story-friendsinthedark', name: 'Friends in the Dark', type: 'quest', id: 78393 },
+        { key: 'leveling-azjkahet-story-unravelingthetrapped', name: 'Unraveling the Trapped', type: 'quest', id: 78256 },
+        { key: 'leveling-azjkahet-story-planswithinplans', name: 'Plans Within Plans', type: 'quest', id: 84022 },
 
         { key: 'leveling-general', name: 'General', type: 'header', level: 1 },
         { key: 'leveling-general-60', name: 'Level 70', type: 'level', max: 70 },
