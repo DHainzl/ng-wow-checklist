@@ -6,7 +6,9 @@ const data: Checklist = {
         { key: 'leveling', name: 'Leveling', type: 'header', level: 0 },
 
         { key: 'leveling-isleofdorn', name: 'Isle of Dorn', type: 'header', level: 1 },
-        { key: 'leveling-isleofdorn-levelingstory', name: 'Leveling Storyline', type: 'achievement', id: 20118 },
+        { key: 'leveling-isleofdorn-story-breakingpoint', name: 'Breaking Point', type: 'quest', id: 83548 },
+        { key: 'leveling-isleofdorn-story-earthenfissures', name: 'Earthen Fissures', type: 'quest', id: 78471 },
+        { key: 'leveling-isleofdorn-story-thefirstblow', name: 'The First Blow', type: 'quest', id: 78546 },
 
         { key: 'leveling-ringingdeeps', name: 'The Ringing Deeps', type: 'header', level: 1 },
         { key: 'leveling-ringingdeeps-levelingstory', name: 'Leveling Storyline', type: 'achievement', id: 19560 },
