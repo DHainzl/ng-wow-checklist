@@ -1,7 +1,7 @@
 import { Checklist } from '../checklist.interface';
 
 const data: Checklist = {
-    id: 'dragonflight',
+    id: 'thewarwithin',
     items: [
         { key: 'leveling', name: 'Leveling', type: 'header', level: 0 },
 
@@ -36,7 +36,7 @@ const data: Checklist = {
         { key: 'story-warwithin-tiesthatbind', name: 'Ties That Bind', type: 'quest', id: 79157 },
         { key: 'story-warwithin-newsfrombelow', name: 'News from Below', type: 'quest', id: 79244 },
         { key: 'story-warwithin-themachinesmarchtowar', name: 'The Machines March to War', type: 'quest', id: 79030 },
-        { key: 'story-warwithin-alightinthedark', name: 'A Light in the Dark', type: 'quest', id: 0 },
+        { key: 'story-warwithin-alightinthedark', name: 'A Light in the Dark', type: 'quest', id: 83503 },
 
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
