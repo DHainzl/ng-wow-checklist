@@ -38,6 +38,12 @@ const data: Checklist = {
         { key: 'story-warwithin-themachinesmarchtowar', name: 'The Machines March to War', type: 'quest', id: 79030 },
         { key: 'story-warwithin-alightinthedark', name: 'A Light in the Dark', type: 'quest', id: 83503 },
 
+        { key: 'story-warwithin-sirenisle', name: 'Siren Isle', type: 'header', level: 2 },
+        { key: 'story-warwithin-sirenisle-shadows', name: 'Lingering Shadows', type: 'quest', id: 84701 },
+        { key: 'story-warwithin-sirenisle-isle', name: 'Siren Isle', type: 'quest', id: 84725 },
+        { key: 'story-warwithin-sirenisle-kirintor', name: 'Fate of the Kirin Tor', type: 'quest', id: 83773 },
+
+
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
         { key: 'warwithin-herbalism', type: 'profession-primary', name: 'Khaz Algar Herbalism', id: 2877 },
