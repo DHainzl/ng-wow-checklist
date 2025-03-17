@@ -43,7 +43,7 @@ const data: Checklist = {
         { key: 'story-warwithin-sirenisle-isle', name: 'Siren Isle', type: 'quest', id: 84725 },
         { key: 'story-warwithin-sirenisle-kirintor', name: 'Fate of the Kirin Tor', type: 'quest', id: 83773 },
 
-        { key: 'story-warwithin-undermine', name: 'Undermine', type: 'header', level: 2 },
+        { key: 'story-warwithin-undermine', name: 'Undermine', type: 'header', level: 1 },
         { key: 'story-warwithin-undermine-trustissues', name: 'Trust Issues', type: 'quest', id: 83151 },
         { key: 'story-warwithin-undermine-undermineawaits', name: 'Undermine Awaits', type: 'quest', id: 83176 },
         { key: 'story-warwithin-undermine-uncoveringthetruth', name: 'Uncovering the Truth', type: 'quest', id: 83125 },
