@@ -40,7 +40,7 @@ const data: Checklist = {
 
         { key: 'story-warwithin-sirenisle', name: 'Siren Isle', type: 'header', level: 2 },
         { key: 'story-warwithin-sirenisle-shadows', name: 'Lingering Shadows', type: 'quest', id: 84701 },
-        { key: 'story-warwithin-sirenisle-isle', name: 'Siren Isle', type: 'quest', id: 84725 },
+        { key: 'story-warwithin-sirenisle-isle', name: 'Siren Isle', type: 'quest', id: 85657 },
         { key: 'story-warwithin-sirenisle-kirintor', name: 'Fate of the Kirin Tor', type: 'quest', id: 83773 },
 
         { key: 'story-warwithin-undermine', name: 'Undermine', type: 'header', level: 1 },
