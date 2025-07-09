@@ -51,6 +51,10 @@ const data: Checklist = {
         { key: 'story-warwithin-undermine-ignitethefuelofchange', name: 'Ignite the Fuel of Change', type: 'quest', id: 85780 },
         { key: 'story-warwithin-undermine-homecoming', name: 'Homecoming', type: 'quest', id: 87297 },
 
+        { key: 'story-warwithin-legacyofarathor', name: 'Legacy of Arathor', type: 'header', level: 2 },
+        { key: 'story-warwithin-legacyofarathor-reddawn', name: 'Rise of the Red Dawn', type: 'quest', id: 85529 },
+        { key: 'story-warwithin-legacyofarathor-discbelt', name: 'D.I.S.C. Belt', type: 'quest', id: 91031 },
+
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
         { key: 'warwithin-herbalism', type: 'profession-primary', name: 'Khaz Algar Herbalism', id: 2877 },
