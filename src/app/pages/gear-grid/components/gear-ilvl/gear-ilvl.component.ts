@@ -7,9 +7,9 @@ import { BattleNetEquipmentItem } from "src/app/core/services/battle-net/charact
     styleUrls: [ 'gear-ilvl.component.scss' ],
 })
 export class GearIlvlComponent implements OnChanges {
-    readonly GEAR_LOW = 385;     // Forbidden Reach Catchup ilvl base
-    readonly GEAR_MID = 395;     // Forbidden Reach Catchup ilvl upgraded 
-    readonly GEAR_HIGH = 402;    // Timewalking / HC upgrade
+    readonly GEAR_LOW = 590;     
+    readonly GEAR_MID = 610;     
+    readonly GEAR_HIGH = 623;    // TWW S2 Weekly Chest
 
     @Input()
     equipment: BattleNetEquipmentItem[];
