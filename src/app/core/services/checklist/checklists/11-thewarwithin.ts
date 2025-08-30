@@ -55,6 +55,13 @@ const data: Checklist = {
         { key: 'story-warwithin-legacyofarathor-reddawn', name: 'Rise of the Red Dawn', type: 'quest', id: 85529 },
         { key: 'story-warwithin-legacyofarathor-discbelt', name: 'D.I.S.C. Belt', type: 'quest', id: 91031 },
 
+        { key: 'story-warwithin-karesh', name: 'Ghosts of K\'aresh', type: 'header', level: 1 },
+        { key: 'story-warwithin-karesh-ashadowyinvitation', name: 'A Shadowy Invitation', type: 'quest', id: 84967 },
+        { key: 'story-warwithin-karesh-voidalliance', name: 'Void Alliance', type: 'quest', id: 90517 },
+        { key: 'story-warwithin-karesh-desertpower', name: 'Desert Power', type: 'quest', id: 84910 },
+        { key: 'story-warwithin-karesh-shadowsengarde', name: 'Shadows En Garde', type: 'quest', id: 85037 },
+        { key: 'story-warwithin-karesh-thelightofkaresh', name: 'The Light of K\'aresh', type: 'quest', id: 86458 },
+
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
         { key: 'warwithin-herbalism', type: 'profession-primary', name: 'Khaz Algar Herbalism', id: 2877 },
@@ -75,5 +82,6 @@ const data: Checklist = {
 };
 
 export {
-    data,
+    data
 };
+
