@@ -27,9 +27,6 @@ import { CharacterLineComponent } from "./character-line/character-line.componen
     ],
 })
 export class CharactersComponent implements OnInit {
-    readonly MAX_LEVEL = 80;
-    readonly MAX_SECONDARY = 80;
-
     readonly loading = signal<boolean>(true);
     readonly characterData = signal<CharacterInfo[]>([]);
 

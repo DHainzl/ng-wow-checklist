@@ -4,6 +4,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { RouterLink } from "@angular/router";
 import { catchError, forkJoin, of } from "rxjs";
+import { environment } from "../../../../environments/environment";
 import { BattleNetCharacterService } from "../../../core/services/battle-net/character/character.service";
 import { BattleNetEquipment } from "../../../core/services/battle-net/character/types/battlenet-equipment";
 import { BattleNetMedia } from "../../../core/services/battle-net/character/types/battlenet-media";
@@ -30,7 +31,8 @@ import { SafeBackgroundImagePipe } from "../../../shared/pipes/safe-background-i
     ]
 })
 export class CharacterLineComponent {
-    readonly MAX_LEVEL = 80;
+    readonly MAX_LEVEL = environment.maxLevel;
+    readonly MAX_SECONDARY = 80;
     
     private readonly characterService = inject(BattleNetCharacterService);
 

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core";
+import { environment } from "../../../../../environments/environment";
 import { BattleNetEquipmentItem } from "../../../../core/services/battle-net/character/types/battlenet-equipment";
 import { WowheadItemPipe } from "../../../../shared/pipes/wowhead-item.pipe";
 
@@ -12,9 +13,9 @@ import { WowheadItemPipe } from "../../../../shared/pipes/wowhead-item.pipe";
     ],
 })
 export class GearIlvlComponent {
-    readonly GEAR_LOW = 590;     
-    readonly GEAR_MID = 610;     
-    readonly GEAR_HIGH = 623;    // TWW S2 Weekly Chest
+    readonly GEAR_LOW = environment.gearGridLow;     
+    readonly GEAR_MID = environment.gearGridMid;     
+    readonly GEAR_HIGH = environment.gearGridHigh;
 
     readonly equipment = input.required<BattleNetEquipmentItem[]>();
     readonly slot = input.required<string>();
