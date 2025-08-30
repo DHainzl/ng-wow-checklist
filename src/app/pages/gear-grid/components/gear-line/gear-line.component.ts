@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from "@angular/core";
+import { MatCardModule } from "@angular/material/card";
 import { catchError, forkJoin, of } from "rxjs";
 import { BattleNetCharacterService } from "../../../../core/services/battle-net/character/character.service";
 import { BattleNetEquipment } from "../../../../core/services/battle-net/character/types/battlenet-equipment";
@@ -15,6 +16,8 @@ import { GearIlvlComponent } from "../gear-ilvl/gear-ilvl.component";
     styleUrls: [ './gear-line.component.scss', '../../gear-grid.shared.scss' ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
+        MatCardModule,
+
         MediaAssetPipe,
         SafeBackgroundImagePipe,
         

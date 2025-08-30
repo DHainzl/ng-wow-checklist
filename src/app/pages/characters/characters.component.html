@@ -1,7 +1,7 @@
 <div class="page-container">
     @if (loading()) {
         <div class="centered">
-            <mat-spinner diameter="30" color="accent" />
+            <mat-spinner diameter="30" />
         </div>
     } @else {
         <div class="page-actions">
@@ -12,6 +12,7 @@
             }
 
             <span class="action-spacer"></span>
+
             <button matIconButton (click)="openAddModal()">
                 <mat-icon>add</mat-icon>
             </button>

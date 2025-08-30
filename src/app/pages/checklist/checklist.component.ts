@@ -30,7 +30,7 @@ import { ChecklistLineComponent } from './checklist-line/checklist-line.componen
 @Component({
     selector: 'app-checklist',
     templateUrl: './checklist.component.html',
-    styleUrls: [ './checklist.component.scss' ],
+    styleUrls: [ '../page-style.scss', './checklist.component.scss' ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatIconModule,

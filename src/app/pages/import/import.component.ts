@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -11,13 +12,14 @@ import { CharacterStoreService } from "../../core/services/character-store/chara
 
 @Component({
     templateUrl: './import.component.html',
-    styleUrls: [ './import.component.scss' ],
+    styleUrls: [ '../page-style.scss', './import.component.scss' ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatTabsModule,
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
+        MatCardModule,
 
         FormsModule,
     ],

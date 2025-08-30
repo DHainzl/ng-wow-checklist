@@ -8,8 +8,7 @@
 html {
      @include mat.theme((color: (
             primary: mat.$violet-palette,
-            tertiary: mat.$orange-palette,
-            theme-type: dark,
+            tertiary: mat.$magenta-palette,
         ),
         typography: Roboto,
         density: 0,
@@ -21,9 +20,10 @@ html {
     ));
 
     @include mat.sidenav-overrides((
-        container-background-color: var(--mat-sys-secondary-container),
-        container-text-color: var(--mat-sys-on-secondary-container),
+        // container-background-color: var(--mat-sys-tertiary-container),
+        // container-text-color: var(--mat-sys-on-tertiary-container),
         container-shape: 0,
+        container-divider-color: var(--mat-sys-outline),
     ));
 }
 

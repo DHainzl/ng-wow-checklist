@@ -16,7 +16,7 @@ import { CharacterLineComponent } from "./character-line/character-line.componen
 @Component({
     selector: 'app-characters',
     templateUrl: './characters.component.html',
-    styleUrls: [ './characters.component.scss' ],
+    styleUrls: [ '../page-style.scss', './characters.component.scss' ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatProgressSpinnerModule,

@@ -1,13 +1,16 @@
-:host {
-    display: flex;
+mat-card {
     margin: 10px 0;
-    background-color: #424242;
+}
+mat-card-content {
+    display: flex;
+    padding: 5px !important;
 }
 
 .cc-icon {
     width: 40px;
     height: 40px;
     background-size: cover;
+    margin-bottom: 0;
 }
 
 .cc {
@@ -20,9 +23,11 @@
 
 .progress-bar {
     flex: 1;
-    border: 1px solid white;
-    margin: 8px 10px;
+    border: 1px solid var(--mat-sys-outline);
+    margin: 6px 10px;
     position: relative;
+    border-radius: var(--mat-sys-corner-small);
+    overflow: hidden;
 
     .progress-level {
         display: block;
@@ -30,7 +35,8 @@
         position: absolute;
         top: 0;
         background: rgb(50,1,46);
-        background: linear-gradient(0deg, rgba(50,1,46,1) 0%, rgba(113,25,101,1) 100%);        }
+        background: linear-gradient(0deg, rgba(50,1,46,1) 0%, rgba(113,25,101,1) 100%);
+    }
 
     .progress-secondary {
         display: block;
@@ -43,8 +49,10 @@
 
     .progress-name {
         position: absolute;
+        color: white;
         width: 100%;
         text-align: center;
+        top: 2px;
     }
 }
 

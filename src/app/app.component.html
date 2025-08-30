@@ -24,6 +24,7 @@
             <mat-icon>home</mat-icon>
             <span>Checklist</span>
         </a>
+
         <div class="submenu">
             @for (
                 character of allCharacters();
@@ -45,16 +46,18 @@
                 </a>
             }
         </div>
+
         <a class="link" routerLink="gear-grid" routerLinkActive="active" (click)="closeSidenav()">
             <mat-icon>grid_on</mat-icon>
             <span>Gear Grid</span>
         </a>
+
         <a class="link" routerLink="import" routerLinkActive="active" (click)="closeSidenav()">
             <mat-icon>sync_alt</mat-icon>
             <span>Import / Export</span>
         </a>
     </mat-sidenav>
     <mat-sidenav-content>
-        <router-outlet></router-outlet>
+        <router-outlet />
     </mat-sidenav-content>
 </mat-sidenav-container>

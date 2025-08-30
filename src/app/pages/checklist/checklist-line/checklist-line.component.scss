@@ -7,18 +7,18 @@
 }
 
 .row {
-    border: 1px solid black;
-    color: black;
     display: flex;
 
-    &.incomplete {
-        background-color: #ffcc80;
-    }
     &.complete {
-        background-color: #aed581;
+        &, a {
+            color: var(--mat-sys-primary);
+        }
     }
-    &.subitem {
-        background-color: #9fa8da;
+
+    &.incomplete {
+        &, a {
+            color: var(--mat-sys-error);
+        }
     }
 
     > div {
@@ -58,8 +58,7 @@
 }
 
 a[data-wowhead] {
-    display: block;
-    color: black;
+    color: var(--mat-sys-on-surface);;
 }
 button[mat-button] {
     text-transform: uppercase;

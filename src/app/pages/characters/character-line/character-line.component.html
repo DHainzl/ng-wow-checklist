@@ -1,52 +1,59 @@
-@if (!error()) {
-    <span
-        class="cc-icon"
-        [style.background-image]="media()! | mediaAsset: 'avatar' | safeBackgroundImage"
-    ></span>
-    <span class="cc cc-{{ profile()?.character_class?.id }}">{{ characterInfo().name }}</span>
-
-    <span class="progress-bar">
-        @if (loading()) {
-            <div class="centered">
-                <mat-spinner diameter="10" color="accent" />
-            </div>
-        } @else {
+<mat-card appearance="filled">
+    <mat-card-content>
+        @if (!error()) {
             <span
-                class="progress-level"
-                [style.width]="profile()!.level | barPercentage: MAX_LEVEL"
+                class="cc-icon"
+                mat-card-avatar
+                [style.background-image]="media()! | mediaAsset: 'avatar' | safeBackgroundImage"
             ></span>
-            <!--
-                <span class="progress-secondary" [style.width]="result.profile.covenant_progress?.renown_level | barPercentage:MAX_SECONDARY"></span>
-            -->
-            <span class="progress-name">
-                <span>Level {{ profile()!.level }}</span>
-                <!--
-                    <span *ngIf="result.profile.level < MAX_LEVEL">Level {{ result.profile.level }}</span>
-                    <span *ngIf="result.profile.level == MAX_LEVEL">Renown {{ result.profile.covenant_progress?.renown_level }}</span>
-                -->
+            <span class="cc cc-{{ profile()?.character_class?.id }}">{{
+                characterInfo().name
+            }}</span>
+
+            <span class="progress-bar">
+                @if (loading()) {
+                    <div class="centered">
+                        <mat-spinner diameter="10" />
+                    </div>
+                } @else {
+                    <span
+                        class="progress-level"
+                        [style.width]="profile()!.level | barPercentage: MAX_LEVEL"
+                    ></span>
+                    <!--
+                        <span class="progress-secondary" [style.width]="result.profile.covenant_progress?.renown_level | barPercentage:MAX_SECONDARY"></span>
+                    -->
+                    <span class="progress-name">
+                        <span>Level {{ profile()!.level }}</span>
+                        <!--
+                            <span *ngIf="result.profile.level < MAX_LEVEL">Level {{ result.profile.level }}</span>
+                            <span *ngIf="result.profile.level == MAX_LEVEL">Renown {{ result.profile.covenant_progress?.renown_level }}</span>
+                        -->
+                    </span>
+                }
+            </span>
+            <span class="actions">
+                <button
+                    matIconButton
+                    [routerLink]="[
+                        '/',
+                        characterInfo().region,
+                        characterInfo().realm,
+                        characterInfo().name,
+                        'checklist',
+                    ]"
+                >
+                    <mat-icon>playlist_add_check</mat-icon>
+                </button>
             </span>
         }
-    </span>
-    <span class="actions">
-        <button
-            matIconButton
-            [routerLink]="[
-                '/',
-                characterInfo().region,
-                characterInfo().realm,
-                characterInfo().name,
-                'checklist',
-            ]"
-        >
-            <mat-icon>playlist_add_check</mat-icon>
-        </button>
-    </span>
-}
 
-@if (!loading() && error()) {
-    <span class="cc-icon"></span>
-    <span class="cc error">{{ characterInfo().name }}</span>
-    <span class="error error-message">
-        Error loading character. Ensure that it exists and you have logged in recently.
-    </span>
-}
+        @if (!loading() && error()) {
+            <span class="cc-icon"></span>
+            <span class="cc error">{{ characterInfo().name }}</span>
+            <span class="error error-message">
+                Error loading character. Ensure that it exists and you have logged in recently.
+            </span>
+        }
+    </mat-card-content>
+</mat-card>

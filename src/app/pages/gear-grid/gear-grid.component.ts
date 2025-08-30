@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from "@angular/core";
+import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { Title } from "@angular/platform-browser";
 import { CharacterInfo } from "../../core/services/character-store/character-store.interface";
@@ -8,10 +9,11 @@ import { GearLineComponent } from "./components/gear-line/gear-line.component";
 
 @Component({
     templateUrl: './gear-grid.component.html',
-    styleUrls: [ './gear-grid.component.scss', 'gear-grid.shared.scss' ],
+    styleUrls: [ '../page-style.scss', './gear-grid.component.scss', 'gear-grid.shared.scss' ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatProgressSpinnerModule,
+        MatCardModule,
 
         IconPipe,
 

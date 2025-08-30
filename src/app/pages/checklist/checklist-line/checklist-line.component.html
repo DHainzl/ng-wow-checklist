@@ -1,9 +1,13 @@
-@if (shown() && (completed() != 'complete' || !hideCompleted())) {
+@if (visible()) {
     <div
         class="row"
         [class.complete]="completed() == 'complete'"
         [class.incomplete]="completed() !== 'complete'"
+        [class.divider-top]="hasDivider()"
     >
+        <div class="column-completed">
+            <mat-icon>{{ icon() }}</mat-icon>
+        </div>
         <div class="column-label">
             <a [attr.data-wowhead]="wowheadId()" [href]="noNavHref">
                 <span
@@ -21,9 +25,6 @@
                     <button matButton (click)="runOnClick()">{{ $any(note()).label }}</button>
                 }
             }
-        </div>
-        <div class="column-completed">
-            <mat-icon>{{ icon() }}</mat-icon>
         </div>
     </div>
 }

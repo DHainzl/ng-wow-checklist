@@ -6,7 +6,7 @@
         </div>
     } @else {
         <div class="page-actions group">
-            <div class="pull-left">
+            <div>
                 <button
                     matIconButton
                     (click)="refresh()"
@@ -25,7 +25,9 @@
                 </button>
             </div>
 
-            <div class="pull-right">
+            <span class="action-spacer"></span>
+
+            <div>
                 <mat-checkbox
                     [(ngModel)]="hideCompleted"
                     (ngModelChange)="hideCompletedChange($event)"
@@ -35,11 +37,11 @@
             </div>
         </div>
 
-        <mat-card>
+        <mat-card appearance="filled">
             @if (loading()) {
                 <mat-card-content>
                     <div class="loading centered-x">
-                        <mat-spinner diameter="25" color="accent"></mat-spinner>
+                        <mat-spinner diameter="25" />
                     </div>
                 </mat-card-content>
             } @else {
@@ -70,11 +72,12 @@
                         </div>
                     }
 
-                    @for (item of checklist(); track item) {
-                        <checklist-line
-                            [handler]="item.handler!"
-                            [hideCompleted]="hideCompleted()"
-                        />
+                    @if (!allCompleted() || !hideCompleted()) {
+                        <div class="checklist">
+                            @for (item of checklist(); track item) {
+                                <checklist-line [item]="item" [hideCompleted]="hideCompleted()" />
+                            }
+                        </div>
                     }
                 </mat-card-content>
             }

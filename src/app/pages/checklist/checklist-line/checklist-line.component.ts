@@ -3,7 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { ChecklistHandler } from '../../../core/services/checklist-evaluator/handlers/_handler';
 import { ChecklistNote } from '../../../core/services/checklist-evaluator/handlers/_handler.interface';
 import { ChecklistItem } from '../../../core/services/checklist/checklist.interface';
 
@@ -16,9 +15,12 @@ import { ChecklistItem } from '../../../core/services/checklist/checklist.interf
         MatIconModule,
         MatButtonModule,
     ],
+    host: {
+        '[class.divider-top]': 'visible() && hasDivider()'
+    }
 })
 export class ChecklistLineComponent implements OnInit, OnDestroy {
-    readonly handler = input.required<ChecklistHandler<ChecklistItem>>();
+    readonly item = input.required<ChecklistItem>();
     readonly hideCompleted = input.required<boolean>();
 
     readonly shown = signal<boolean | undefined>(undefined);
@@ -28,6 +30,13 @@ export class ChecklistLineComponent implements OnInit, OnDestroy {
     readonly subitems = signal<string[] | undefined>(undefined);
     readonly wowheadId = signal<string | undefined>(undefined);
     readonly indention = signal<number | undefined>(undefined);
+
+    readonly handler = computed(() => this.item().handler!);
+    readonly visible = computed(() => this.shown() && (this.completed() != 'complete' || !this.hideCompleted()));
+    readonly hasDivider = computed(() => {
+        const item = this.item();
+        return item.type === 'header' && item.level === 0;
+    });
 
     noNavHref = `${window?.location.href}#`;            // Necessary for wowhead tooltips
 

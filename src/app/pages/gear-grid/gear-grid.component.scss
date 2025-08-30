@@ -10,56 +10,8 @@
     display: inline-block;
 }
 
-mat-card {
-    margin: 10px 10px;
-}
-
-mat-card-actions {
-    text-align: right;
-}
-
 button[mat-button] {
     text-transform: uppercase;
-}
-
-.page-actions {
-    display: flex;
-
-    .action-spacer {
-        flex: 1 1 auto;
-    }
-}
-
-.character {
-    .progress-bar {
-        flex: 1;
-        border: 1px solid white;
-        margin: 8px 10px;
-        position: relative;
-
-        .progress-level {
-            display: block;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            background: rgb(50,1,46);
-            background: linear-gradient(0deg, rgba(50,1,46,1) 0%, rgba(113,25,101,1) 100%);        }
-
-        .progress-secondary {
-            display: block;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            background: rgb(182,168,123);
-            background: linear-gradient(180deg, rgba(182,168,123,1) 0%, rgba(106,94,78,1) 100%);
-        }
-
-        .progress-name {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-        }
-    }
 }
 
 .no-characters {
@@ -69,7 +21,6 @@ button[mat-button] {
     line-height: 40px;
     font-size: 16px;
 }
-
 
 .error {
     color: var(--mat-sys-error);

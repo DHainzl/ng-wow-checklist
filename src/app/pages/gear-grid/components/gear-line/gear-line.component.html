@@ -1,68 +1,71 @@
-<div class="character">
-    @if (!loading()) {
-        @if (error()) {
-            <span class="cc-icon"></span>
-            <span class="cc error">{{ characterInfo().name }}</span>
-            <span class="error error-message">
-                Error loading character. Ensure that it exists and you have logged in recently.
-            </span>
-        } @else {
-            <span
-                class="cc-icon"
-                [style.background-image]="media()! | mediaAsset: 'avatar' | safeBackgroundImage"
-            ></span>
-            <span class="cc cc-{{ profile()?.character_class?.id }}">{{
-                characterInfo().name
-            }}</span>
+<mat-card appearance="filled">
+    <mat-card-content>
+        @if (!loading()) {
+            @if (error()) {
+                <span class="cc-icon"></span>
+                <span class="cc error">{{ characterInfo().name }}</span>
+                <span class="error error-message">
+                    Error loading character. Ensure that it exists and you have logged in recently.
+                </span>
+            } @else {
+                <span
+                    class="cc-icon"
+                    mat-card-avatar
+                    [style.background-image]="media()! | mediaAsset: 'avatar' | safeBackgroundImage"
+                ></span>
+                <span class="cc cc-{{ profile()?.character_class?.id }}">{{
+                    characterInfo().name
+                }}</span>
 
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="HEAD" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="NECK" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="SHOULDER" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="BACK" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="CHEST" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="WRIST" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="HANDS" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="WAIST" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="LEGS" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="FEET" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="FINGER_1" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="FINGER_2" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="TRINKET_1" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="TRINKET_2" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="MAIN_HAND" />
-            </span>
-            <span class="gg-col">
-                <gear-ilvl [equipment]="equipment()!.equipped_items" slot="OFF_HAND" />
-            </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="HEAD" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="NECK" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="SHOULDER" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="BACK" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="CHEST" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="WRIST" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="HANDS" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="WAIST" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="LEGS" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="FEET" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="FINGER_1" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="FINGER_2" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="TRINKET_1" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="TRINKET_2" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="MAIN_HAND" />
+                </span>
+                <span class="gg-col">
+                    <gear-ilvl [equipment]="equipment()!.equipped_items" slot="OFF_HAND" />
+                </span>
+            }
         }
-    }
-</div>
+    </mat-card-content>
+</mat-card>

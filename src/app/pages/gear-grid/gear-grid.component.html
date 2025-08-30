@@ -1,80 +1,82 @@
 <div class="page-container">
     @if (loading()) {
         <div class="centered">
-            <mat-spinner diameter="30" color="accent"></mat-spinner>
+            <mat-spinner diameter="30" />
         </div>
     } @else if (!characterInfo().length) {
         <div class="no-characters">No characters set up!</div>
     } @else {
         <div class="characters">
-            <div class="character">
-                <span class="cc-icon"></span>
-                <span class="cc"></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'head' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'neck' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'shoulder' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'back' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'chest' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'wrist' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'hands' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'waist' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'legs' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'feet' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'finger' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'finger' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'trinket' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'trinket' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'mainhand' | icon: 'gear-slot'"
-                ></span>
-                <span
-                    class="gg-col gg-icon"
-                    [style.background-image]="'offhand' | icon: 'gear-slot'"
-                ></span>
-            </div>
+            <mat-card appearance="filled">
+                <mat-card-content>
+                    <span class="cc-icon"></span>
+                    <span class="cc"></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'head' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'neck' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'shoulder' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'back' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'chest' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'wrist' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'hands' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'waist' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'legs' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'feet' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'finger' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'finger' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'trinket' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'trinket' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'mainhand' | icon: 'gear-slot'"
+                    ></span>
+                    <span
+                        class="gg-col gg-icon"
+                        [style.background-image]="'offhand' | icon: 'gear-slot'"
+                    ></span>
+                </mat-card-content>
+            </mat-card>
 
             @for (ci of characterInfo(); track ci.region + ci.realm + ci.name) {
                 <gear-line [characterInfo]="ci" />

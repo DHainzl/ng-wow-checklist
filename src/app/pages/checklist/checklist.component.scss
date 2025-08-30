@@ -1,12 +1,6 @@
-:host {
-    display: block;
-    margin-bottom: 30px;
-}
-
 table {
     width: 100%;
 }
-
 
 [mat-card-avatar] {
     margin-top: 20px;
@@ -14,26 +8,23 @@ table {
 }
 
 mat-card-subtitle {
-    font-weight: lighter;
     font-size: 15px;
 }
 
-.page-actions {
-    padding: 10px 16px;
-
-    mat-checkbox {
-        display: block;
-        margin-top: 8px;
-    }
+.checklist {
+    background-color: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+    border-radius: var(--mat-sys-corner-medium);
+    padding: 10px 0;
 }
 
 .completion-alert {
-    background-color: var(--mat-sys-primary);
+    background-color: var(--mat-sys-tertiary-container);
+    color: var(--mat-sys-on-tertiary-container);
+    border-radius: var(--mat-sys-corner-medium);
     text-align: center;
     padding: 12px 10px;
     margin-bottom: 20px;
-    color: black;
-    border: 1px solid black;
     font-weight: 500;
 }
 

@@ -6,7 +6,7 @@ import { UserInfoService } from '../../core/services/battle-net/userinfo/userinf
 
 @Component({
     templateUrl: './login.component.html',
-    styleUrls: [ './login.component.scss' ],
+    styleUrls: [ '../page-style.scss', './login.component.scss' ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatButtonModule,
