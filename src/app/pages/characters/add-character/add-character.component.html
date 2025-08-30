@@ -1,29 +1,35 @@
 <h1 mat-dialog-title>Add character</h1>
 
-<div mat-dialog-content [formGroup]="form">
+<mat-dialog-content [formGroup]="form">
     <mat-form-field color="accent">
         <mat-label>Region</mat-label>
         <mat-select formControlName="region">
-            <mat-option *ngFor="let region of regions" [value]="region">
-                {{ region | uppercase}}
-            </mat-option>
+            @for (region of regions; track region) {
+                <mat-option [value]="region">
+                    {{ region | uppercase }}
+                </mat-option>
+            }
         </mat-select>
     </mat-form-field>
     <mat-form-field color="accent">
         <mat-label>
-            {{ getCharacterLabel() }}
+            {{ characterLabel() }}
         </mat-label>
         <mat-select formControlName="character">
-            <mat-optgroup *ngFor="let realmWithCharacters of charactersByRealm" [label]="realmWithCharacters.realm">
-                <mat-option *ngFor="let character of realmWithCharacters.characters" [value]="character" [disabled]="characterAdded(character)">
-                    {{ character.name }}
-                </mat-option>
-            </mat-optgroup>
+            @for (realmWithCharacters of charactersByRealm(); track realmWithCharacters.realm) {
+                <mat-optgroup [label]="realmWithCharacters.realm">
+                    @for (character of realmWithCharacters.characters; track character.id) {
+                        <mat-option [value]="character" [disabled]="characterAdded(character)">
+                            {{ character.name }}
+                        </mat-option>
+                    }
+                </mat-optgroup>
+            }
         </mat-select>
     </mat-form-field>
-</div>
+</mat-dialog-content>
 
-<div mat-dialog-actions>
-    <button mat-button (click)="close()">Cancel</button>
-    <button mat-raised-button color="primary" (click)="addCharacter()" [disabled]="form.invalid">Add</button>
-</div>
+<mat-dialog-actions>
+    <button matButton (click)="close()">Cancel</button>
+    <button matButton="filled" (click)="addCharacter()" [disabled]="form.invalid">Add</button>
+</mat-dialog-actions>

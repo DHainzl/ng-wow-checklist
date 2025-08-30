@@ -1,16 +1,27 @@
-import { Component, Inject } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { CharactersService } from "src/app/core/services/battle-net/characters/characters.service";
-import { CharacterIngameData } from "src/app/core/services/character-store/character-store.interface";
-import { CharacterStoreService } from "src/app/core/services/character-store/character-store.service";
-
+import { ChangeDetectionStrategy, Component, Inject, signal } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { CharacterIngameData } from "../../../core/services/character-store/character-store.interface";
+import { CharacterStoreService } from "../../../core/services/character-store/character-store.service";
 @Component({
     templateUrl: './ingame-import-dialog.component.html',
     styleUrls: [ './ingame-import-dialog.component.scss' ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+
+        FormsModule,
+    ],
 })
 export class IngameImportDialogComponent {
-    error: string = '';
-    importData: string = '';
+    error = signal<string>('');
+    importData = signal<string>('');
 
     constructor(
         @Inject(MAT_DIALOG_DATA) private data: {
@@ -24,13 +35,13 @@ export class IngameImportDialogComponent {
     ) { }
 
     import(): void {
-        if (!this.importData) {
-            this.error = 'Please paste some text';
+        if (!this.importData()) {
+            this.error.set('Please paste some text');
             return;
         }
 
         try {
-            const parsed: CharacterIngameData = JSON.parse(this.importData);
+            const parsed: CharacterIngameData = JSON.parse(this.importData());
 
             if (parsed && 
                 parsed.character.region.toLocaleLowerCase() === this.data.region.toLocaleLowerCase() &&
@@ -40,12 +51,12 @@ export class IngameImportDialogComponent {
                 this.characterStoreService.setIngameData(parsed);
                 this.dialogRef.close(true);
             } else {
-                this.error = `Imported character ${parsed.character.name} seems to be different than this one.`;
+                this.error.set(`Imported character ${parsed.character.name} seems to be different than this one.`);
                 return;
             }
 
         } catch (ex) {
-            this.error = 'Could not parse pasted data.';
+            this.error.set('Could not parse pasted data.');
             return;
         }
     }

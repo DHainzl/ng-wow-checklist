@@ -1,10 +1,8 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { CharacterInfo } from 'src/app/core/services/character-store/character-store.interface';
-import { ChecklistItemReputation } from 'src/app/core/services/checklist/checklist.interface';
-
 import { BattleNetCharacterReputation, BattleNetCharacterReputations } from '../../battle-net/character/types/battlenet-reputation';
+import { CharacterInfo } from '../../character-store/character-store.interface';
+import { ChecklistItemReputation } from '../../checklist/checklist.interface';
 import { ReputationTiersService } from '../../reputation-tiers/reputation-tiers.service';
-
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemReputation> {
@@ -24,7 +22,7 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
         this.subscription.unsubscribe();
     }
 
-    private evaluate(reputations: BattleNetCharacterReputations, overrides: CharacterInfo['overrides']): void {
+    private evaluate(reputations: BattleNetCharacterReputations | undefined, overrides: CharacterInfo['overrides']): void {
         if (!reputations || !overrides) {
             this._completed$.next('loading');
             this._note$.next(undefined);
@@ -40,7 +38,7 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
             return;
         }
 
-        const isCompleted = reputation.standing.tier >= max;
+        const isCompleted = (reputation.standing.tier ?? 0) >= max;
 
         if (isCompleted) {
             this._completed$.next('complete');
@@ -61,7 +59,7 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
         return `${this.item.name}: ${tiers.tiers[max].name}`;
     }
 
-    private getReputation(reputations: BattleNetCharacterReputations): BattleNetCharacterReputation {
+    private getReputation(reputations: BattleNetCharacterReputations): BattleNetCharacterReputation | undefined {
         return reputations.reputations.find(reputation => reputation.faction.id === this.item.id);
     }
 

@@ -3,6 +3,7 @@
 ::ng-deep h2, ::ng-deep h3, ::ng-deep h4 {
     font-weight: 500 !important;
     margin-bottom: 0 !important;
+    margin-top: 0 !important;
 }
 
 .row {
@@ -11,13 +12,13 @@
     display: flex;
 
     &.incomplete {
-        background-color: mat.get-color-from-palette(mat.define-palette(mat.$orange-palette, 200));
+        background-color: #ffcc80;
     }
     &.complete {
-        background-color: mat.get-color-from-palette(mat.define-palette(mat.$light-green-palette, 300));
+        background-color: #aed581;
     }
     &.subitem {
-        background-color: mat.get-color-from-palette(mat.define-palette(mat.$indigo-palette, 200));
+        background-color: #9fa8da;
     }
 
     > div {

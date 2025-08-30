@@ -1,7 +1,0 @@
-@use '@angular/material' as mat;
-
-$primary-palette: mat.define-palette(mat.$deep-purple-palette);
-$accent-palette: mat.define-palette(mat.$deep-orange-palette);
-
-$primary: mat.get-color-from-palette($primary-palette);
-$accent: mat.get-color-from-palette($accent-palette);

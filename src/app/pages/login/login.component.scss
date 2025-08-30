@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 .login-container {
     text-align: center;
     width: 400px;
@@ -16,6 +18,9 @@ button.login-button {
     font-weight: bold;
 
     &.battlenet {
-        background-color: #0e86ca;
+        @include mat.button-overrides((
+            filled-container-color: #0e86ca,
+            filled-label-text-color: white,
+        ));
     }
 }

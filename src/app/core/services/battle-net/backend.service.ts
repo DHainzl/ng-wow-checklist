@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 interface ErrorResponse {
     code: number;
@@ -11,11 +11,9 @@ interface ErrorResponse {
 
 @Injectable({ providedIn: 'root' })
 export class BackendService {
-    constructor(
-        private http: HttpClient,
-    ) { }
+    private http = inject(HttpClient);
 
-    getData<T>(url: string): Observable<T> {
+    getData<T extends object>(url: string): Observable<T> {
         return this.http.get<T | ErrorResponse>(url, {
             headers: new HttpHeaders({
                 Accept: 'application/json',
@@ -23,16 +21,16 @@ export class BackendService {
             }),
             withCredentials: true,
         }).pipe(
-            flatMap(data => {
+            mergeMap(data => {
                 if (this.isErrorResponse(data)) {
-                    return throwError(`Backend returned error: ${data.type} (${data.code} ${data.detail})`);
+                    return throwError(() => new Error(`Backend returned error: ${data.type} (${data.code} ${data.detail})`));
                 }
                 return of(data);
             }),
         );
     }
 
-    private isErrorResponse<T>(data: T | ErrorResponse): data is ErrorResponse {
-        return data.hasOwnProperty('type') && data.hasOwnProperty('code') && data.hasOwnProperty('detail');
+    private isErrorResponse<T extends object>(data: T | ErrorResponse): data is ErrorResponse {
+        return 'type' in data && 'code' in data && 'detail' in data;
     }
 }

@@ -1,10 +1,14 @@
-<div class="login-container" *ngIf="!loading; else loadingDiv">
-    <div class="login-text">
-        <h2>Login</h2>
-        <p>You are currently not logged in. Click below to use the application.</p>
-    </div>
-    <button mat-flat-button class="login-button battlenet" (click)="login()">Login via battle.net</button>
-</div>
-<ng-template #loadingDiv>
+@if (loading()) {
     Loading ...
-</ng-template>
+} @else {
+    <div class="login-container">
+        <div class="login-text">
+            <h2>Login</h2>
+            <p>You are currently not logged in. Click below to use the application.</p>
+        </div>
+
+        <button matButton="filled" class="login-button battlenet" (click)="login()">
+            Login via battle.net
+        </button>
+    </div>
+}

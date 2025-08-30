@@ -1,24 +1,20 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { flatMap, tap } from 'rxjs/operators';
-
+import { mergeMap, tap } from 'rxjs/operators';
 import { Region } from '../battle-net/battle-net.interface';
 import { LocalStorageService } from '../local-storage/local-storage.service';
-
 import { CharacterInfo, CharacterIngameData } from './character-store.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CharacterStoreService {
-    private _charactersChanged$: BehaviorSubject<CharacterInfo[]> = new BehaviorSubject([]);
+    private readonly localStorage = inject(LocalStorageService);
+
+    private readonly _charactersChanged$: BehaviorSubject<CharacterInfo[]> = new BehaviorSubject<CharacterInfo[]>([]);
 
     get charactersChanged(): Observable<CharacterInfo[]> { return this._charactersChanged$.asObservable(); }
 
-    constructor(
-        private localStorage: LocalStorageService,
-    ) { }
-
     getCharacters(): Observable<CharacterInfo[]> {
-        const characters: CharacterInfo[] = this.localStorage.get('characters');
+        const characters = this.localStorage.get<CharacterInfo[]>('characters');
 
         if (!characters) {
             this._charactersChanged$.next([]);
@@ -30,13 +26,13 @@ export class CharacterStoreService {
     }
 
     getCharacter(region: Region, realm: string, name: string): Observable<CharacterInfo> {
-        const characters: CharacterInfo[] = this.localStorage.get('characters');
+        const characters = this.localStorage.get<CharacterInfo[]>('characters') ?? [];
         const character = characters.find(c => {
             return c.region === region.toLocaleLowerCase() && c.realm === realm.toLocaleLowerCase() && c.name === name.toLocaleLowerCase();
         });
 
         if (!character) {
-            return throwError(`Could not find character ${name}@${region}-${realm}!`);
+            return throwError(() => new Error(`Could not find character ${name}@${region}-${realm}!`));
         }
 
         return of(character);
@@ -45,7 +41,7 @@ export class CharacterStoreService {
     addCharacter(character: CharacterInfo): Observable<undefined> {
         return this.getCharacters().pipe(
             tap(allCharacters => allCharacters.push(character)),
-            flatMap(allCharacters => this.setCharacters(allCharacters)),
+            mergeMap(allCharacters => this.setCharacters(allCharacters)),
         );
     }
 
@@ -57,7 +53,7 @@ export class CharacterStoreService {
 
     setCharacter(character: CharacterInfo): Observable<undefined> {
         return this.getCharacters().pipe(
-            flatMap(allCharacters => {
+            mergeMap(allCharacters => {
                 const idx = allCharacters
                     .findIndex(c => c.region === character.region && c.realm === character.realm && c.name === character.name);
 
@@ -72,7 +68,7 @@ export class CharacterStoreService {
         );
     }
 
-    getIngameData(region: Region, realm: string, name: string): CharacterIngameData {
+    getIngameData(region: Region, realm: string, name: string): CharacterIngameData | undefined {
         const allData: CharacterIngameData[] = this.localStorage.get('ingame-data') || [];
         return allData
             .find(c => c.character.region === region && c.character.realm === realm && c.character.name === name);

@@ -1,9 +1,8 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { CharacterInfo } from 'src/app/core/services/character-store/character-store.interface';
-import { ChecklistItemSecondaryProfession } from 'src/app/core/services/checklist/checklist.interface';
+import { BattleNetProfessions } from '../../battle-net/character/types/battlenet-profession';
 
-import { BattleNetProfessions, BattleNetProfessionSkill, isTieredProfession } from '../../battle-net/character/types/battlenet-profession';
-
+import { CharacterInfo } from '../../character-store/character-store.interface';
+import { ChecklistItemSecondaryProfession } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 import { getProfession } from './primary-profession-handler';
 
@@ -11,10 +10,10 @@ export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<Checkl
     subscription: Subscription = new Subscription();
 
     handlerInit(): void {
-        this.subscription = combineLatest(
+        this.subscription = combineLatest([
             this.checklistRequestContainer.professionsChanged,
             this.checklistRequestContainer.overridesChanged,
-        ).subscribe(([ professions, overrides ]) => {
+        ]).subscribe(([ professions, overrides ]) => {
             this.evaluate(professions, overrides);
         });
     }
@@ -23,7 +22,7 @@ export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<Checkl
         this.subscription.unsubscribe();
     }
 
-    private evaluate(professions: BattleNetProfessions, overrides: CharacterInfo['overrides']): void {
+    private evaluate(professions: BattleNetProfessions | undefined, overrides: CharacterInfo['overrides'] | undefined): void {
         if (!professions || !professions.secondaries || !overrides) {
             this._shown$.next(false);
             this._note$.next(undefined);

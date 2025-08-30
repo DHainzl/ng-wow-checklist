@@ -1,29 +1,26 @@
-import { Injectable } from '@angular/core';
-import { EventManager } from '@angular/platform-browser';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, fromEvent } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 
-export type ScreenSize = 's' | 'm' | 'l' | 'xl';
+export type ScreenSize = 'unknown' | 's' | 'm' | 'l' | 'xl';
 
 @Injectable({ providedIn: 'root' })
 export class ResponsiveService {
+    private readonly mediaMatcher = inject(MediaMatcher);
+
     sizeChanged: BehaviorSubject<ScreenSize> = new BehaviorSubject(this.getScreenSize());
 
-    private onResize: Subject<void> = new Subject();
-
-    constructor(
-         private eventManager: EventManager,
-    ) {
-        this.onResize.pipe(
+    constructor() {
+        fromEvent(window, 'resize').pipe(
             debounceTime(50),
             map(() => this.getScreenSize()),
         ).subscribe(screenSize => this.sizeChanged.next(screenSize));
-        this.eventManager.addGlobalEventListener('window', 'resize', () => this.onResize.next());
     }
 
     private getScreenSize(): ScreenSize {
         if (!window) {
-            return;
+            return 'unknown';
         }
 
         const width = window.innerWidth;

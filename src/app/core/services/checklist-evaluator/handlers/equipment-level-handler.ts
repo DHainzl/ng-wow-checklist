@@ -1,8 +1,6 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItemAverageEquipmentLevel, ChecklistItemEquipmentLevel } from 'src/app/core/services/checklist/checklist.interface';
-
 import { BattleNetEquipment, BattleNetEquipmentItem } from '../../battle-net/character/types/battlenet-equipment';
-
+import { ChecklistItemEquipmentLevel } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEquipmentLevel> {
@@ -18,7 +16,7 @@ export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEqu
         this.subscription.unsubscribe();
     }
 
-    private evaluate(equipment: BattleNetEquipment): void {
+    private evaluate(equipment: BattleNetEquipment | undefined): void {
         if (!equipment) {
             this._completed$.next('loading');
             this._subitems$.next([]);
@@ -47,7 +45,7 @@ export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEqu
         }
     }
 
-    private getItem(equipment: BattleNetEquipment): BattleNetEquipmentItem {
+    private getItem(equipment: BattleNetEquipment): BattleNetEquipmentItem | undefined {
         return equipment.equipped_items.find(item => item.slot.type === this.item.slot);
     }
 }

@@ -1,19 +1,17 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { ChecklistItemAchievement } from 'src/app/core/services/checklist/checklist.interface';
-
 import { BattleNetAchievement, BattleNetAchievements } from '../../battle-net/character/types/battlenet-achievement';
 import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';
-
+import { ChecklistItemAchievement } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemAchievement> {
     subscription: Subscription = new Subscription();
 
     handlerInit(): void {
-        this.subscription = combineLatest(
+        this.subscription = combineLatest([
             this.checklistRequestContainer.achievementsChanged,
             this.checklistRequestContainer.profileChanged,
-        ).subscribe(([ achievements, profile ]) => {
+        ]).subscribe(([ achievements, profile ]) => {
             this.evaluate(achievements, profile);
         });
     }
@@ -22,7 +20,7 @@ export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemA
         this.subscription.unsubscribe();
     }
 
-    private evaluate(achievements: BattleNetAchievements, profile: BattleNetProfile): void {
+    private evaluate(achievements: BattleNetAchievements | undefined, profile: BattleNetProfile | undefined): void {
         if (!achievements || !profile) {
             this._completed$.next('loading');
             return;
@@ -39,7 +37,7 @@ export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemA
         this._wowheadId$.next(this.getWowheadId(achievement, profile));
     }
 
-    getWowheadId(achievement: BattleNetAchievement, profile: BattleNetProfile): string {
+    getWowheadId(achievement: BattleNetAchievement | undefined, profile: BattleNetProfile): string {
         let link = `${this.item.type}-${this.item.id}`;
 
         if (!achievement) {
@@ -53,7 +51,7 @@ export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemA
         return link;
     }
 
-    private getAchievement(achievements: BattleNetAchievements): BattleNetAchievement {
+    private getAchievement(achievements: BattleNetAchievements): BattleNetAchievement | undefined {
         return achievements.achievements.find(av => av.id === this.item.id);
     }
 }

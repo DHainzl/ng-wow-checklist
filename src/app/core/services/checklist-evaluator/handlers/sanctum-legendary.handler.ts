@@ -1,7 +1,6 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { CharacterIngameData } from 'src/app/core/services/character-store/character-store.interface';
-import { ChecklistItemSanctumLegendary } from 'src/app/core/services/checklist/checklist.interface';
-
+import { CharacterIngameData } from '../../character-store/character-store.interface';
+import { ChecklistItemSanctumLegendary } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistSanctumLegendaryHandler extends ChecklistHandler<ChecklistItemSanctumLegendary> {
@@ -20,7 +19,7 @@ export class ChecklistSanctumLegendaryHandler extends ChecklistHandler<Checklist
         this.subscription.unsubscribe();
     }
 
-    private evaluate(ingameData: CharacterIngameData): void {
+    private evaluate(ingameData: CharacterIngameData | undefined): void {
         if (!ingameData?.powers) {
             this._completed$.next('loading');
             this._note$.next({

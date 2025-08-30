@@ -1,14 +1,19 @@
 <h2 mat-dialog-title>Import from Ingame Addon</h2>
 <mat-dialog-content class="mat-typography">
-    <p>If you have the ingame addon installed, run <code>/hcl export</code> and paste the code below:</p>
+    <p>
+        If you have the ingame addon installed, run <code>/hcl export</code> and paste the code
+        below:
+    </p>
 
-    <div class="error-alert" *ngIf="error">{{ error }}</div>
+    @if (error()) {
+        <div class="error-alert">{{ error() }}</div>
+    }
 
     <mat-form-field appearance="fill">
-        <textarea matInput [(ngModel)]="importData"></textarea>
+        <textarea matInput [(ngModel)]="importData" rows="8"></textarea>
     </mat-form-field>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-button [mat-dialog-close]="false">Close</button>
-    <button mat-raised-button color="primary" (click)="import()">Import</button>
+<mat-dialog-actions>
+    <button matButton [mat-dialog-close]="false">Close</button>
+    <button matButton="filled" (click)="import()">Import</button>
 </mat-dialog-actions>

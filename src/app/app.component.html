@@ -1,20 +1,49 @@
-<mat-toolbar color="primary" class="mat-elevation-z12">
-    <button mat-icon-button (click)="openSidenav()" *ngIf="isMobile" style="margin-right: 15px;"><mat-icon>menu</mat-icon></button>
+<mat-toolbar class="mat-elevation-z12">
+    @if (isMobile()) {
+        <button matIconButton (click)="openSidenav()" style="margin-right: 15px">
+            <mat-icon>menu</mat-icon>
+        </button>
+    }
+
     <strong>WoW Checklist</strong>
     <span class="toolbar-spacer"></span>
-    <span class="userinfo" *ngIf="userinfo?.battletag">Welcome, {{ userinfo.battletag }}</span>
+
+    @if (userInfo()?.battletag) {
+        <span class="userinfo">Welcome, {{ userInfo()!.battletag }}</span>
+    }
 </mat-toolbar>
 
 <mat-sidenav-container class="mat-typography">
-    <mat-sidenav opened class="mat-elevation-z6" [mode]="isMobile ? 'over' : 'side'" [fixedInViewport]="isMobile" [(opened)]="isOpened">
+    <mat-sidenav
+        class="mat-elevation-z6"
+        [mode]="isMobile() ? 'over' : 'side'"
+        [fixedInViewport]="isMobile()"
+        [(opened)]="isOpened"
+    >
         <a class="link" routerLink="home" routerLinkActive="active" (click)="closeSidenav()">
             <mat-icon>home</mat-icon>
             <span>Checklist</span>
         </a>
         <div class="submenu">
-            <a *ngFor="let character of allCharacters" class="small-link" routerLinkActive="active" [routerLink]="[ '/', character.region, character.realm, character.name, 'checklist' ]" (click)="closeSidenav()">
-                <span class="character">{{ character.name }}</span>
-            </a>
+            @for (
+                character of allCharacters();
+                track character.region + character.realm + character.name
+            ) {
+                <a
+                    class="small-link"
+                    routerLinkActive="active"
+                    [routerLink]="[
+                        '/',
+                        character.region,
+                        character.realm,
+                        character.name,
+                        'checklist',
+                    ]"
+                    (click)="closeSidenav()"
+                >
+                    <span class="character">{{ character.name }}</span>
+                </a>
+            }
         </div>
         <a class="link" routerLink="gear-grid" routerLinkActive="active" (click)="closeSidenav()">
             <mat-icon>grid_on</mat-icon>

@@ -1,28 +1,43 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatTabsModule } from "@angular/material/tabs";
+import { Title } from "@angular/platform-browser";
 import { Subscription } from "rxjs";
-import { CharacterStoreService } from "src/app/core/services/character-store/character-store.service";
+import { CharacterStoreService } from "../../core/services/character-store/character-store.service";
 
 @Component({
     templateUrl: './import.component.html',
     styleUrls: [ './import.component.scss' ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatTabsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+
+        FormsModule,
+    ],
 })
 export class ImportComponent implements OnInit, OnDestroy {
-    exportData: string;
-    importData: string = '';
+    private readonly characterStoreService = inject(CharacterStoreService);
+    private readonly snackBar = inject(MatSnackBar);
+    private readonly titleService = inject(Title);
+
+    readonly exportData = signal<string>('');
+    readonly importData = signal<string>('');
 
     private subscriptions = new Subscription();
 
-    constructor(
-        private characterStoreService: CharacterStoreService,
-        private snackBar: MatSnackBar,
-    ) { }
-
     ngOnInit(): void {
+        this.titleService.setTitle('Import / Export');
         this.characterStoreService.getCharacters();
 
         this.subscriptions.add(this.characterStoreService.charactersChanged.subscribe(characters => {
-            this.exportData = JSON.stringify(characters);
+            this.exportData.set(JSON.stringify(characters));
         }));
     }
     
@@ -31,18 +46,18 @@ export class ImportComponent implements OnInit, OnDestroy {
     }
 
     import() {
-        if (!this.importData) {
+        if (!this.importData()) {
             this.snackBar.open('Please enter some data to import', 'OK');
             return;
         }
 
         try {
-            const data = JSON.parse(this.importData);
+            const data = JSON.parse(this.importData());
 
             this.characterStoreService.setCharacters(data);
 
-            this.exportData = this.importData;
-            this.importData = '';
+            this.exportData.set(this.importData());
+            this.importData.set('');
 
             this.snackBar.open('Data imported successfully!', 'OK');
         } catch (ex) {

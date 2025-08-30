@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { BattleNetMedia } from 'src/app/core/services/battle-net/character/types/battlenet-media';
+import { BattleNetMedia } from '../../core/services/battle-net/character/types/battlenet-media';
 
 @Pipe({
     name: 'mediaAsset',

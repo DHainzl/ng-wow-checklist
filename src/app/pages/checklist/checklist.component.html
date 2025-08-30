@@ -1,56 +1,83 @@
 <div class="page-container">
-    <ng-container *ngIf="!error; else errorDiv">
+    @if (error()) {
+        <div class="error">
+            There was an error loading this character. Ensure that it exists and you have logged in
+            recently.
+        </div>
+    } @else {
         <div class="page-actions group">
             <div class="pull-left">
-                <button mat-icon-button (click)="refresh()" aria-label="Refresh All" [disabled]="loading">
+                <button
+                    matIconButton
+                    (click)="refresh()"
+                    aria-label="Refresh All"
+                    [disabled]="loading()"
+                >
                     <mat-icon>refresh</mat-icon>
                 </button>
-                <button mat-icon-button (click)="import()" aria-label="Import from Ingame Addon" [disabled]="loading">
+                <button
+                    matIconButton
+                    (click)="import()"
+                    aria-label="Import from Ingame Addon"
+                    [disabled]="loading()"
+                >
                     <mat-icon>import_export</mat-icon>
                 </button>
             </div>
 
             <div class="pull-right">
-                <mat-checkbox [(ngModel)]="hideCompleted" (ngModelChange)="hideCompletedChange($event)">Hide completed items</mat-checkbox>
+                <mat-checkbox
+                    [(ngModel)]="hideCompleted"
+                    (ngModelChange)="hideCompletedChange($event)"
+                >
+                    Hide completed items
+                </mat-checkbox>
             </div>
         </div>
 
         <mat-card>
-            <ng-container *ngIf="!loading; else loadingDiv">
+            @if (loading()) {
+                <mat-card-content>
+                    <div class="loading centered-x">
+                        <mat-spinner diameter="25" color="accent"></mat-spinner>
+                    </div>
+                </mat-card-content>
+            } @else {
                 <mat-card-header>
-                    <div mat-card-avatar [style.background-image]="media | mediaAsset:'avatar' | safeBackgroundImage"></div>
-                    <mat-card-title>{{ profile.name | addTitle:profile.active_title }}</mat-card-title>
+                    <div
+                        mat-card-avatar
+                        [style.background-image]="
+                            media()! | mediaAsset: 'avatar' | safeBackgroundImage
+                        "
+                    ></div>
+                    <mat-card-title>{{
+                        profile()!.name | addTitle: profile()!.active_title
+                    }}</mat-card-title>
                     <mat-card-subtitle>
-                        Level {{ profile.level }}
-                        {{ profile.race.name }}
-                        <span class="cc cc-{{ profile.character_class.id }}">{{ profile.character_class.name }}</span><br>
-                        Item Level: {{ profile.equipped_item_level }}<br>
+                        Level {{ profile()!.level }}
+                        {{ profile()!.race.name }}
+                        <span class="cc cc-{{ profile()!.character_class.id }}">{{
+                            profile()!.character_class.name
+                        }}</span
+                        ><br />
+                        Item Level: {{ profile()!.equipped_item_level }}<br />
                     </mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
-                    <div *ngIf="allCompleted" class="completion-alert">🎉 You have successfully completed all items on your checklist! 🎉</div>
-                    <ng-container *ngFor="let item of checklist">
-                        <checklist-line [handler]="item.handler" [hideCompleted]="hideCompleted"></checklist-line>
-                    </ng-container>
+                    @if (allCompleted()) {
+                        <div class="completion-alert">
+                            🎉 You have successfully completed all items on your checklist! 🎉
+                        </div>
+                    }
+
+                    @for (item of checklist(); track item) {
+                        <checklist-line
+                            [handler]="item.handler!"
+                            [hideCompleted]="hideCompleted()"
+                        />
+                    }
                 </mat-card-content>
-            </ng-container>
+            }
         </mat-card>
-    </ng-container>
+    }
 </div>
-
-
-<ng-template #loadingDiv>
-    <div class="loading centered-x">
-        <mat-spinner diameter="25" color="accent"></mat-spinner>
-    </div>
-</ng-template>
-
-<ng-template #loadingDiv2>
-    <div class="centered-x">
-        <mat-spinner diameter="20"></mat-spinner>
-    </div>
-</ng-template>
-
-<ng-template #errorDiv>
-    <div class="error">There was an error loading this character. Ensure that it exists and you have logged in recently.</div>
-</ng-template>

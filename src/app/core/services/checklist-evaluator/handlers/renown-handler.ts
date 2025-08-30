@@ -1,8 +1,6 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItemRenown } from 'src/app/core/services/checklist/checklist.interface';
-
 import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';
-
+import { ChecklistItemRenown } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistRenownHandler extends ChecklistHandler<ChecklistItemRenown> {
@@ -18,14 +16,14 @@ export class ChecklistRenownHandler extends ChecklistHandler<ChecklistItemRenown
         this.subscription.unsubscribe();
     }
 
-    private evaluate(profile: BattleNetProfile): void {
+    private evaluate(profile: BattleNetProfile | undefined): void {
         if (!profile) {
             this._completed$.next('loading');
             this._note$.next(undefined);
             return;
         }
 
-        const isCompleted = profile.covenant_progress?.renown_level >= this.item.threshold;
+        const isCompleted = (profile.covenant_progress?.renown_level ?? 0) >= this.item.threshold;
 
         if (isCompleted) {
             this._completed$.next('complete');

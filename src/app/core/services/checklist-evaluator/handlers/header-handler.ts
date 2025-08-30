@@ -1,7 +1,6 @@
-import { combineLatest, from, Observable, of, Subscription } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
-import { ChecklistItem, ChecklistItemHeader } from 'src/app/core/services/checklist/checklist.interface';
-
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ChecklistItem, ChecklistItemHeader } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 import { CompletionStatus } from './_handler.interface';
 
@@ -52,7 +51,7 @@ export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader
         return subitems
             .filter(subitem => subitem.type !== 'header')
             .map(subitem => {
-                return combineLatest([ subitem.handler.shown, subitem.handler.completed ]).pipe(
+                return combineLatest([ subitem.handler!.shown, subitem.handler!.completed ]).pipe(
                     map(([ shown, completed ]) => ({ shown, completed })),
                 );
             });

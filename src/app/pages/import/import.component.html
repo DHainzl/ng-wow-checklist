@@ -1,12 +1,10 @@
 <mat-tab-group>
     <mat-tab label="Export">
         <div class="export-tab">
-            <p>
-                You can copy the following data somewhere save to backup your settings.
-            </p>
-    
+            <p>You can copy the following data somewhere save to backup your settings.</p>
+
             <mat-form-field appearance="fill">
-                <textarea matInput readonly>{{ exportData }}</textarea>
+                <textarea matInput readonly rows="15">{{ exportData() }}</textarea>
             </mat-form-field>
         </div>
     </mat-tab>
@@ -18,10 +16,10 @@
             </p>
 
             <mat-form-field appearance="fill">
-                <textarea matInput [(ngModel)]="importData"></textarea>
+                <textarea matInput [(ngModel)]="importData" rows="15"></textarea>
             </mat-form-field>
 
-            <button mat-raised-button color="primary" (click)="import()">Import</button>
+            <button matButton="filled" (click)="import()">Import</button>
         </div>
-</mat-tab>
+    </mat-tab>
 </mat-tab-group>

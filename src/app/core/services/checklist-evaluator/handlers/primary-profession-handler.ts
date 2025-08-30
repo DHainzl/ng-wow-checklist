@@ -1,29 +1,22 @@
 import { Subscription } from 'rxjs';
 import {
-    ChecklistItem,
-    ChecklistItemPrimaryProfession,
-    ChecklistItemSecondaryProfession,
-} from 'src/app/core/services/checklist/checklist.interface';
-import { ChecklistRequestContainerService } from 'src/app/pages/checklist/services/checklist-request-container.service';
-
-import {
     BattleNetProfession,
     BattleNetProfessions,
     BattleNetProfessionSkill,
     isTieredProfession,
 } from '../../battle-net/character/types/battlenet-profession';
 import { CharacterStoreService } from '../../character-store/character-store.service';
-
+import { ChecklistItem, ChecklistItemPrimaryProfession, ChecklistItemSecondaryProfession } from '../../checklist/checklist.interface';
+import { ChecklistRequestContainerService } from '../checklist-request-container.service';
 import { ChecklistHandler } from './_handler';
-
 export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<ChecklistItemPrimaryProfession> {
     subscription: Subscription = new Subscription();
 
     constructor(
-        protected checklistRequestContainer: ChecklistRequestContainerService,
-        protected characterStoreService: CharacterStoreService,
-        protected item: ChecklistItemPrimaryProfession,
-        protected allItems: ChecklistItem[],
+        protected override checklistRequestContainer: ChecklistRequestContainerService,
+        protected override characterStoreService: CharacterStoreService,
+        protected override item: ChecklistItemPrimaryProfession,
+        protected override allItems: ChecklistItem[],
     ) {
         super(checklistRequestContainer, characterStoreService, item, allItems);
         this._shown$.next(false);
@@ -39,7 +32,7 @@ export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<Checklis
         this.subscription.unsubscribe();
     }
 
-    private evaluate(professions: BattleNetProfessions): void {
+    private evaluate(professions: BattleNetProfessions | undefined): void {
         if (!professions || !professions.primaries) {
             this._completed$.next('loading');
             this._shown$.next(false);
@@ -68,7 +61,7 @@ export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<Checklis
 export function getProfession(
     professions: BattleNetProfession[],
     item: ChecklistItemPrimaryProfession | ChecklistItemSecondaryProfession,
-): BattleNetProfessionSkill {
+): BattleNetProfessionSkill | undefined {
     for (const profession of professions) {
         if (isTieredProfession(profession)) {
             const prof = profession.tiers.find(tier => tier.tier.id === item.id);
@@ -82,5 +75,5 @@ export function getProfession(
         }
     }
 
-    return null;
+    return undefined;
 }

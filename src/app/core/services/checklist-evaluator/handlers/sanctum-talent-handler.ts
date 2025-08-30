@@ -1,7 +1,6 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { CharacterIngameData } from 'src/app/core/services/character-store/character-store.interface';
-import { ChecklistItemSanctumTalent } from 'src/app/core/services/checklist/checklist.interface';
-
+import { CharacterIngameData } from '../../character-store/character-store.interface';
+import { ChecklistItemSanctumTalent } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistSanctumTalentHandler extends ChecklistHandler<ChecklistItemSanctumTalent> {
@@ -9,8 +8,7 @@ export class ChecklistSanctumTalentHandler extends ChecklistHandler<ChecklistIte
 
     handlerInit(): void {
         this.subscription = combineLatest([
-            this.checklistRequestContainer.ingameDataChanged
-            ,
+            this.checklistRequestContainer.ingameDataChanged,
         ]).subscribe(([ ingameData ]) => {
             this.evaluate(ingameData);
         });
@@ -20,7 +18,7 @@ export class ChecklistSanctumTalentHandler extends ChecklistHandler<ChecklistIte
         this.subscription.unsubscribe();
     }
 
-    private evaluate(ingameData: CharacterIngameData): void {
+    private evaluate(ingameData: CharacterIngameData | undefined): void {
         if (!ingameData) {
             this._completed$.next('loading');
             this._note$.next({

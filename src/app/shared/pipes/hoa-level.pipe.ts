@@ -12,6 +12,6 @@ export class HoALevelPipe implements PipeTransform {
             return 0;
         }
 
-        return hoa.azerite_details.level.value;
+        return hoa.azerite_details.level!.value;
     }
 }

@@ -1,23 +1,41 @@
-<div *ngIf="shown && (completed != 'complete' || !hideCompleted)" class="row" [class.complete]="completed == 'complete'" [class.incomplete]="completed !== 'complete'">
-    <div class="column-label">
-        <a [attr.data-wowhead]="wowheadId" [href]="noNavHref">
-            <span class="item-name item-indention-{{ indention }}" [innerHTML]="label"></span>
-        </a>
+@if (shown() && (completed() != 'complete' || !hideCompleted())) {
+    <div
+        class="row"
+        [class.complete]="completed() == 'complete'"
+        [class.incomplete]="completed() !== 'complete'"
+    >
+        <div class="column-label">
+            <a [attr.data-wowhead]="wowheadId()" [href]="noNavHref">
+                <span
+                    class="item-name item-indention-{{ indention() }}"
+                    [innerHTML]="label()"
+                ></span>
+            </a>
+        </div>
+        <div class="column-note">
+            @switch (note()?.type) {
+                @case ('text') {
+                    {{ $any(note()).text }}
+                }
+                @case ('button') {
+                    <button matButton (click)="runOnClick()">{{ $any(note()).label }}</button>
+                }
+            }
+        </div>
+        <div class="column-completed">
+            <mat-icon>{{ icon() }}</mat-icon>
+        </div>
     </div>
-    <div class="column-note" [ngSwitch]="note?.type">
-        <ng-container *ngSwitchCase="'text'">{{ $any(note).text }}</ng-container>
-        <button mat-button *ngSwitchCase="'button'" (click)="runOnClick()">{{ $any(note).label }}</button>
-    </div>
-    <div class="column-completed">
-        <mat-icon *ngIf="completed === 'complete'">check</mat-icon>
-        <mat-icon *ngIf="completed === 'incomplete'">close</mat-icon>
-        <mat-icon *ngIf="completed === 'loading'">sync</mat-icon>
-    </div>
-</div>
-<ng-container *ngIf="subitems && subitems.length">
-    <div *ngFor="let subitem of subitems" class="row subitem">
-        <div class="column-label"><span class="item-name item-indention-{{ indention + 1}}">{{ subitem }}</span></div>
-        <div class="column-note"></div>
-        <div class="column-completed"></div>
-    </div>
-</ng-container>
+}
+
+@if (subitems()?.length) {
+    @for (subitem of subitems(); track subitem) {
+        <div class="row subitem">
+            <div class="column-label">
+                <span class="item-name item-indention-{{ indention()! + 1 }}">{{ subitem }}</span>
+            </div>
+            <div class="column-note"></div>
+            <div class="column-completed"></div>
+        </div>
+    }
+}

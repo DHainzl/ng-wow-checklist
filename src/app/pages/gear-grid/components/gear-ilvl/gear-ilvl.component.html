@@ -1,8 +1,10 @@
-<a class="gg-ilvl"
-    [class.gg-red]="item?.level.value < GEAR_LOW"
-    [class.gg-orange]="item?.level.value >= GEAR_LOW && item?.level.value < GEAR_MID"
-    [class.gg-yellow]="item?.level.value >= GEAR_MID && item?.level.value < GEAR_HIGH"
-    [class.gg-green]="item?.level.value >= GEAR_HIGH"
-    [attr.data-wowhead]="item | wowheadItem"
+<a
+    class="gg-ilvl"
+    [class.gg-red]="itemlevel() < GEAR_LOW"
+    [class.gg-orange]="itemlevel() >= GEAR_LOW && itemlevel() < GEAR_MID"
+    [class.gg-yellow]="itemlevel() >= GEAR_MID && itemlevel() < GEAR_HIGH"
+    [class.gg-green]="itemlevel() >= GEAR_HIGH"
+    [attr.data-wowhead]="item() | wowheadItem"
     [href]="noNavHref"
->{{ item?.level.value }}</a>
+    >{{ itemlevel() === 0 ? '' : itemlevel() }}</a
+>

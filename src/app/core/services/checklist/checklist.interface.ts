@@ -4,7 +4,7 @@ export type ChecklistCovenant = 'Kyrian' | 'Necrolord' | 'Night Fae' | 'Venthyr'
 export type ChecklistWowClass = 'Death Knight' | 'Demon Hunter' | 'Druid' | 'Hunter' | 'Mage' | 'Monk' | 'Paladin' | 'Priest' |
     'Rogue' | 'Shaman' | 'Warlock' | 'Warrior';
 
-export class Checklist {
+export interface Checklist {
     id: string;
     items: ChecklistItem[];
 }

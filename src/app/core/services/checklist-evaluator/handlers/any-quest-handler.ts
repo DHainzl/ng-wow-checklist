@@ -1,8 +1,6 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItemAnyQuest } from 'src/app/core/services/checklist/checklist.interface';
-
 import { BattleNetQuests } from '../../battle-net/character/types/battlenet-quest';
-
+import { ChecklistItemAnyQuest } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistAnyQuestHandler extends ChecklistHandler<ChecklistItemAnyQuest> {
@@ -18,7 +16,7 @@ export class ChecklistAnyQuestHandler extends ChecklistHandler<ChecklistItemAnyQ
         this.subscription.unsubscribe();
     }
 
-    private evaluate(quests: BattleNetQuests): void {
+    private evaluate(quests: BattleNetQuests | undefined): void {
         if (!quests) {
             this._completed$.next('loading');
             this._subitems$.next([]);

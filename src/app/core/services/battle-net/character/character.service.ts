@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { environment } from 'src/environments/environment';
-
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
 import { LocalForageService } from '../../local-forage/local-forage.service';
 import { Region } from '../battle-net.interface';
 import { CachedRequestService } from '../cached-request.service';
-
 import { BattleNetAchievements } from './types/battlenet-achievement';
 import { BattleNetEquipment } from './types/battlenet-equipment';
 import { BattleNetMedia } from './types/battlenet-media';
@@ -16,10 +14,8 @@ import { BattleNetCharacterReputations } from './types/battlenet-reputation';
 
 @Injectable({ providedIn: 'root' })
 export class BattleNetCharacterService {
-    constructor(
-        private cachedRequestService: CachedRequestService,
-        private localForageService: LocalForageService,
-    ) { }
+    private readonly cachedRequestService = inject(CachedRequestService);
+    private readonly localForageService = inject(LocalForageService);
 
     public getAchievement(region: Region, realm: string, characterName: string, cached: boolean = true): Observable<BattleNetAchievements> {
         return this.getCharacterData(region, realm, characterName, cached, '/achievements');
@@ -77,7 +73,7 @@ export class BattleNetCharacterService {
         return this.getCharacterData(region, realm, characterName, cached, '/professions');
     }
 
-    private getCharacterData<T>(region: Region, realm: string, characterName: string, cached: boolean, endpoint: string): Observable<T> {
+    private getCharacterData<T extends object>(region: Region, realm: string, characterName: string, cached: boolean, endpoint: string): Observable<T> {
         const url =  `${environment.backendUrl}/api/${region}/${realm}/${characterName}/profile${endpoint}`;
         const cacheKey = `character-${region}-${realm}-${characterName}-${endpoint}`;
 

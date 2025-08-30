@@ -1,8 +1,6 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItemLevel } from 'src/app/core/services/checklist/checklist.interface';
-
 import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';
-
+import { ChecklistItemLevel } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> {
@@ -18,7 +16,7 @@ export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> 
         this.subscription.unsubscribe();
     }
 
-    private evaluate(profile: BattleNetProfile): void {
+    private evaluate(profile: BattleNetProfile | undefined): void {
         if (!profile) {
             this._completed$.next('loading');
             this._note$.next(undefined);

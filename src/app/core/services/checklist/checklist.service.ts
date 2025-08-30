@@ -22,7 +22,7 @@ export class ChecklistService {
 
     getChecklist(id: string): Observable<Checklist> {
         if (!this.checklists[id]) {
-            return throwError(`Checklist ${id} not found!`);
+            return throwError(() => new Error(`Checklist ${id} not found!`));
         }
         return of(this.checklists[id]);
     }

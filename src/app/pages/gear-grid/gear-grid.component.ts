@@ -1,81 +1,49 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from "@angular/core";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { Title } from "@angular/platform-browser";
-import { catchError, forkJoin, of } from "rxjs";
-import { BattleNetCharacterService } from "src/app/core/services/battle-net/character/character.service";
-import { BattleNetEquipment } from "src/app/core/services/battle-net/character/types/battlenet-equipment";
-import { BattleNetMedia } from "src/app/core/services/battle-net/character/types/battlenet-media";
-import { BattleNetProfile } from "src/app/core/services/battle-net/character/types/battlenet-profile";
-import { CharacterInfo } from "src/app/core/services/character-store/character-store.interface";
-import { CharacterStoreService } from "src/app/core/services/character-store/character-store.service";
-
-export interface CharacterDataForGrid {
-    info: CharacterInfo;
-    loading: boolean;
-    error?: boolean;
-    profile?: BattleNetProfile;
-    media?: BattleNetMedia;
-    equipment?: BattleNetEquipment;
-}
+import { CharacterInfo } from "../../core/services/character-store/character-store.interface";
+import { CharacterStoreService } from "../../core/services/character-store/character-store.service";
+import { IconPipe } from "../../shared/pipes/icon.pipe";
+import { GearLineComponent } from "./components/gear-line/gear-line.component";
 
 @Component({
     templateUrl: './gear-grid.component.html',
-    styleUrls: [ './gear-grid.component.scss' ],
+    styleUrls: [ './gear-grid.component.scss', 'gear-grid.shared.scss' ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatProgressSpinnerModule,
+
+        IconPipe,
+
+        GearLineComponent,
+    ]
 })
 export class GearGridComponent implements OnInit {
-    loading: boolean = true;
+    private readonly characterStoreService = inject(CharacterStoreService);
 
-    characterData: CharacterDataForGrid[] = [];
+    private readonly titleService = inject(Title);
 
-    constructor(
-        private characterService: BattleNetCharacterService,
-        private characterStoreService: CharacterStoreService,
-
-        private titleService: Title,
-    ) { }
+    readonly loading = signal<boolean>(true);
+    readonly characterInfo = signal<CharacterInfo[]>([]);
 
     ngOnInit(): void {
         this.fetch();
+
         this.titleService.setTitle('Gear Grid');
     }
 
     private fetch() {
-        this.loading = true;
-        this.characterData = [];
+        this.loading.set(true);
+        this.characterInfo.set([]);
 
-        this.characterStoreService.getCharacters().subscribe(characters => {
-            this.loading = false;
-
-            if (!characters.length) {
-                return;
-            }
-
-            characters.forEach(char => {
-                const charData: CharacterDataForGrid = {
-                    info: char,
-                    loading: true,
-                };
-
-                this.characterData.push(charData);
-
-                forkJoin([
-                    this.characterService.getProfile(char.region, char.realm, char.name, true),
-                    this.characterService.getMedia(char.region, char.realm, char.name, true).pipe(
-                        catchError(() => of(undefined)),
-                    ),
-                    this.characterService.getEquipment(char.region, char.realm, char.name, true),
-                ]).subscribe({
-                    next: ([ profile, media, equipment ]) => {
-                        charData.profile = profile;
-                        charData.media = media || this.characterService.getMediaMock(char.region, profile);;
-                        charData.equipment = equipment;
-                        charData.loading = false;
-                    },
-                    error: error => {
-                        charData.error = true;
-                        charData.loading = false;
-                    }
-                });
-            })
-        })
+        this.characterStoreService.getCharacters().subscribe({
+            next: characters => {
+                this.loading.set(false);
+                this.characterInfo.set(characters);
+            },
+            error: error => {
+                // TODO Error handling
+            },
+        });
     }
 }

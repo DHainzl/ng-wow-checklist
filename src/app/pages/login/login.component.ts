@@ -1,27 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
-import { UserInfoService } from 'src/app/core/services/battle-net/userinfo/userinfo.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
+import { UserInfoService } from '../../core/services/battle-net/userinfo/userinfo.service';
 
 @Component({
     templateUrl: './login.component.html',
     styleUrls: [ './login.component.scss' ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatButtonModule,
+    ]
 })
 export class LoginComponent implements OnInit {
-    loading: boolean = true;
+    private readonly router = inject(Router);
+    private readonly userInfoService = inject(UserInfoService);
 
-    constructor(
-        private router: Router,
-        private userinfoService: UserInfoService,
-    ) { }
+    readonly loading = signal<boolean>(true);
 
     ngOnInit(): void {
-        this.userinfoService.getUserInfo().subscribe(userInfo => {
-            // If we now get a successful response we can redirect to the home page
-            this.router.navigateByUrl('/');
-        }, error => {
-            // Still throwing error, show login buttons
-            this.loading = false;
+        this.userInfoService.getUserInfo().subscribe({
+            next: _userInfo => {
+                // If we now get a successful response we can redirect to the home page
+                this.router.navigateByUrl('/');
+            },
+            error: error => {
+                // Still throwing error, show login buttons
+                this.loading.set(false);
+            },
         });
     }
 

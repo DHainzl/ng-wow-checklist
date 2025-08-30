@@ -1,12 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { combineLatest, Observable, of, Subscription } from 'rxjs';
-import { distinctUntilChanged, flatMap, map } from 'rxjs/operators';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, mergeMap } from 'rxjs/operators';
 
 import { Region } from '../../core/services/battle-net/battle-net.interface';
-import { BattleNetEquipment } from '../../core/services/battle-net/character/types/battlenet-equipment';
 import { BattleNetMedia } from '../../core/services/battle-net/character/types/battlenet-media';
 import { BattleNetProfile } from '../../core/services/battle-net/character/types/battlenet-profile';
 import { CharacterInfo } from '../../core/services/character-store/character-store.interface';
@@ -17,69 +15,84 @@ import { ChecklistService } from '../../core/services/checklist/checklist.servic
 import { LocalStorageService } from '../../core/services/local-storage/local-storage.service';
 import { IngameImportDialogComponent } from './import-dialog/ingame-import-dialog.component';
 
-import { ChecklistRequestContainerService } from './services/checklist-request-container.service';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ChecklistRequestContainerService } from '../../core/services/checklist-evaluator/checklist-request-container.service';
+import { AddTitlePipe } from '../../shared/pipes/add-title.pipe';
+import { MediaAssetPipe } from '../../shared/pipes/media-asset.pipe';
+import { SafeBackgroundImagePipe } from '../../shared/pipes/safe-background-image.pipe';
+import { ChecklistLineComponent } from './checklist-line/checklist-line.component';
 
 @Component({
     selector: 'app-checklist',
     templateUrl: './checklist.component.html',
     styleUrls: [ './checklist.component.scss' ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatIconModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatProgressSpinnerModule,
+        MatButtonModule,
+
+        FormsModule,
+
+        MediaAssetPipe,
+        SafeBackgroundImagePipe,
+        AddTitlePipe,
+
+        ChecklistLineComponent,
+    ],
 })
 export class ChecklistComponent implements OnInit, OnDestroy {
+    private readonly checklistHandlerService = inject(ChecklistHandlerService);
+    private readonly checklistRequestContainerService = inject(ChecklistRequestContainerService);
+    private readonly checklistService = inject(ChecklistService);
+    private readonly characterStoreService = inject(CharacterStoreService);
+    private readonly localStorageService = inject(LocalStorageService);
 
-    loading: boolean = true;
-    error: string = '';
+    private readonly dialog = inject(MatDialog);
 
-    region: Region;
-    realm: string;
-    name: string;
+    private readonly titleService = inject(Title);
 
-    allCompleted: boolean = false;
-    hideCompleted: boolean = this.localStorageService.get('hideCompleted') || false;
+    readonly region = input.required<Region>();
+    readonly realm = input.required<string>();
+    readonly name = input.required<string>();
 
-    checklist: ChecklistItem[];
-    characterInfo: CharacterInfo;
+    readonly loading = signal<boolean>(true);
+    readonly error = signal<string>('');
 
-    media: BattleNetMedia;
-    profile: BattleNetProfile;
-    equipment: BattleNetEquipment;
+    readonly allCompleted = signal<boolean>(false);
+    readonly hideCompleted = signal<boolean>(this.localStorageService.get('hideCompleted') || false);
+
+    readonly checklist = signal<ChecklistItem[]>([]);
+    private characterInfo: CharacterInfo | undefined;
+
+    readonly media = signal<BattleNetMedia | undefined>(undefined);
+    readonly profile = signal<BattleNetProfile | undefined>(undefined);
 
     private subscriptions: Subscription = new Subscription();
 
-    constructor(
-        private activatedRoute: ActivatedRoute,
-        private checklistHandlerService: ChecklistHandlerService,
-        private checklistRequestContainerService: ChecklistRequestContainerService,
-        private checklistService: ChecklistService,
-        private characterStoreService: CharacterStoreService,
-        private localStorageService: LocalStorageService,
-
-        private dialog: MatDialog,
-
-        private titleService: Title,
-        private changeDetectorRef: ChangeDetectorRef,
-    ) { }
+    constructor() {
+        effect(() => this.loadData());
+    }
 
     ngOnInit(): void {
-        this.activatedRoute.params.subscribe(params => {
-            this.region = params.region;
-            this.realm = params.realm;
-            this.name = params.name;
-
-            this.loadData();
-        });
-
-        this.subscriptions.add(this.checklistRequestContainerService.mediaChanged.subscribe(media => this.media = media));
+        this.subscriptions.add(this.checklistRequestContainerService.mediaChanged.subscribe(media => this.media.set(media)));
         this.subscriptions.add(this.checklistRequestContainerService.profileChanged.subscribe(profile => {
-            this.profile = profile;
+            this.profile.set(profile);
 
             if (!profile) {
                 return;
             }
 
-            const title = `${profile.name} @ ${this.region.toUpperCase()}-${profile.realm.name} :: WoW Checklist`;
+            const title = `${profile.name} @ ${this.region().toUpperCase()}-${profile.realm.name} :: WoW Checklist`;
             this.titleService.setTitle(title);
         }));
-        this.subscriptions.add(this.checklistRequestContainerService.equipmentChanged.subscribe(equipment => this.equipment = equipment));
     }
 
     ngOnDestroy(): void {
@@ -93,9 +106,9 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     import(): void {
         const dialogRef = this.dialog.open(IngameImportDialogComponent, {
             data: {
-                region: this.region,
-                realm: this.realm,
-                name: this.name,
+                region: this.region(),
+                realm: this.realm(),
+                name: this.name(),
             },
         });
 
@@ -107,30 +120,30 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     }
 
     private loadData(cached: boolean = true): void {
-        this.loading = true;
-        this.error = '';
+        this.loading.set(true);
+        this.error.set('');
         this.titleService.setTitle(`WoW Checklist`);
 
-        this.characterStoreService.getCharacter(this.region, this.realm, this.name).pipe(
-            flatMap(characterInfo => {
+        this.characterStoreService.getCharacter(this.region(), this.realm(), this.name()).pipe(
+            mergeMap(characterInfo => {
                 this.characterInfo = characterInfo;
 
-                return this.checklistRequestContainerService.load(this.region, this.realm, this.name, this.characterInfo, cached);
+                return this.checklistRequestContainerService.load(this.region(), this.realm(), this.name(), characterInfo, cached);
             }),
-            flatMap(() => {
-                this.loading = false;
-                return this.checklistService.getChecklist(this.characterInfo.checklistId);
+            mergeMap(() => {
+                this.loading.set(false);
+                return this.checklistService.getChecklist(this.characterInfo!.checklistId);
             }),
-        ).subscribe(checklist => {
-            this.loading = false;
-            const completedChanged: Observable<boolean>[] = [];
+        ).subscribe({
+            next: checklist => {
+                this.loading.set(false);
+                const completedChanged: Observable<boolean>[] = [];
 
-            const items = checklist.items
-                .filter(item => this.isInRightCovenant(item))
-                .filter(item => this.isRightClass(item));
+                const items = checklist.items
+                    .filter(item => this.isInRightCovenant(item))
+                    .filter(item => this.isRightClass(item));
 
-            items
-                .forEach(item => {
+                items.forEach(item => {
                     item.handler = this.checklistHandlerService.getHandler(item, items);
 
                     const completedAndVisible$ = combineLatest([
@@ -149,18 +162,18 @@ export class ChecklistComponent implements OnInit, OnDestroy {
                     completedChanged.push(completedAndVisible$);
                 });
 
-            this.subscriptions.add(combineLatest(completedChanged).pipe(
-                map(completionStatus => completionStatus.every(status => status)),
-                distinctUntilChanged(),
-            ).subscribe(allCompleted => {
-                this.allCompleted = allCompleted;
-                this.changeDetectorRef.detectChanges();
-            }));
+                this.subscriptions.add(combineLatest(completedChanged).pipe(
+                    map(completionStatus => completionStatus.every(status => status)),
+                    distinctUntilChanged(),
+                ).subscribe(allCompleted => {
+                    this.allCompleted.set(allCompleted);
+                }));
 
-            this.checklist = items;
-        },
-        error => {
-            this.error = error;
+                this.checklist.set(items);
+            },
+            error: error => {
+                this.error.set(error);
+            },
         });
     }
 
@@ -173,11 +186,11 @@ export class ChecklistComponent implements OnInit, OnDestroy {
             return true;
         }
 
-        if (!this.profile) {
+        if (!this.profile()) {
             return false;
         }
 
-        return item.covenant === this.profile.covenant_progress?.chosen_covenant?.name;
+        return item.covenant === this.profile()!.covenant_progress?.chosen_covenant?.name;
     }
 
     private isRightClass(item: ChecklistItem): boolean {
@@ -185,10 +198,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
             return true;
         }
 
-        if (!this.profile) {
+        if (!this.profile()) {
             return false;
         }
 
-        return !!item.classes.find(cls => this.profile.character_class.name === cls);
+        return !!item.classes.find(cls => this.profile()!.character_class.name === cls);
     }
 }

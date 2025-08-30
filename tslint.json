@@ -1,8 +1,0 @@
-{
-  "rules": {
-    "deprecation": {
-      "severity": "warning"
-    }
-  },
-  "extends": "@dhainzl/ng-tslint-config"
-}

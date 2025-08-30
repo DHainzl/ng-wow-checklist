@@ -1,10 +1,8 @@
 import { Subscription, combineLatest } from 'rxjs';
-import { ChecklistItemQuest } from 'src/app/core/services/checklist/checklist.interface';
-
 import { BattleNetQuests } from '../../battle-net/character/types/battlenet-quest';
-
-import { ChecklistHandler } from './_handler';
 import { CharacterIngameData } from '../../character-store/character-store.interface';
+import { ChecklistItemQuest } from '../../checklist/checklist.interface';
+import { ChecklistHandler } from './_handler';
 
 export class ChecklistQuestHandler extends ChecklistHandler<ChecklistItemQuest> {
     subscription: Subscription = new Subscription();
@@ -24,7 +22,7 @@ export class ChecklistQuestHandler extends ChecklistHandler<ChecklistItemQuest> 
         this.subscription.unsubscribe();
     }
 
-    private evaluate(quests: BattleNetQuests, ingameData: CharacterIngameData): void {
+    private evaluate(quests: BattleNetQuests | undefined, ingameData: CharacterIngameData | undefined): void {
         if (!quests) {
             this._completed$.next('loading');
             return;

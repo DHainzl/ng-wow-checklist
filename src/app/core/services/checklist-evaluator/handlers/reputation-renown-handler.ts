@@ -1,8 +1,6 @@
 import { Subscription } from 'rxjs';
-import { ChecklistItemReputationRenown } from 'src/app/core/services/checklist/checklist.interface';
-
 import { BattleNetCharacterReputation, BattleNetCharacterReputations } from '../../battle-net/character/types/battlenet-reputation';
-
+import { ChecklistItemReputationRenown } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistReputationRenownHandler extends ChecklistHandler<ChecklistItemReputationRenown> {
@@ -18,7 +16,7 @@ export class ChecklistReputationRenownHandler extends ChecklistHandler<Checklist
         this.subscription.unsubscribe();
     }
 
-    private evaluate(reputations: BattleNetCharacterReputations): void {
+    private evaluate(reputations: BattleNetCharacterReputations | undefined): void {
         if (!reputations) {
             this._completed$.next('loading');
             this._note$.next(undefined);
@@ -33,7 +31,7 @@ export class ChecklistReputationRenownHandler extends ChecklistHandler<Checklist
             return;
         }
 
-        const isCompleted = reputation.standing.renown_level >= this.item.max;
+        const isCompleted = (reputation.standing.renown_level ?? 0) >= this.item.max;
 
         if (isCompleted) {
             this._completed$.next('complete');
@@ -51,7 +49,7 @@ export class ChecklistReputationRenownHandler extends ChecklistHandler<Checklist
         return `${this.item.name}: Renown ${this.item.max}`;
     }
 
-    private getReputation(reputations: BattleNetCharacterReputations): BattleNetCharacterReputation {
+    private getReputation(reputations: BattleNetCharacterReputations): BattleNetCharacterReputation | undefined {
         return reputations.reputations.find(reputation => reputation.faction.id === this.item.id);
     }
 }

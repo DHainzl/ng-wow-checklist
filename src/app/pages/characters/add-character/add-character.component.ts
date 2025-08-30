@@ -1,48 +1,64 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { from, of, Subscription, throwError, zip } from 'rxjs';
-import { flatMap, groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
-import { Region } from 'src/app/core/services/battle-net/battle-net.interface';
-import { CharactersService } from 'src/app/core/services/battle-net/characters/characters.service';
-import { BattleNetCharacterListEntry } from 'src/app/core/services/battle-net/characters/types/characters.interface';
-import { CharacterStoreService } from 'src/app/core/services/character-store/character-store.service';
-
-import { CharacterDataForList } from '../characters.component';
+import { UpperCasePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, Inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { from, groupBy, map, mergeMap, of, Subscription, tap, toArray, zip } from 'rxjs';
+import { Region } from '../../../core/services/battle-net/battle-net.interface';
+import { CharactersService } from '../../../core/services/battle-net/characters/characters.service';
+import { BattleNetCharacterListEntry } from '../../../core/services/battle-net/characters/types/characters.interface';
+import { CharacterInfo } from '../../../core/services/character-store/character-store.interface';
+import { CharacterStoreService } from '../../../core/services/character-store/character-store.service';
 
 @Component({
     templateUrl: './add-character.component.html',
     styleUrls: [ './add-character.component.scss' ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatButtonModule,
+
+        ReactiveFormsModule,
+        UpperCasePipe,
+    ]
 })
 export class AddCharacterComponent implements OnInit, OnDestroy {
     private static readonly DEFAULT_CHECKLIST = 'dragonflight';
 
-    form: FormGroup = new FormGroup({
-        region: new FormControl('us', [ Validators.required ]),
-        character: new FormControl('', [ Validators.required ]),
+    readonly form = new FormGroup({
+        region: new FormControl<Region>('us', [ Validators.required ]),
+        character: new FormControl<BattleNetCharacterListEntry | undefined>(undefined, [ Validators.required ]),
     });
 
-    regions: Region[] = [ 'us', 'eu',  'kr', 'tw', 'cn' ];
+    readonly regions: Region[] = [ 'us', 'eu',  'kr', 'tw', 'cn' ];
 
-    private charactersLoading: boolean = true;
-    private charactersLoadingError: boolean = false;
-    charactersByRealm: { realm: string, characters: BattleNetCharacterListEntry[] }[] = [];
+    private readonly charactersLoading = signal<boolean>(true);
+    private readonly charactersLoadingError = signal<boolean>(false);
+    readonly charactersByRealm = signal<{ realm: string, characters: BattleNetCharacterListEntry[] }[]>([]);
 
-    private subscriptions: Subscription = new Subscription();
+    readonly characterLabel = computed(() => this.getCharacterLabel());
+
+    private readonly subscriptions: Subscription = new Subscription();
 
     constructor(
         private dialogRef: MatDialogRef<AddCharacterComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: CharacterDataForList[],
+        @Inject(MAT_DIALOG_DATA) public data: CharacterInfo[],
 
         private charactersService: CharactersService,
         private characterStoreService: CharacterStoreService,
     ) { }
 
     ngOnInit(): void {
-        this.subscriptions.add(this.form.get('region').valueChanges.subscribe(newRegion => {
-            this.loadCharacters(newRegion);
+        this.subscriptions.add(this.form.controls.region.valueChanges.subscribe(newRegion => {
+            this.loadCharacters(newRegion!);
         }));
-        this.loadCharacters(this.form.get('region').value);
+        this.loadCharacters(this.form.controls.region.value!);
     }
 
     ngOnDestroy(): void {
@@ -54,11 +70,11 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
     }
 
     addCharacter(): void {
-        const selected: BattleNetCharacterListEntry = this.form.get('character').value;
+        const selected = this.form.controls.character.value;
         if (!selected) return this.close(false);
 
         const character = {
-            region: this.form.get('region').value,
+            region: this.form.controls.region.value!,
             name: selected.name.toLowerCase(),
             realm: selected.realm.slug,
             checklistId: AddCharacterComponent.DEFAULT_CHECKLIST,
@@ -66,25 +82,25 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
         };
 
         this.characterStoreService.addCharacter(character).subscribe({
-            next: () => this.close(),
+            next: () => this.close(true),
             error: error => alert('Could not add character: ' + error),
         });
     }
 
-    getCharacterLabel(): string {
-        if (!this.form.get('region').value) {
+    private getCharacterLabel(): string {
+        if (!this.form.controls.region.value) {
             return 'Please select a region';
         }
 
-        if (this.charactersLoading) {
+        if (this.charactersLoading()) {
             return 'Loading character list ...';
         }
 
-        if (this.charactersLoadingError) {
+        if (this.charactersLoadingError()) {
             return 'Error loading characters (wrong region?)';
         }
 
-        if (this.charactersByRealm.length === 0) {
+        if (this.charactersByRealm().length === 0) {
             return 'No characters found';
         }
 
@@ -93,9 +109,9 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
 
     characterAdded(character: BattleNetCharacterListEntry): boolean {
         return this.data.some(c => {
-            return c.info.region === this.form.get('region').value
-                && c.info.realm === character.realm.slug
-                && c.info.name === character.name.toLowerCase();
+            return c.region === this.form.controls.region.value
+                && c.realm === character.realm.slug
+                && c.name === character.name.toLowerCase();
         });
     }
 
@@ -104,26 +120,30 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.form.get('character').setValue('');
-        this.charactersLoading = true;
-        this.charactersLoadingError = false;
+        this.form.controls.character.setValue(undefined);
+        this.charactersLoading.set(true);
+        this.charactersLoadingError.set(false);
+        this.charactersByRealm.set([]);
 
-        this.charactersService.getCharacters(region).subscribe(characterList => {
-            from(characterList.wow_accounts).pipe(
-                mergeMap(account => account.characters),
-                groupBy(character => character.realm.name),
-                mergeMap(group => zip(of(group.key), group.pipe(toArray()))),
-                toArray(),
-                map(groups => groups.map(([ realm, characters ]) => ({ realm, characters }))),
-                map(groups => groups.sort((a, b) => b.characters.length - a.characters.length)),
-                tap(groups => groups.forEach(group => group.characters.sort((a, b) => a.name.localeCompare(b.name)))),
-            ).subscribe(charactersByRealm => {
-                this.charactersByRealm = charactersByRealm;
-                this.charactersLoading = false;
-            });
-        }, error => {
-            this.charactersLoading = false;
-            this.charactersLoadingError = true;
+        this.charactersService.getCharacters(region).subscribe({
+            next: characterList => {
+                from(characterList.wow_accounts).pipe(
+                    mergeMap(account => account.characters),
+                    groupBy(character => character.realm.name),
+                    mergeMap(group => zip(of(group.key), group.pipe(toArray()))),
+                    toArray(),
+                    map(groups => groups.map(([ realm, characters ]) => ({ realm, characters }))),
+                    map(groups => groups.sort((a, b) => b.characters.length - a.characters.length)),
+                    tap(groups => groups.forEach(group => group.characters.sort((a, b) => a.name.localeCompare(b.name)))),
+                ).subscribe(charactersByRealm => {
+                    this.charactersByRealm.set(charactersByRealm);
+                    this.charactersLoading.set(false);
+                });
+            },
+            error: error => {
+                this.charactersLoading.set(false);
+                this.charactersLoadingError.set(true);
+            },
         });
     }
 }

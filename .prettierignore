@@ -1,0 +1,20 @@
+# Ignore folders
+.angular
+.cursor
+.vscode
+build
+docs
+e2e
+temp
+
+src/assets
+
+livetest.html
+
+# Ignore everything other than html
+*.scss
+*.ts
+*.json
+*.md
+*.mjs
+*.js

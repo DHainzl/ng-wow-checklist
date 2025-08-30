@@ -1,6 +1,3 @@
-@use '@angular/material' as mat;
-@import '../../../styles/variables';
-
 :host {
     display: block;
     margin-bottom: 30px;
@@ -16,6 +13,11 @@ table {
     background-size: cover;
 }
 
+mat-card-subtitle {
+    font-weight: lighter;
+    font-size: 15px;
+}
+
 .page-actions {
     padding: 10px 16px;
 
@@ -26,7 +28,7 @@ table {
 }
 
 .completion-alert {
-    background-color: mat.get-color-from-palette(mat.define-palette(mat.$light-green-palette, 300));;
+    background-color: var(--mat-sys-primary);
     text-align: center;
     padding: 12px 10px;
     margin-bottom: 20px;
@@ -44,5 +46,5 @@ table {
 
 .error {
     margin: 15px 0;
-    color: $accent;
+    color: var(--mat-sys-error);
 }

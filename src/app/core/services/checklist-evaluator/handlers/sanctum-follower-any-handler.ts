@@ -1,7 +1,6 @@
 import { combineLatest, Subscription } from 'rxjs';
-import { CharacterIngameData } from 'src/app/core/services/character-store/character-store.interface';
-import { ChecklistItemSanctumFollowerAny } from 'src/app/core/services/checklist/checklist.interface';
-
+import { CharacterIngameData } from '../../character-store/character-store.interface';
+import { ChecklistItemSanctumFollowerAny } from '../../checklist/checklist.interface';
 import { ChecklistHandler } from './_handler';
 
 export class ChecklistSanctumFollowerAnyHandler extends ChecklistHandler<ChecklistItemSanctumFollowerAny> {
@@ -22,7 +21,7 @@ export class ChecklistSanctumFollowerAnyHandler extends ChecklistHandler<Checkli
         this.subscription.unsubscribe();
     }
 
-    private evaluate(ingameData: CharacterIngameData): void {
+    private evaluate(ingameData: CharacterIngameData | undefined): void {
         if (!ingameData) {
             this._label$.next(this.item.name);
             this._completed$.next('loading');
@@ -35,7 +34,7 @@ export class ChecklistSanctumFollowerAnyHandler extends ChecklistHandler<Checkli
 
         const followerName = this.item.followers
             .find(name => ingameData.followers[name]?.collected);
-        const follower = ingameData.followers[followerName];
+        const follower = ingameData.followers[followerName!];
         
         if (!follower || !follower.collected) {
             this._label$.next(this.item.name);
@@ -47,7 +46,7 @@ export class ChecklistSanctumFollowerAnyHandler extends ChecklistHandler<Checkli
             return;
         }
         
-        this._label$.next(followerName);
+        this._label$.next(followerName!);
         this._note$.next({
             type: 'text',
             text: `Lvl. ${follower.level} / ${ChecklistSanctumFollowerAnyHandler.MAX_FOLLOWER_LEVEL}`,
