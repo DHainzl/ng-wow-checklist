@@ -23,7 +23,7 @@
             <div>
                 <button
                     matIconButton
-                    [matMenuTriggerFor]="menu"
+                    [matMenuTriggerFor]="moreOptionsMenu"
                     matTooltip="More options"
                     aria-label="More options"
                     [disabled]="loading()"
@@ -31,7 +31,7 @@
                     <mat-icon>more_vert</mat-icon>
                 </button>
 
-                <mat-menu #menu="matMenu">
+                <mat-menu #moreOptionsMenu="matMenu">
                     <ng-template matMenuContent>
                         <button mat-menu-item (click)="toggleHideCompleted()">
                             <mat-icon>{{
@@ -45,6 +45,22 @@
                             <mat-icon>import_export</mat-icon>
                             <span>Import from ingame addon</span>
                         </button>
+                        <button mat-menu-item [matMenuTriggerFor]="checklistSelectionMenu">
+                            <mat-icon>list_alt</mat-icon>
+                            <span>Active checklist</span>
+                        </button>
+                    </ng-template>
+                </mat-menu>
+                <mat-menu #checklistSelectionMenu="matMenu">
+                    <ng-template matMenuContent>
+                        @for (checklist of availableChecklists(); track checklist.id) {
+                            <button mat-menu-item (click)="enableChecklist(checklist.id)">
+                                <mat-icon>{{
+                                    checklist.id === characterInfo()!.checklistId ? 'check' : ''
+                                }}</mat-icon>
+                                <span>{{ checklist.name }}</span>
+                            </button>
+                        }
                     </ng-template>
                 </mat-menu>
             </div>

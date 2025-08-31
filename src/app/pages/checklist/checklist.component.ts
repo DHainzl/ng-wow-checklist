@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { combineLatest, Observable, Subscription } from 'rxjs';
@@ -73,29 +73,31 @@ export class ChecklistComponent implements OnInit, OnDestroy {
     readonly hideCompletedToggle = signal<boolean[]>([ false ]);
 
     readonly checklist = signal<ChecklistItem[]>([]);
-    private characterInfo: CharacterInfo | undefined;
+    readonly characterInfo = signal<CharacterInfo | undefined>(undefined);
 
     readonly media = signal<BattleNetMedia | undefined>(undefined);
     readonly profile = signal<BattleNetProfile | undefined>(undefined);
+
+    readonly availableChecklists = computed(() => {
+        const profile = this.profile();
+
+        if (!profile) {
+            return [];
+        }
+
+        return this.checklistService.getAvailableChecklists(profile);
+    })
 
     private subscriptions: Subscription = new Subscription();
 
     constructor() {
         effect(() => this.loadData());
+        effect(() => this.updateTitle());
     }
 
     ngOnInit(): void {
         this.subscriptions.add(this.checklistRequestContainerService.mediaChanged.subscribe(media => this.media.set(media)));
-        this.subscriptions.add(this.checklistRequestContainerService.profileChanged.subscribe(profile => {
-            this.profile.set(profile);
-
-            if (!profile) {
-                return;
-            }
-
-            const title = `${profile.name} @ ${this.region().toUpperCase()}-${profile.realm.name} :: WoW Checklist`;
-            this.titleService.setTitle(title);
-        }));
+        this.subscriptions.add(this.checklistRequestContainerService.profileChanged.subscribe(profile => this.profile.set(profile)));
     }
 
     ngOnDestroy(): void {
@@ -122,6 +124,15 @@ export class ChecklistComponent implements OnInit, OnDestroy {
         });
     }
 
+    enableChecklist(checklistId: string): void {
+        const newCharacterInfo = {
+            ...this.characterInfo()!,
+            checklistId,
+        };
+
+        this.characterStoreService.setCharacter(newCharacterInfo).subscribe(() => this.loadData());
+    }
+
     private loadData(cached: boolean = true): void {
         this.loading.set(true);
         this.error.set('');
@@ -129,12 +140,11 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
         this.characterStoreService.getCharacter(this.region(), this.realm(), this.name()).pipe(
             mergeMap(characterInfo => {
-                this.characterInfo = characterInfo;
-
+                this.characterInfo.set(characterInfo);
                 return this.checklistRequestContainerService.load(this.region(), this.realm(), this.name(), characterInfo, cached);
             }),
             mergeMap(() => {
-                return this.checklistService.getChecklist(this.characterInfo!.checklistId);
+                return this.checklistService.getChecklist(this.characterInfo()!.checklistId);
             }),
         ).subscribe({
             next: checklist => {
@@ -184,6 +194,17 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
         this.hideCompleted.set(value);
         this.localStorageService.set('hideCompleted', value);
+    }
+
+    private updateTitle(): void {
+        const profile = this.profile();
+
+        if (!profile) {
+            return;
+        }
+
+        const title = `${profile.name} @ ${this.region().toUpperCase()}-${profile.realm.name} :: WoW Checklist`;
+        this.titleService.setTitle(title);
     }
 
     private isInRightCovenant(item: ChecklistItem): boolean {
