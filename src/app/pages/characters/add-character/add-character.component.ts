@@ -1,5 +1,5 @@
 import { UpperCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, Inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
@@ -36,6 +36,12 @@ export interface AddCharacterResult {
 })
 export class AddCharacterComponent implements OnInit, OnDestroy {
     private readonly checklistService = inject(ChecklistService);
+    private readonly dialogRef = inject<MatDialogRef<AddCharacterComponent, AddCharacterResult>>(MatDialogRef);
+    readonly data = inject<CharacterInfo[]>(MAT_DIALOG_DATA);
+
+    private readonly charactersService = inject(CharactersService);
+    private readonly characterStoreService = inject(CharacterStoreService);
+
     private readonly DEFAULT_CHECKLIST = this.checklistService.getLatestChecklistId();
 
     readonly form = new FormGroup({
@@ -52,14 +58,6 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
     readonly characterLabel = computed(() => this.getCharacterLabel());
 
     private readonly subscriptions: Subscription = new Subscription();
-
-    constructor(
-        private dialogRef: MatDialogRef<AddCharacterComponent, AddCharacterResult>,
-        @Inject(MAT_DIALOG_DATA) public data: CharacterInfo[],
-
-        private charactersService: CharactersService,
-        private characterStoreService: CharacterStoreService,
-    ) { }
 
     ngOnInit(): void {
         this.subscriptions.add(this.form.controls.region.valueChanges.subscribe(newRegion => {

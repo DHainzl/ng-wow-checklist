@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, merge, Observable, of } from 'rxjs';
 import { catchError, filter, map, tap } from 'rxjs/operators';
 import { Region } from '../battle-net/battle-net.interface';
@@ -21,6 +21,9 @@ export interface CharacterId {
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistRequestContainerService {
+    private characterService = inject(BattleNetCharacterService);
+    private characterStoreService = inject(CharacterStoreService);
+
     private _characterChanged$: BehaviorSubject<CharacterId | undefined> = new BehaviorSubject<CharacterId | undefined>(undefined);
     private _questsChanged$: BehaviorSubject<BattleNetQuests | undefined> = new BehaviorSubject<BattleNetQuests | undefined>(undefined);
     private _professionsChanged$: BehaviorSubject<BattleNetProfessions | undefined> = new BehaviorSubject<BattleNetProfessions | undefined>(undefined);
@@ -57,11 +60,6 @@ export class ChecklistRequestContainerService {
         );
     }
     get ingameDataChanged(): Observable<CharacterIngameData | undefined> { return this._ingameDataChanged$.asObservable(); }
-
-    constructor(
-        private characterService: BattleNetCharacterService,
-        private characterStoreService: CharacterStoreService,
-    ) { }
 
     load(region: Region, realm: string, name: string, characterInfo: CharacterInfo, cached: boolean = false): Observable<undefined> {
         this._characterChanged$.next({

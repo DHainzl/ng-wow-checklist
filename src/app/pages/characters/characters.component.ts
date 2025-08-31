@@ -31,17 +31,14 @@ import { CharacterLineComponent } from "./character-line/character-line.componen
 })
 export class CharactersComponent implements OnInit {
     private readonly router = inject(Router);
+    private readonly characterService = inject(BattleNetCharacterService);
+    private readonly characterStoreService = inject(CharacterStoreService);
+    private readonly localStorageService = inject(LocalStorageService);
+    private readonly dialog = inject(MatDialog);
+    private readonly titleService = inject(Title);
 
     readonly loading = signal<boolean>(true);
     readonly characterData = signal<CharacterInfo[]>([]);
-
-    constructor(
-        private characterService: BattleNetCharacterService,
-        private characterStoreService: CharacterStoreService,
-        private localStorageService: LocalStorageService,
-        private dialog: MatDialog,
-        private titleService: Title,
-    ) { }
 
     ngOnInit(): void {
         this.fetch();

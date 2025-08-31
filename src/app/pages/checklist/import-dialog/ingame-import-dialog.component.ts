@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
@@ -20,19 +20,16 @@ import { CharacterStoreService } from "../../../core/services/character-store/ch
     ],
 })
 export class IngameImportDialogComponent {
-    error = signal<string>('');
-    importData = signal<string>('');
+    private readonly data = inject<{
+        region: string;
+        realm: string;
+        name: string;
+    }>(MAT_DIALOG_DATA);
+    private readonly dialogRef = inject<MatDialogRef<IngameImportDialogComponent>>(MatDialogRef);
+    private readonly characterStoreService = inject(CharacterStoreService);
 
-    constructor(
-        @Inject(MAT_DIALOG_DATA) private data: {
-            region: string;
-            realm: string;
-            name: string;
-        },
-        private dialogRef: MatDialogRef<IngameImportDialogComponent>,
-
-        private characterStoreService: CharacterStoreService,
-    ) { }
+    readonly error = signal<string>('');
+    readonly importData = signal<string>('');
 
     import(): void {
         if (!this.importData()) {
