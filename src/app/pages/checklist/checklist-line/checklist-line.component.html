@@ -1,39 +1,41 @@
 @if (visible()) {
     <div
         class="row"
-        [class.complete]="completed() == 'complete'"
-        [class.incomplete]="completed() !== 'complete'"
+        [class.complete]="item().completed == 'complete'"
+        [class.incomplete]="item().completed !== 'complete'"
         [class.divider-top]="hasDivider()"
     >
         <div class="column-completed">
             <mat-icon>{{ icon() }}</mat-icon>
         </div>
         <div class="column-label">
-            <a [attr.data-wowhead]="wowheadId()" [href]="noNavHref">
+            <a [attr.data-wowhead]="item().wowheadId" [href]="noNavHref">
                 <span
-                    class="item-name item-indention-{{ indention() }}"
-                    [innerHTML]="label()"
+                    class="item-name item-indention-{{ item().indention }}"
+                    [innerHTML]="item().label"
                 ></span>
             </a>
         </div>
         <div class="column-note">
-            @switch (note()?.type) {
+            @switch (item().note?.type) {
                 @case ('text') {
-                    {{ $any(note()).text }}
+                    {{ $any(item().note).text }}
                 }
                 @case ('button') {
-                    <button matButton (click)="runOnClick()">{{ $any(note()).label }}</button>
+                    <button matButton (click)="runOnClick()">{{ $any(item().note).label }}</button>
                 }
             }
         </div>
     </div>
 }
 
-@if (subitems()?.length) {
-    @for (subitem of subitems(); track subitem) {
+@if (item().subitems.length) {
+    @for (subitem of item().subitems; track subitem) {
         <div class="row subitem">
             <div class="column-label">
-                <span class="item-name item-indention-{{ indention()! + 1 }}">{{ subitem }}</span>
+                <span class="item-name item-indention-{{ item().indention + 1 }}">{{
+                    subitem
+                }}</span>
             </div>
             <div class="column-note"></div>
             <div class="column-completed"></div>

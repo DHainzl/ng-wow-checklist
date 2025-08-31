@@ -107,7 +107,7 @@
 
                     @if (!allCompleted() || !hideCompleted()) {
                         <div class="checklist">
-                            @for (item of checklist(); track item) {
+                            @for (item of checklistItems(); track item) {
                                 <checklist-line [item]="item" [hideCompleted]="hideCompleted()" />
                             }
                         </div>

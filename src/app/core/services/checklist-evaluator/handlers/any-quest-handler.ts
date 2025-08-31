@@ -1,45 +1,45 @@
-import { Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { BattleNetQuests } from '../../battle-net/character/types/battlenet-quest';
 import { ChecklistItemAnyQuest } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistAnyQuestHandler extends ChecklistHandler<ChecklistItemAnyQuest> {
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemAnyQuest, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-    handlerInit(): void {
-        this.subscription = this.checklistRequestContainer.questsChanged.subscribe(quests => {
-            this.evaluate(quests);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(quests: BattleNetQuests | undefined): void {
-        if (!quests) {
-            this._completed$.next('loading');
-            this._subitems$.next([]);
-            return;
+        if (!data.quests) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                subitems: [],
+            };
         }
 
-        const anyCompleted = this.item.quests.some(q => this.isQuestCompleted(q.id, quests));
+        const anyCompleted = item.quests.some(q => this.isQuestCompleted(q.id, data.quests));
 
         if (anyCompleted) {
-            this._completed$.next('complete');
-            this._subitems$.next([]);
-            return;
+            return {
+                ...baseItem,
+                completed: 'complete',
+                subitems: [],
+            };
         }
 
-        this._completed$.next('incomplete');
-        this._subitems$.next(this.getSubitems());
+        return {
+            ...baseItem,
+            completed: 'incomplete',
+            subitems: this.getSubitems(item),
+        };
     }
 
     private isQuestCompleted(questId: number, quests: BattleNetQuests): boolean {
         return !!quests.quests.find(q => q.id === questId);
     }
 
-    private getSubitems(): string[] {
-        return this.item.quests.map(q => q.name);
+    private getSubitems(item: ChecklistItemAnyQuest): string[] {
+        return item.quests.map(q => q.name);
     }
 }

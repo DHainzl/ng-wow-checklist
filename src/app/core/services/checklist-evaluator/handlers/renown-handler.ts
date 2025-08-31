@@ -1,39 +1,39 @@
-import { Subscription } from 'rxjs';
-import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';
+import { Injectable } from '@angular/core';
 import { ChecklistItemRenown } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistRenownHandler extends ChecklistHandler<ChecklistItemRenown> {
-    subscription: Subscription = new Subscription();
-
-    handlerInit(): void {
-        this.subscription = this.checklistRequestContainer.profileChanged.subscribe(profile => {
-            this.evaluate(profile);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(profile: BattleNetProfile | undefined): void {
-        if (!profile) {
-            this._completed$.next('loading');
-            this._note$.next(undefined);
-            return;
+    evaluate(item: ChecklistItemRenown, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
+    
+        if (!data.profile) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                note: undefined,
+            };
         }
 
-        const isCompleted = (profile.covenant_progress?.renown_level ?? 0) >= this.item.threshold;
+        const isCompleted = (data.profile.covenant_progress?.renown_level ?? 0) >= item.threshold;
 
         if (isCompleted) {
-            this._completed$.next('complete');
-            this._note$.next(undefined);
+            return {
+                ...baseItem,
+                completed: 'complete',
+                note: undefined,
+            };
         } else {
-            this._completed$.next('incomplete');
-            this._note$.next({
-                type: 'text',
-                text: `${profile.covenant_progress?.renown_level ?? 0} / ${this.item.threshold}`,
-            });
+            return {
+                ...baseItem,
+                completed: 'incomplete',
+                note: {
+                    type: 'text',
+                    text: `${data.profile.covenant_progress?.renown_level ?? 0} / ${item.threshold}`,
+                },
+            };
         }
     }
 }

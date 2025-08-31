@@ -1,39 +1,41 @@
-import { Subscription } from 'rxjs';
-import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';
+import { Injectable } from '@angular/core';
 import { ChecklistItemLevel } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> {
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemLevel, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = {
+            ...this.getBaseEvaluatedItem(item, data),
+        };
 
-    handlerInit(): void {
-        this.subscription = this.checklistRequestContainer.profileChanged.subscribe(profile => {
-            this.evaluate(profile);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(profile: BattleNetProfile | undefined): void {
-        if (!profile) {
-            this._completed$.next('loading');
-            this._note$.next(undefined);
-            return;
+        if (!data.profile) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                note: undefined,
+            };
         }
 
-        const isCompleted = profile.level >= this.item.max;
+        const isCompleted = data.profile.level >= item.max;
 
         if (isCompleted) {
-            this._completed$.next('complete');
-            this._note$.next(undefined);
+            return {
+                ...baseItem,
+                completed: 'complete',
+                note: undefined,
+            };
         } else {
-            this._completed$.next('incomplete');
-            this._note$.next({
-                type: 'text',
-                text: `${profile.level} / ${this.item.max}`,
-            });
+            return {
+                ...baseItem,
+                completed: 'incomplete',
+                note: {
+                    type: 'text',
+                    text: `${data.profile.level} / ${item.max}`,
+                }
+            };
         }
     }
 }

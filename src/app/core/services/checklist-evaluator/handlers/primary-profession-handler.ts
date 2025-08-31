@@ -1,60 +1,48 @@
-import { Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
 import {
     BattleNetProfession,
-    BattleNetProfessions,
     BattleNetProfessionSkill,
-    isTieredProfession,
+    isTieredProfession
 } from '../../battle-net/character/types/battlenet-profession';
-import { CharacterStoreService } from '../../character-store/character-store.service';
-import { ChecklistItem, ChecklistItemPrimaryProfession, ChecklistItemSecondaryProfession } from '../../checklist/checklist.interface';
-import { ChecklistRequestContainerService } from '../checklist-request-container.service';
-import { ChecklistHandler } from './_handler';
+import { ChecklistItemPrimaryProfession, ChecklistItemSecondaryProfession } from '../../checklist/checklist.interface';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
+
+@Injectable({ providedIn: 'root' })
 export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<ChecklistItemPrimaryProfession> {
-    subscription: Subscription = new Subscription();
-
-    constructor(
-        protected override checklistRequestContainer: ChecklistRequestContainerService,
-        protected override characterStoreService: CharacterStoreService,
-        protected override item: ChecklistItemPrimaryProfession,
-        protected override allItems: ChecklistItem[],
-    ) {
-        super(checklistRequestContainer, characterStoreService, item, allItems);
-        this._shown$.next(false);
-    }
-
-    handlerInit(): void {
-        this.subscription = this.checklistRequestContainer.professionsChanged.subscribe(professions => {
-            this.evaluate(professions);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(professions: BattleNetProfessions | undefined): void {
-        if (!professions || !professions.primaries) {
-            this._completed$.next('loading');
-            this._shown$.next(false);
-            this._note$.next(undefined);
-            return;
+    evaluate(item: ChecklistItemPrimaryProfession, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
+    
+        if (!data.professions || !data.professions.primaries) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                shown: false,
+                note: undefined,
+            };
         }
 
-        const profession = getProfession(professions.primaries, this.item);
+        const profession = getProfession(data.professions.primaries, item);
 
         if (!profession) {
-            this._shown$.next(false);
-            return;
+            return {
+                ...baseItem,
+                shown: false,
+            }
         }
 
         const isComplete = profession.skill_points >= profession.max_skill_points;
 
-        this._shown$.next(true);
-        this._note$.next({
-            type: 'text',
-            text: `${profession.skill_points} / ${profession.max_skill_points}`,
-        });
-        this._completed$.next(isComplete ? 'complete' : 'incomplete');
+        return {
+            ...baseItem,
+            completed: isComplete ? 'complete' : 'incomplete',
+            shown: true,
+            note: {
+                type: 'text',
+                text: `${profession.skill_points} / ${profession.max_skill_points}`,
+            },
+        };
     }
 }
 

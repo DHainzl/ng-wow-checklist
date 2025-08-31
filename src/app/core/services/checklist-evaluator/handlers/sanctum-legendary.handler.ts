@@ -1,46 +1,37 @@
-import { combineLatest, Subscription } from 'rxjs';
-import { CharacterIngameData } from '../../character-store/character-store.interface';
+import { Injectable } from '@angular/core';
 import { ChecklistItemSanctumLegendary } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistSanctumLegendaryHandler extends ChecklistHandler<ChecklistItemSanctumLegendary> {
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemSanctumLegendary, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-    handlerInit(): void {
-        this.subscription = combineLatest([
-            this.checklistRequestContainer.ingameDataChanged
-            ,
-        ]).subscribe(([ ingameData ]) => {
-            this.evaluate(ingameData);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(ingameData: CharacterIngameData | undefined): void {
-        if (!ingameData?.powers) {
-            this._completed$.next('loading');
-            this._note$.next({
-                type: 'text',
-                text: 'Import',
-            });
-            return;
+        if (!data.ingameData?.powers) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                note: {
+                    type: 'text',
+                    text: 'Import',
+                },
+            };
         }
 
-        this._note$.next({
+        const note: ChecklistNote = {
             type: 'text',
             text: '',
-        });
+        };
 
-        const power = ingameData.powers[this.item.name];
-        
-        if (!power?.learned) {
-            this._completed$.next('incomplete');
-            return;
-        }
+        const power = data.ingameData.powers[item.name];
+        const completed = power?.learned;
 
-        this._completed$.next('complete');
+        return {
+            ...baseItem,
+            note,
+            completed: completed ? 'complete' : 'incomplete',
+        };
     }
 }

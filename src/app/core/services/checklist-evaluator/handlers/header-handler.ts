@@ -1,74 +1,55 @@
-import { combineLatest, Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ChecklistItem, ChecklistItemHeader } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
-import { CompletionStatus } from './_handler.interface';
+import { Injectable } from '@angular/core';
+import { ChecklistItemHeader } from '../../checklist/checklist.interface';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistHeaderHandler extends ChecklistHandler<ChecklistItemHeader> {
-    private numItems: number = 0;
-    private completeItems: number = 0;
+    evaluate(item: ChecklistItemHeader, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
+        const subitems = this.findSubitems(item, evaluated);
 
-    subscription: Subscription = new Subscription();
-
-    handlerInit(): void {
-        const subitems = this.findSubitems();
-
-        if (subitems.length === 0) {
-            this._shown$.next(false);
+        const shownStatus = subitems
+            .filter(s => s.shown)
+            .filter(s => s.baseItem.type !== 'header')
+            .map(s => s.completed);
+    
+        const isLoading = shownStatus.includes('loading');
+        if (isLoading) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                label: this.getHeader(item, 0, 0),
+            };
         }
 
-        this._label$.next(this.getHeader());
-        
-        this.subscription = combineLatest(this.getSubitemSubscriptions(subitems))
-        .subscribe(allStatus => {
-            const shownStatus = allStatus.filter(s => s.shown).map(s => s.completed);
-        
-            const isLoading = shownStatus.includes('loading');
-            if (isLoading) {
-                this._completed$.next('loading');
-                return;
-            }
+        const numItems = shownStatus.length;
+        const completeItems = shownStatus.filter(c => c === 'complete').length;
+        const isCompleted = shownStatus.every(c => c === 'complete');
 
-            this.numItems = shownStatus.length;
-            this.completeItems = shownStatus.filter(c => c === 'complete').length;
-            const isCompleted = shownStatus.every(c => c === 'complete');
-
-            this._completed$.next(isCompleted ? 'complete' : 'incomplete');
-            this._label$.next(this.getHeader());
-        });
+        return {
+            ...baseItem,
+            completed: isCompleted ? 'complete' : 'incomplete',
+            label: this.getHeader(item, completeItems, numItems),
+        }
     }
 
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
+    private getHeader(item: ChecklistItemHeader, completeItems: number, numItems: number): string {
+        const tag = 'h' + (item.level + 2);
+        const completeItemsLabel = numItems === 0 ? '' : ` (${completeItems} / ${numItems})`
+        return `<${tag}>${item.name}${completeItemsLabel}</${tag}>`;
     }
 
-    private getHeader(): string {
-        const tag = 'h' + (this.item.level + 2);
-        return `<${tag}>${this.item.name} (${this.completeItems} / ${this.numItems})</${tag}>`;
-    }
-
-    private getSubitemSubscriptions(subitems: ChecklistItem[]): Observable<{ shown: boolean, completed: CompletionStatus }>[] {
-        return subitems
-            .filter(subitem => subitem.type !== 'header')
-            .map(subitem => {
-                return combineLatest([ subitem.handler!.shown, subitem.handler!.completed ]).pipe(
-                    map(([ shown, completed ]) => ({ shown, completed })),
-                );
-            });
-    }
-
-    private findSubitems(): ChecklistItem[] {
-        const currentIndex = this.allItems.findIndex(item => item.key === this.item.key);
-        if (currentIndex + 1 >= this.allItems.length) {
+    private findSubitems(item: ChecklistItemHeader, evaluated: EvaluatedChecklistItem[]): EvaluatedChecklistItem[] {
+        if (evaluated.length === 0) {
             return [];
         }
 
-        const fromCurrent = this.allItems.slice(currentIndex + 1);
-        const nextIndex = fromCurrent.findIndex(item => item.type === 'header' && item.level <= this.item.level);
-
+        const nextIndex = evaluated.findIndex(i => i.baseItem.type === 'header' && i.baseItem.level <= item.level);
         if (nextIndex !== -1) {
-            return fromCurrent.slice(0, nextIndex);
+            return evaluated.slice(0, nextIndex);
         }
-        return fromCurrent;
+        return evaluated;
     }
 }

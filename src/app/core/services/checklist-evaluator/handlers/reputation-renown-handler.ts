@@ -1,55 +1,61 @@
-import { Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { BattleNetCharacterReputation, BattleNetCharacterReputations } from '../../battle-net/character/types/battlenet-reputation';
 import { ChecklistItemReputationRenown } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistReputationRenownHandler extends ChecklistHandler<ChecklistItemReputationRenown> {
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemReputationRenown, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-    handlerInit(): void {
-        this.subscription = this.checklistRequestContainer.reputationChanged.subscribe(reputations => {
-            this.evaluate(reputations);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(reputations: BattleNetCharacterReputations | undefined): void {
-        if (!reputations) {
-            this._completed$.next('loading');
-            this._note$.next(undefined);
-            return;
+        if (!data.reputations) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                note: undefined,
+            };
         }
 
-        const reputation = this.getReputation(reputations);
-        this._label$.next(this.getLabel());
+        const reputation = this.getReputation(item, data.reputations);
+        const label = this.getLabel(item);
 
         if (!reputation) {
-            this._completed$.next('incomplete');
-            return;
+            return {
+                ...baseItem,
+                label,
+                completed: 'incomplete',
+            };
         }
 
-        const isCompleted = (reputation.standing.renown_level ?? 0) >= this.item.max;
+        const isCompleted = (reputation.standing.renown_level ?? 0) >= item.max;
 
         if (isCompleted) {
-            this._completed$.next('complete');
-            this._note$.next(undefined);
+            return {
+                ...baseItem,
+                label,
+                completed: 'complete',
+                note: undefined,
+            };
         } else {
-            this._completed$.next('incomplete');
-            this._note$.next({
-                type: 'text',
-                text: `${reputation.standing.renown_level ?? 0} / ${this.item.max}`,
-            });
+            return {
+                ...baseItem,
+                label,
+                completed: 'incomplete',
+                note: {
+                    type: 'text',
+                    text: `${reputation.standing.renown_level ?? 0} / ${item.max}`,
+                },
+            };
         }
     }
 
-    private getLabel(): string {
-        return `${this.item.name}: Renown ${this.item.max}`;
+    private getLabel(item: ChecklistItemReputationRenown): string {
+        return `${item.name}: Renown ${item.max}`;
     }
 
-    private getReputation(reputations: BattleNetCharacterReputations): BattleNetCharacterReputation | undefined {
-        return reputations.reputations.find(reputation => reputation.faction.id === this.item.id);
+    private getReputation(item: ChecklistItemReputationRenown, reputations: BattleNetCharacterReputations): BattleNetCharacterReputation | undefined {
+        return reputations.reputations.find(reputation => reputation.faction.id === item.id);
     }
 }

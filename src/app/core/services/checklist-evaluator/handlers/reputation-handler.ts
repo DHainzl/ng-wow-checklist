@@ -1,66 +1,69 @@
-import { combineLatest, Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { BattleNetCharacterReputation, BattleNetCharacterReputations } from '../../battle-net/character/types/battlenet-reputation';
 import { CharacterInfo } from '../../character-store/character-store.interface';
 import { ChecklistItemReputation } from '../../checklist/checklist.interface';
 import { ReputationTiersService } from '../../reputation-tiers/reputation-tiers.service';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemReputation> {
-    subscription: Subscription = new Subscription();
     tiersService: ReputationTiersService = new ReputationTiersService();
 
-    handlerInit(): void {
-        this.subscription = combineLatest([
-            this.checklistRequestContainer.reputationChanged,
-            this.checklistRequestContainer.overridesChanged,
-        ]).subscribe(([ reputations, overrides ]) => {
-            this.evaluate(reputations, overrides);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(reputations: BattleNetCharacterReputations | undefined, overrides: CharacterInfo['overrides']): void {
-        if (!reputations || !overrides) {
-            this._completed$.next('loading');
-            this._note$.next(undefined);
-            return;
+    evaluate(item: ChecklistItemReputation, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
+        
+        if (!data.reputations || !data.characterInfo.overrides) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                note: undefined,
+            };
         }
         
-        const max = this.getMax(this.item, overrides);
-        const reputation = this.getReputation(reputations);
-        this._label$.next(this.getLabel(max));
+        const max = this.getMax(item, data.characterInfo.overrides);
+        const reputation = this.getReputation(item, data.reputations);
+        const label = this.getLabel(item, max);
 
         if (!reputation) {
-            this._completed$.next('incomplete');
-            return;
+            return {
+                ...baseItem,
+                label,
+                completed: 'incomplete',
+            };
         }
 
         const isCompleted = (reputation.standing.tier ?? 0) >= max;
 
         if (isCompleted) {
-            this._completed$.next('complete');
-            this._note$.next(undefined);
+            return {
+                ...baseItem,
+                label,
+                completed: 'complete',
+                note: undefined,
+            };
         } else {
-            this._completed$.next('incomplete');
-            this._note$.next({
-                type: 'text',
-                text: `${reputation.standing.value} / ${reputation.standing.max}`,
-            });
+            return {
+                ...baseItem,
+                label,
+                completed: 'incomplete',
+                note: {
+                    type: 'text',
+                    text: `${reputation.standing.value} / ${reputation.standing.max}`,
+                },
+            };
         }
-
     }
 
-    private getLabel(max: number): string {
-        const tiers = this.tiersService.getTiers(this.item.id);
+    private getLabel(item: ChecklistItemReputation, max: number): string {
+        const tiers = this.tiersService.getTiers(item.id);
 
-        return `${this.item.name}: ${tiers.tiers[max].name}`;
+        return `${item.name}: ${tiers.tiers[max].name}`;
     }
 
-    private getReputation(reputations: BattleNetCharacterReputations): BattleNetCharacterReputation | undefined {
-        return reputations.reputations.find(reputation => reputation.faction.id === this.item.id);
+    private getReputation(item: ChecklistItemReputation, reputations: BattleNetCharacterReputations): BattleNetCharacterReputation | undefined {
+        return reputations.reputations.find(reputation => reputation.faction.id === item.id);
     }
 
     private getMax(item: ChecklistItemReputation, overrides: CharacterInfo['overrides']): number {

@@ -1,44 +1,32 @@
-import { combineLatest, Subscription } from 'rxjs';
-import { BattleNetAchievement, BattleNetAchievements } from '../../battle-net/character/types/battlenet-achievement';
+import { Injectable } from '@angular/core';
+import { BattleNetAchievement } from '../../battle-net/character/types/battlenet-achievement';
 import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';
 import { ChecklistItemAchievement } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemAchievement> {
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemAchievement, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-    handlerInit(): void {
-        this.subscription = combineLatest([
-            this.checklistRequestContainer.achievementsChanged,
-            this.checklistRequestContainer.profileChanged,
-        ]).subscribe(([ achievements, profile ]) => {
-            this.evaluate(achievements, profile);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(achievements: BattleNetAchievements | undefined, profile: BattleNetProfile | undefined): void {
-        if (!achievements || !profile) {
-            this._completed$.next('loading');
-            return;
+        if (!data.achievements || !data.profile) {
+            return { ...baseItem, completed: 'loading' };
         }
 
-        const achievement = this.getAchievement(achievements);
+        const achievement = data.achievements.achievements.find(av => av.id === item.id);
+        const wowheadId = this.getWowheadId(item, achievement, data.profile);
 
         if (!achievement || !achievement.criteria.is_completed) {
-            this._completed$.next('incomplete');
-        } else {
-            this._completed$.next('complete');
+            return { ...baseItem, wowheadId, completed: 'incomplete' };
         }
-
-        this._wowheadId$.next(this.getWowheadId(achievement, profile));
+        
+        return { ...baseItem, wowheadId, completed: 'complete' };
     }
 
-    getWowheadId(achievement: BattleNetAchievement | undefined, profile: BattleNetProfile): string {
-        let link = `${this.item.type}-${this.item.id}`;
+    getWowheadId(item: ChecklistItemAchievement, achievement: BattleNetAchievement | undefined, profile: BattleNetProfile): string {
+        let link = `achievement-${item.id}`;
 
         if (!achievement) {
             return link;
@@ -49,9 +37,5 @@ export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemA
         }
 
         return link;
-    }
-
-    private getAchievement(achievements: BattleNetAchievements): BattleNetAchievement | undefined {
-        return achievements.achievements.find(av => av.id === this.item.id);
     }
 }

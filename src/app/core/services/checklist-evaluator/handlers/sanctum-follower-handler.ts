@@ -1,57 +1,57 @@
-import { combineLatest, Subscription } from 'rxjs';
-import { CharacterIngameData } from '../../character-store/character-store.interface';
+import { Injectable } from '@angular/core';
 import { ChecklistItemSanctumFollower } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistSanctumFollowerHandler extends ChecklistHandler<ChecklistItemSanctumFollower> {
     private static readonly MAX_FOLLOWER_LEVEL = 60;
 
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemSanctumFollower, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-    handlerInit(): void {
-        this.subscription = combineLatest([
-            this.checklistRequestContainer.ingameDataChanged
-            ,
-        ]).subscribe(([ ingameData ]) => {
-            this.evaluate(ingameData);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(ingameData: CharacterIngameData | undefined): void {
-        if (!ingameData) {
-            this._completed$.next('loading');
-            this._note$.next({
-                type: 'text',
-                text: 'Import',
-            });
-            return;
+        if (!data.ingameData) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                note: {
+                    type: 'text',
+                    text: 'Import',
+                },
+            };
         }
 
-        const follower = ingameData.followers[this.item.name];
+        const follower = data.ingameData.followers[item.name];
         
         if (!follower || !follower.collected) {
-            this._completed$.next('incomplete');
-            this._note$.next({
-                type: 'text',
-                text: 'Not collected',
-            });
-            return;
+            return {
+                ...baseItem,
+                completed: 'incomplete',
+                note: {
+                    type: 'text',
+                    text: 'Not collected',
+                },
+            };
         }
         
-        this._note$.next({
+        const note: ChecklistNote = {
             type: 'text',
             text: `Lvl. ${follower.level} / ${ChecklistSanctumFollowerHandler.MAX_FOLLOWER_LEVEL}`,
-        });
+        };
 
         if (follower.level < ChecklistSanctumFollowerHandler.MAX_FOLLOWER_LEVEL) {
-            this._completed$.next('incomplete');
-            return;
+            return {
+                ...baseItem,
+                note,
+                completed: 'incomplete',
+            };
         }
 
-        this._completed$.next('complete');
+        return {
+            ...baseItem,
+            note,
+            completed: 'complete',
+        };
     }
 }

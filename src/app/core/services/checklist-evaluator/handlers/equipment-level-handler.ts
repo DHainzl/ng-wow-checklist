@@ -1,51 +1,56 @@
-import { Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { BattleNetEquipment, BattleNetEquipmentItem } from '../../battle-net/character/types/battlenet-equipment';
 import { ChecklistItemEquipmentLevel } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEquipmentLevel> {
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemEquipmentLevel, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-    handlerInit(): void {
-        this.subscription = this.checklistRequestContainer.equipmentChanged.subscribe(equipment => {
-            this.evaluate(equipment);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(equipment: BattleNetEquipment | undefined): void {
-        if (!equipment) {
-            this._completed$.next('loading');
-            this._subitems$.next([]);
-            return;
+        if (!data.equipment) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                subitems: [],
+            };
         }
 
-        const item = this.getItem(equipment);
-        if (!item) {
-            this._note$.next({
-                type: 'text',
-                text: 'Not equipped',
-            });
-            this._completed$.next('incomplete');
-            return;
+        const equippedItem = this.getItem(item, data.equipment);
+        if (!equippedItem) {
+            return {
+                ...baseItem,
+                completed: 'incomplete',
+                note: {
+                    type: 'text',
+                    text: 'Not equipped',
+                }
+            };
         }
 
-        this._note$.next({
+        const note: ChecklistNote = {
             type: 'text',
-            text: `${item.level.value} / ${this.item.level}`,
-        });
+            text: `${equippedItem.level.value} / ${item.level}`,
+        }
 
-        if (item.level.value >= this.item.level) {
-            this._completed$.next('complete');
+        if (equippedItem.level.value >= item.level) {
+            return {
+                ...baseItem,
+                note,
+                completed: 'complete',
+            };
         } else {
-            this._completed$.next('incomplete');
+            return {
+                ...baseItem,
+                note,
+                completed: 'incomplete',
+            };
         }
     }
 
-    private getItem(equipment: BattleNetEquipment): BattleNetEquipmentItem | undefined {
-        return equipment.equipped_items.find(item => item.slot.type === this.item.slot);
+    private getItem(item: ChecklistItemEquipmentLevel, equipment: BattleNetEquipment): BattleNetEquipmentItem | undefined {
+        return equipment.equipped_items.find(i => i.slot.type === item.slot);
     }
 }

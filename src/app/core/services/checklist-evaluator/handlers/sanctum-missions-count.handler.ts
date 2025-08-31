@@ -1,48 +1,39 @@
-import { combineLatest, Subscription } from 'rxjs';
-import { CharacterIngameData } from '../../character-store/character-store.interface';
+import { Injectable } from '@angular/core';
 import { ChecklistItemSanctumMissionsCount } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistSanctumMissionsCountHandler extends ChecklistHandler<ChecklistItemSanctumMissionsCount> {
     private static readonly MAX_MISSIONS_COUNT: number = 20;
 
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemSanctumMissionsCount, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-    handlerInit(): void {
-        this.subscription = combineLatest([
-            this.checklistRequestContainer.ingameDataChanged
-            ,
-        ]).subscribe(([ ingameData ]) => {
-            this.evaluate(ingameData);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(ingameData: CharacterIngameData | undefined): void {
-        if (!ingameData || ingameData.missions === undefined) {
-            this._completed$.next('loading');
-            this._note$.next({
-                type: 'text',
-                text: 'Import',
-            });
-            return;
+        if (!data.ingameData || data.ingameData.missions === undefined) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                note: {
+                    type: 'text',
+                    text: 'Import',
+                },
+            };
         }
 
-        const completedMissions = ingameData.missions;
+        const completedMissions = data.ingameData.missions;
         
-        this._note$.next({
+        const note: ChecklistNote = {
             type: 'text',
             text: `${completedMissions} / ${ChecklistSanctumMissionsCountHandler.MAX_MISSIONS_COUNT}`,
-        });
+        };
+        const isCompleted = completedMissions >= ChecklistSanctumMissionsCountHandler.MAX_MISSIONS_COUNT;
 
-        if (completedMissions < ChecklistSanctumMissionsCountHandler.MAX_MISSIONS_COUNT) {
-            this._completed$.next('incomplete');
-            return;
-        }
-
-        this._completed$.next('complete');
+        return {
+            ...baseItem,
+            note,
+            completed: isCompleted ? 'complete' : 'incomplete',
+        };
     }
 }

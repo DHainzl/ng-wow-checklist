@@ -1,46 +1,45 @@
-import { combineLatest, Subscription } from 'rxjs';
-import { CharacterIngameData } from '../../character-store/character-store.interface';
+import { Injectable } from '@angular/core';
 import { ChecklistItemSanctumTalent } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistSanctumTalentHandler extends ChecklistHandler<ChecklistItemSanctumTalent> {
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemSanctumTalent, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-    handlerInit(): void {
-        this.subscription = combineLatest([
-            this.checklistRequestContainer.ingameDataChanged,
-        ]).subscribe(([ ingameData ]) => {
-            this.evaluate(ingameData);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(ingameData: CharacterIngameData | undefined): void {
-        if (!ingameData) {
-            this._completed$.next('loading');
-            this._note$.next({
-                type: 'text',
-                text: 'Import',
-            });
-            return;
+        if (!data.ingameData) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                note: {
+                    type: 'text',
+                    text: 'Import',
+                },
+            };
         }
 
-        const talent = ingameData.sanctum[this.item.talentName] ?? 0;
-        const max = this.item.talentName === 'special' ? 5 : 3;
+        const talent = data.ingameData.sanctum[item.talentName] ?? 0;
+        const max = item.talentName === 'special' ? 5 : 3;
 
-        this._note$.next({
+        const note: ChecklistNote = {
             type: 'text',
             text: `${talent} / ${max}`,
-        });
+        };
 
         if (talent < max) {
-            this._completed$.next('incomplete');
-            return;
+            return {
+                ...baseItem,
+                note,
+                completed: 'incomplete',
+            }
         }
-        
-        this._completed$.next('complete');
+
+        return {
+            ...baseItem,
+            note,
+            completed: 'complete',
+        }
     }
 }

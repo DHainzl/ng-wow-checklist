@@ -1,42 +1,33 @@
-import { Subscription, combineLatest } from 'rxjs';
-import { BattleNetQuests } from '../../battle-net/character/types/battlenet-quest';
-import { CharacterIngameData } from '../../character-store/character-store.interface';
+import { Injectable } from '@angular/core';
 import { ChecklistItemQuest } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistQuestHandler extends ChecklistHandler<ChecklistItemQuest> {
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemQuest, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = {
+            ...this.getBaseEvaluatedItem(item, data),
+            wowheadId: `quest-${item.id}`,
+        };
 
-    handlerInit(): void {
-        this.subscription = combineLatest([
-            this.checklistRequestContainer.questsChanged,
-            this.checklistRequestContainer.ingameDataChanged,
-        ]) .subscribe(([ quests, ingameData ]) => {
-            this.evaluate(quests, ingameData);
-        });
-
-        this._wowheadId$.next(`quest-${this.item.id}`);
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(quests: BattleNetQuests | undefined, ingameData: CharacterIngameData | undefined): void {
-        if (!quests) {
-            this._completed$.next('loading');
-            return;
+        if (!data.quests) {
+            return { ...baseItem, completed: 'loading' };
         }
 
-        const completedQuest = quests.quests.find(quest => quest.id === this.item.id);
+        const completedQuest = data.quests.quests.find(quest => quest.id === item.id);
+
         // API responded true
         if (completedQuest) {
-            this._completed$.next('complete');
-            return;    
+            return { ...baseItem, completed: 'complete' };
         }
 
         // Hidden quests might be reported by ingame addon
-        const completedIngame = ingameData?.quests?.[`${this.item.id}`] ?? false;
-        this._completed$.next(completedIngame ? 'complete' : 'incomplete');
+        const completedIngame = data.ingameData?.quests?.[`${item.id}`] ?? false;
+        return {
+            ...baseItem,
+            completed: completedIngame ? 'complete' : 'incomplete',
+        };
     }
 }

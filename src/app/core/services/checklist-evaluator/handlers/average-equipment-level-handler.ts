@@ -1,47 +1,48 @@
-import { Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { BattleNetEquipment } from '../../battle-net/character/types/battlenet-equipment';
 import { ChecklistItemAverageEquipmentLevel } from '../../checklist/checklist.interface';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistAverageEquipmentHandler extends ChecklistHandler<ChecklistItemAverageEquipmentLevel> {
-    subscription: Subscription = new Subscription();
+    evaluate(item: ChecklistItemAverageEquipmentLevel, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-    handlerInit(): void {
-        this.subscription = this.checklistRequestContainer.equipmentChanged.subscribe(equipment => {
-            this.evaluate(equipment);
-        });
-    }
-
-    handlerDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private evaluate(equipment: BattleNetEquipment | undefined): void {
-        if (!equipment) {
-            this._completed$.next('loading');
-            this._subitems$.next([]);
-            return;
+        if (!data.equipment) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                subitems: [],
+            };
         }
 
-        const subitems = this.getItemsBelowLevel(equipment);
+        const subitems = this.getItemsBelowLevel(item, data.equipment);
 
         if (subitems.length) {
-            this._completed$.next('incomplete');
-            this._subitems$.next(subitems);
+            return {
+                ...baseItem,
+                completed: 'incomplete',
+                subitems: subitems,
+            };
         } else {
-            this._completed$.next('complete');
-            this._subitems$.next([]);
+            return {
+                ...baseItem,
+                completed: 'complete',
+                subitems: [],
+            };
         }
     }
 
-    private getItemsBelowLevel(equipment: BattleNetEquipment): string[] {
+    private getItemsBelowLevel(item: ChecklistItemAverageEquipmentLevel, equipment: BattleNetEquipment): string[] {
         const excludedKeys = [ 'SHIRT', 'TABARD' ];
 
         return equipment.equipped_items
-            .filter(item => excludedKeys.indexOf(item.slot.type) === -1)
-            .filter(item => item.level.value < this.item.max)
-            .map(item => {
-                return `${item.slot.name} (${item.level.value})`;
+            .filter(i => !excludedKeys.includes(i.slot.type))
+            .filter(i => i.level.value < item.max)
+            .map(i => {
+                return `${i.slot.name} (${i.level.value})`;
             });
     }
 }

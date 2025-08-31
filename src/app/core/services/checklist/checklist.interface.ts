@@ -1,4 +1,3 @@
-import { ChecklistHandler } from '../checklist-evaluator/handlers/_handler';
 
 export type ChecklistCovenant = 'Kyrian' | 'Necrolord' | 'Night Fae' | 'Venthyr';
 export type ChecklistWowClass = 'Death Knight' | 'Demon Hunter' | 'Druid' | 'Hunter' | 'Mage' | 'Monk' | 'Paladin' | 'Priest' |
@@ -17,7 +16,6 @@ export interface ChecklistItemBase {
         'sanctum-missions-count' | 'sanctum-legendary' | 'reputation-renown';
     covenant?: ChecklistCovenant;
     classes?: ChecklistWowClass[];
-    handler?: ChecklistHandler<ChecklistItem>;
 }
 
 export interface ChecklistItemHeader extends ChecklistItemBase {

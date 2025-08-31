@@ -1,59 +1,53 @@
-import { Observable, of, Subscription } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { inject, Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { CharacterInfo } from '../../character-store/character-store.interface';
+import { CharacterStoreService } from '../../character-store/character-store.service';
 import { ChecklistItemManual } from '../../checklist/checklist.interface';
-import { CharacterId } from '../checklist-request-container.service';
-import { ChecklistHandler } from './_handler';
+import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
+import { ChecklistEvaluatorData } from './_handler.interface';
+import { ChecklistHandler } from './_handler.service';
 
+@Injectable({ providedIn: 'root' })
 export class ChecklistManualHandler extends ChecklistHandler<ChecklistItemManual> {
-    subscriptions: Subscription = new Subscription();
-    characterId: CharacterId | undefined;
+    private readonly characterStoreService = inject(CharacterStoreService);
 
-    handlerInit(): void {
-        this._note$.next({
-            type: 'button',
-            label: 'Uncheck',
-            onClick: () => this.changeChecked(false),
-        });
+    evaluate(item: ChecklistItemManual, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem(item, data);
 
-        this.subscriptions.add(this.checklistRequestContainer.overridesChanged.subscribe(overrides => {
-            this.evaluate(overrides);
-        }));
-        this.subscriptions.add(this.checklistRequestContainer.characterChanged.subscribe(characterId => {
-            this.characterId = characterId;
-        }));
-    }
-
-    handlerDestroy(): void {
-        this.subscriptions.unsubscribe();
-    }
-
-    private evaluate(overrides: CharacterInfo['overrides']): void {
-        if (!overrides) {
-            this._completed$.next('loading');
-            this._note$.next(undefined);
-            return;
+        if (!data.characterInfo.overrides) {
+            return {
+                ...baseItem,
+                completed: 'loading',
+                note: undefined,
+            };
         }
 
-        if (this.isCompleted(overrides)) {
-            this._completed$.next('complete');
-            this._note$.next({
-                type: 'button',
-                label: 'Uncheck',
-                onClick: () => this.changeChecked(false),
-            });
+        if (this.isCompleted(item, data.characterInfo.overrides)) {
+            return {
+                ...baseItem,
+                completed: 'complete',
+                note: {
+                    type: 'button',
+                    label: 'Uncheck',
+                    onClick: () => this.changeChecked(false, item, data.characterInfo),
+                }
+            };
         } else {
-            this._completed$.next('incomplete');
-            this._note$.next({
-                type: 'button',
-                label: 'Check',
-                onClick: () => this.changeChecked(true),
-            });
+            return {
+                ...baseItem,
+                completed: 'incomplete',
+                note: {
+                    type: 'button',
+                    label: 'Check',
+                    onClick: () => this.changeChecked(true, item, data.characterInfo),
+                }
+            };
         }
     }
 
-    isCompleted(overrides: CharacterInfo['overrides']): boolean {
-        const override = overrides[this.item.key];
+    isCompleted(item: ChecklistItemManual, overrides: CharacterInfo['overrides']): boolean {
+        const override = overrides[item.key];
 
         if (override && override.type === 'manual') {
             return override.checked;
@@ -62,17 +56,18 @@ export class ChecklistManualHandler extends ChecklistHandler<ChecklistItemManual
         return false;
     }
 
-    private changeChecked(isChecked: boolean): Observable<undefined> {
+    // TODO Only works on reload ...
+    private changeChecked(isChecked: boolean, item: ChecklistItemManual, characterInfo: CharacterInfo): Observable<undefined> {
         return this.characterStoreService
-            .getCharacter(this.characterId!.region, this.characterId!.realm, this.characterId!.name)
+            .getCharacter(characterInfo.region, characterInfo.realm, characterInfo.name)
             .pipe(
-                flatMap(character => {
+                mergeMap(character => {
                     if (!character) {
                         console.warn('character not found');
                         return of(undefined);
                     }
 
-                    character.overrides[this.item.key] = {
+                    character.overrides[item.key] = {
                         type: 'manual',
                         checked: isChecked,
                     };
