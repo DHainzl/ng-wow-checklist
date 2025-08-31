@@ -18,8 +18,8 @@ import { IngameImportDialogComponent } from './import-dialog/ingame-import-dialo
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ChecklistRequestContainerService } from '../../core/services/checklist-evaluator/checklist-request-container.service';
 import { AddTitlePipe } from '../../shared/pipes/add-title.pipe';
@@ -34,10 +34,10 @@ import { ChecklistLineComponent } from './checklist-line/checklist-line.componen
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         MatIconModule,
-        MatCheckboxModule,
         MatCardModule,
         MatProgressSpinnerModule,
         MatButtonModule,
+        MatMenuModule,
 
         FormsModule,
 
@@ -68,6 +68,7 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
     readonly allCompleted = signal<boolean>(false);
     readonly hideCompleted = signal<boolean>(this.localStorageService.get('hideCompleted') || false);
+    readonly hideCompletedToggle = signal<boolean[]>([ false ]);
 
     readonly checklist = signal<ChecklistItem[]>([]);
     private characterInfo: CharacterInfo | undefined;
@@ -176,7 +177,10 @@ export class ChecklistComponent implements OnInit, OnDestroy {
         });
     }
 
-    hideCompletedChange(value: boolean): void {
+    toggleHideCompleted(): void {
+        const value = !this.hideCompleted();
+
+        this.hideCompleted.set(value);
         this.localStorageService.set('hideCompleted', value);
     }
 

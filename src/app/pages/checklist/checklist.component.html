@@ -15,25 +15,36 @@
                 >
                     <mat-icon>refresh</mat-icon>
                 </button>
-                <button
-                    matIconButton
-                    (click)="import()"
-                    aria-label="Import from Ingame Addon"
-                    [disabled]="loading()"
-                >
-                    <mat-icon>import_export</mat-icon>
-                </button>
             </div>
 
             <span class="action-spacer"></span>
 
             <div>
-                <mat-checkbox
-                    [(ngModel)]="hideCompleted"
-                    (ngModelChange)="hideCompletedChange($event)"
+                <button
+                    matIconButton
+                    [matMenuTriggerFor]="menu"
+                    aria-label="More options"
+                    [disabled]="loading()"
                 >
-                    Hide completed items
-                </mat-checkbox>
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+
+                <mat-menu #menu="matMenu">
+                    <ng-template matMenuContent>
+                        <button mat-menu-item (click)="toggleHideCompleted()">
+                            <mat-icon>{{
+                                hideCompleted() ? 'visibility' : 'visibility_off'
+                            }}</mat-icon>
+                            <span>{{
+                                hideCompleted() ? 'Show completed items' : 'Hide completed items'
+                            }}</span>
+                        </button>
+                        <button mat-menu-item (click)="import()">
+                            <mat-icon>import_export</mat-icon>
+                            <span>Import from ingame addon</span>
+                        </button>
+                    </ng-template>
+                </mat-menu>
             </div>
         </div>
 
