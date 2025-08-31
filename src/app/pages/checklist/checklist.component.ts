@@ -27,6 +27,7 @@ import { AddTitlePipe } from '../../shared/pipes/add-title.pipe';
 import { MediaAssetPipe } from '../../shared/pipes/media-asset.pipe';
 import { SafeBackgroundImagePipe } from '../../shared/pipes/safe-background-image.pipe';
 import { ChecklistLineComponent } from './checklist-line/checklist-line.component';
+import { RemoveCharacterDialogComponent } from './remove-character-dialog/remove-character-dialog.component';
 
 @Component({
     selector: 'app-checklist',
@@ -194,6 +195,13 @@ export class ChecklistComponent implements OnInit, OnDestroy {
 
         this.hideCompleted.set(value);
         this.localStorageService.set('hideCompleted', value);
+    }
+
+    openDeletionDialog(): void {
+        this.dialog.open(RemoveCharacterDialogComponent, {
+            width: '400px',
+            data: this.characterInfo(),
+        });
     }
 
     private updateTitle(): void {

@@ -49,6 +49,10 @@
                             <mat-icon>list_alt</mat-icon>
                             <span>Active checklist</span>
                         </button>
+                        <button mat-menu-item (click)="openDeletionDialog()">
+                            <mat-icon>delete_forever</mat-icon>
+                            <span>Remove character</span>
+                        </button>
                     </ng-template>
                 </mat-menu>
                 <mat-menu #checklistSelectionMenu="matMenu">

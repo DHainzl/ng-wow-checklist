@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Remove {{ characterInfo.name | titlecase }}</h1>
+
+<mat-dialog-content>
+    <p>
+        Are you sure you want to remove the character
+        {{ characterInfo.name | titlecase }}-{{ characterInfo.realm | titlecase }}
+        from your checklists?
+    </p>
+    <p>This will NOT delete your character in-game.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button matButton (click)="close()">Cancel</button>
+    <button matButton="filled" (click)="removeCharacter()">Remove</button>
+</mat-dialog-actions>
