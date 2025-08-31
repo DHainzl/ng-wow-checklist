@@ -34,13 +34,14 @@
                 <mat-menu #moreOptionsMenu="matMenu">
                     <ng-template matMenuContent>
                         <button mat-menu-item (click)="toggleHideCompleted()">
-                            <mat-icon>{{
-                                hideCompleted() ? 'visibility' : 'visibility_off'
-                            }}</mat-icon>
-                            <span>{{
-                                hideCompleted() ? 'Show completed items' : 'Hide completed items'
-                            }}</span>
+                            <mat-icon>{{ hideCompleted() ? 'check' : '' }}</mat-icon>
+                            <span>Hide completed items</span>
                         </button>
+                        <button mat-menu-item (click)="toggleSecondaryProfessions()">
+                            <mat-icon>{{ showSecondaryProfessions() ? 'check' : '' }}</mat-icon>
+                            <span>Show secondary professions</span>
+                        </button>
+                        <mat-divider />
                         <button mat-menu-item (click)="import()">
                             <mat-icon>import_export</mat-icon>
                             <span>Import from ingame addon</span>

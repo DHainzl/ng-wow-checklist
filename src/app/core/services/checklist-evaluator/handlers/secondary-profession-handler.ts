@@ -7,6 +7,8 @@ import { getProfession } from './primary-profession-handler';
 
 @Injectable()
 export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<ChecklistItemSecondaryProfession> {
+    public static readonly GLOBAL_OVERRIDE_KEY = '__global-profession-secondary';
+
     private readonly professions = inject(CHECKLIST_PROFESSIONS);
     private readonly characterInfo = inject(CHECKLIST_CHARACTERINFO);
 
@@ -25,10 +27,22 @@ export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<Checkl
         const profession = getProfession(this.professions.secondaries, this.item);
         const isEnabled = this.isEnabled();
 
-        if (!profession || !isEnabled) {
+        if (!isEnabled) {
             return {
                 ...baseItem,
                 shown: false,
+            };
+        }
+
+        if (!profession) {
+            return {
+                ...baseItem,
+                completed: 'incomplete',
+                shown: true,
+                note: {
+                    type: 'text',
+                    text: 'Not learned',
+                },
             };
         }
 
@@ -46,10 +60,14 @@ export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<Checkl
     }
 
     private isEnabled(): boolean {
-        const override = this.characterInfo.overrides[this.item.key];
+        const specificOverride = this.characterInfo.overrides[this.item.key];
+        if (specificOverride && specificOverride.type === 'profession-secondary') {
+            return specificOverride.enabled;
+        }
 
-        if (override && override.type === 'profession-secondary') {
-            return override.enabled;
+        const genericOverride = this.characterInfo.overrides[ChecklistSecondaryProfessionHandler.GLOBAL_OVERRIDE_KEY];
+        if (genericOverride && genericOverride.type === 'profession-secondary') {
+            return genericOverride.enabled;
         }
 
         return false;

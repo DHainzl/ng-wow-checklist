@@ -17,6 +17,7 @@ import { IngameImportDialogComponent } from './import-dialog/ingame-import-dialo
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -28,6 +29,7 @@ import { BattleNetProfessions } from '../../core/services/battle-net/character/t
 import { BattleNetQuests } from '../../core/services/battle-net/character/types/battlenet-quest';
 import { BattleNetCharacterReputations } from '../../core/services/battle-net/character/types/battlenet-reputation';
 import { ChecklistEvaluatorService } from '../../core/services/checklist-evaluator/checklist-evaluator.service';
+import { ChecklistSecondaryProfessionHandler } from '../../core/services/checklist-evaluator/handlers/secondary-profession-handler';
 import { AddTitlePipe } from '../../shared/pipes/add-title.pipe';
 import { MediaAssetPipe } from '../../shared/pipes/media-asset.pipe';
 import { SafeBackgroundImagePipe } from '../../shared/pipes/safe-background-image.pipe';
@@ -46,6 +48,7 @@ import { RemoveCharacterDialogComponent } from './remove-character-dialog/remove
         MatButtonModule,
         MatMenuModule,
         MatTooltipModule,
+        MatDividerModule,
 
         FormsModule,
 
@@ -76,6 +79,7 @@ export class ChecklistComponent {
     readonly error = signal<string>('');
 
     readonly hideCompleted = signal<boolean>(this.localStorageService.get('hideCompleted') || false);
+    readonly showSecondaryProfessions = signal<boolean>(false);
     readonly hideCompletedToggle = signal<boolean[]>([ false ]);
 
     readonly quests = signal<BattleNetQuests | undefined>(undefined);
@@ -193,42 +197,15 @@ export class ChecklistComponent {
                 this.professions.set(professions);
                 this.ingameData.set(ingameData);
                 this.checklist.set(checklist);
+                
+                const secondaryProfessionOverride = this.characterInfo()!.overrides[ChecklistSecondaryProfessionHandler.GLOBAL_OVERRIDE_KEY];
+                if (secondaryProfessionOverride && secondaryProfessionOverride.type === 'profession-secondary') {
+                    this.showSecondaryProfessions.set(secondaryProfessionOverride.enabled);
+                } else {
+                    this.showSecondaryProfessions.set(false);
+                }
 
                 this.loading.set(false);
-            
-                // const completedChanged: Observable<boolean>[] = [];
-
-                // const items = checklist.items
-                //     .filter(item => this.isInRightCovenant(item))
-                //     .filter(item => this.isRightClass(item));
-
-                // items.forEach(item => {
-                //     item.handler = this.checklistHandlerService.getHandler(item, items);
-
-                //     const completedAndVisible$ = combineLatest([
-                //         item.handler.completed.pipe(distinctUntilChanged()),
-                //         item.handler.shown.pipe(distinctUntilChanged()),
-                //     ]).pipe(
-                //         map(([ completionStatus, isShown ]) => {
-                //             if (!isShown) {
-                //                 return true;
-                //             }
-
-                //             return completionStatus === 'complete';
-                //         }),
-                //     );
-
-                //     completedChanged.push(completedAndVisible$);
-                // });
-
-                // this.subscriptions.add(combineLatest(completedChanged).pipe(
-                //     map(completionStatus => completionStatus.every(status => status)),
-                //     distinctUntilChanged(),
-                // ).subscribe(allCompleted => {
-                //     this.allCompleted.set(allCompleted);
-                // }));
-
-                // this.checklist.set(items);
             },
             error: error => {
                 this.error.set(error);
@@ -241,6 +218,21 @@ export class ChecklistComponent {
 
         this.hideCompleted.set(value);
         this.localStorageService.set('hideCompleted', value);
+    }
+
+    toggleSecondaryProfessions(): void {
+        const characterInfo: CharacterInfo = {
+            ...this.characterInfo()!,
+            overrides: {
+                ...this.characterInfo()!.overrides,
+                [ChecklistSecondaryProfessionHandler.GLOBAL_OVERRIDE_KEY]: {
+                    type: 'profession-secondary',
+                    enabled: !this.showSecondaryProfessions(),
+                }
+            }
+        }
+
+        this.characterStoreService.setCharacter(characterInfo).subscribe(() => this.loadData());
     }
 
     openDeletionDialog(): void {
