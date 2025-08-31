@@ -11,7 +11,7 @@ html {
             primary: mat.$violet-palette,
             tertiary: mat.$magenta-palette,
         ),
-        typography: Roboto,
+        typography: 'Noto Sans',
         density: 0,
     ));
 
@@ -52,7 +52,6 @@ body {
 
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 
