@@ -1,6 +1,11 @@
 <mat-toolbar class="mat-elevation-z12">
     @if (isMobile()) {
-        <button matIconButton (click)="openSidenav()" style="margin-right: 15px">
+        <button
+            matIconButton
+            (click)="openSidenav()"
+            matTooltip="Open menu"
+            style="margin-right: 15px"
+        >
             <mat-icon>menu</mat-icon>
         </button>
     }

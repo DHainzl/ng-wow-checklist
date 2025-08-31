@@ -6,14 +6,24 @@
     } @else {
         <div class="page-actions">
             @if (characterData().length) {
-                <button matIconButton (click)="refresh()" aria-label="Refresh All">
+                <button
+                    matIconButton
+                    (click)="refresh()"
+                    matTooltip="Refresh all"
+                    aria-label="Refresh all"
+                >
                     <mat-icon>refresh</mat-icon>
                 </button>
             }
 
             <span class="action-spacer"></span>
 
-            <button matIconButton (click)="openAddModal()">
+            <button
+                matIconButton
+                (click)="openAddModal()"
+                matTooltip="Add character"
+                aria-label="Add character"
+            >
                 <mat-icon>add</mat-icon>
             </button>
         </div>

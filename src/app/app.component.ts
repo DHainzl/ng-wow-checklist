@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserInfo } from './core/services/battle-net/userinfo/types/userinfo.interface';
@@ -18,6 +19,8 @@ import { ResponsiveService } from './core/services/responsive/responsive.service
         MatIconModule,
         MatButtonModule,
         MatSidenavModule,
+        MatTooltipModule,
+
         RouterOutlet,
         RouterLink,
         RouterLinkActive,

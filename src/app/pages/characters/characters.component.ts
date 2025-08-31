@@ -10,6 +10,7 @@ import { LocalStorageService } from '../../core/services/local-storage/local-sto
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddCharacterComponent } from './add-character/add-character.component';
 import { CharacterLineComponent } from "./character-line/character-line.component";
 
@@ -22,6 +23,7 @@ import { CharacterLineComponent } from "./character-line/character-line.componen
         MatProgressSpinnerModule,
         MatIconModule,
         MatButtonModule,
+        MatTooltipModule,
 
         CharacterLineComponent,
     ],

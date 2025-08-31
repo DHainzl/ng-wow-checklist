@@ -10,7 +10,8 @@
                 <button
                     matIconButton
                     (click)="refresh()"
-                    aria-label="Refresh All"
+                    matTooltip="Refresh character"
+                    aria-label="Refresh character"
                     [disabled]="loading()"
                 >
                     <mat-icon>refresh</mat-icon>
@@ -23,6 +24,7 @@
                 <button
                     matIconButton
                     [matMenuTriggerFor]="menu"
+                    matTooltip="More options"
                     aria-label="More options"
                     [disabled]="loading()"
                 >

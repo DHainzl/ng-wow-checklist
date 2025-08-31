@@ -3,6 +3,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { RouterLink } from "@angular/router";
 import { catchError, forkJoin, of } from "rxjs";
 import { environment } from "../../../../environments/environment";
@@ -25,6 +26,7 @@ import { SafeBackgroundImagePipe } from "../../../shared/pipes/safe-background-i
         MatIconModule,
         MatButtonModule,
         MatCardModule,
+        MatTooltipModule,
 
         RouterLink,
         MediaAssetPipe,
