@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 
 import { BattleNetCharacterService } from '../../core/services/battle-net/character/character.service';
@@ -11,7 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AddCharacterComponent } from './add-character/add-character.component';
+import { Router } from '@angular/router';
+import { AddCharacterComponent, AddCharacterResult } from './add-character/add-character.component';
 import { CharacterLineComponent } from "./character-line/character-line.component";
 
 @Component({
@@ -29,6 +30,8 @@ import { CharacterLineComponent } from "./character-line/character-line.componen
     ],
 })
 export class CharactersComponent implements OnInit {
+    private readonly router = inject(Router);
+
     readonly loading = signal<boolean>(true);
     readonly characterData = signal<CharacterInfo[]>([]);
 
@@ -63,14 +66,14 @@ export class CharactersComponent implements OnInit {
     }
 
     openAddModal(): void {
-        const dialogRef = this.dialog.open(AddCharacterComponent, {
+        const dialogRef: MatDialogRef<AddCharacterComponent, AddCharacterResult> = this.dialog.open(AddCharacterComponent, {
             width: '400px',
             data: this.characterData(),
         });
 
-        dialogRef.afterClosed().subscribe(hasChanged => {
-            if (hasChanged) {
-                this.fetch();
+        dialogRef.afterClosed().subscribe(result => {
+            if (result?.added) {
+                this.router.navigate([ '/', result.characterData?.region, result.characterData?.realm, result.characterData?.name, 'checklist' ]);
             }
         });
     }

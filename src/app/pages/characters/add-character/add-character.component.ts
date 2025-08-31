@@ -13,6 +13,11 @@ import { CharacterInfo } from '../../../core/services/character-store/character-
 import { CharacterStoreService } from '../../../core/services/character-store/character-store.service';
 import { ChecklistService } from '../../../core/services/checklist/checklist.service';
 
+export interface AddCharacterResult {
+    added: boolean;
+    characterData: CharacterInfo | undefined;
+}
+
 @Component({
     templateUrl: './add-character.component.html',
     styleUrls: [ './add-character.component.scss' ],
@@ -49,7 +54,7 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription = new Subscription();
 
     constructor(
-        private dialogRef: MatDialogRef<AddCharacterComponent>,
+        private dialogRef: MatDialogRef<AddCharacterComponent, AddCharacterResult>,
         @Inject(MAT_DIALOG_DATA) public data: CharacterInfo[],
 
         private charactersService: CharactersService,
@@ -67,15 +72,18 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
         this.subscriptions.unsubscribe();
     }
 
-    close(result: boolean = false): void {
-        this.dialogRef.close(result);
+    close(result: boolean = false, characterData: CharacterInfo | undefined = undefined): void {
+        this.dialogRef.close({
+            added: result,
+            characterData,
+        });
     }
 
     addCharacter(): void {
         const selected = this.form.controls.character.value;
         if (!selected) return this.close(false);
 
-        const character = {
+        const character: CharacterInfo = {
             region: this.form.controls.region.value!,
             name: selected.name.toLowerCase(),
             realm: selected.realm.slug,
@@ -84,7 +92,7 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
         };
 
         this.characterStoreService.addCharacter(character).subscribe({
-            next: () => this.close(true),
+            next: () => this.close(true, character),
             error: error => alert('Could not add character: ' + error),
         });
     }
