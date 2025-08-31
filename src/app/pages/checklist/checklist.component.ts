@@ -131,7 +131,6 @@ export class ChecklistComponent implements OnInit, OnDestroy {
                 return this.checklistRequestContainerService.load(this.region(), this.realm(), this.name(), characterInfo, cached);
             }),
             mergeMap(() => {
-                this.loading.set(false);
                 return this.checklistService.getChecklist(this.characterInfo!.checklistId);
             }),
         ).subscribe({
