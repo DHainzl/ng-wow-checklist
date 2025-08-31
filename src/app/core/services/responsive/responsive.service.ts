@@ -1,37 +1,44 @@
-import { MediaMatcher } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, fromEvent } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
-export type ScreenSize = 'unknown' | 's' | 'm' | 'l' | 'xl';
+export type ScreenSize = 'unknown' | 'xs' | 's' | 'm' | 'l' | 'xl';
 
 @Injectable({ providedIn: 'root' })
 export class ResponsiveService {
-    private readonly mediaMatcher = inject(MediaMatcher);
+    private readonly breakpointObserver = inject(BreakpointObserver);
+    private readonly breakpointList: {
+        breakpoint: string;
+        size: ScreenSize;
+    }[] = [
+        { breakpoint: Breakpoints.XSmall, size: 'xs' },
+        { breakpoint: Breakpoints.Small, size: 's' },
+        { breakpoint: Breakpoints.Medium, size: 'm' },
+        { breakpoint: Breakpoints.Large, size: 'l' },
+        { breakpoint: Breakpoints.XLarge, size: 'xl' },
+    ]
 
-    sizeChanged: BehaviorSubject<ScreenSize> = new BehaviorSubject(this.getScreenSize());
+    private readonly sizeChanged$: BehaviorSubject<ScreenSize> = new BehaviorSubject<ScreenSize>('unknown');
+    get sizeChanged() { return this.sizeChanged$.asObservable() }
 
     constructor() {
-        fromEvent(window, 'resize').pipe(
-            debounceTime(50),
-            map(() => this.getScreenSize()),
-        ).subscribe(screenSize => this.sizeChanged.next(screenSize));
+        this.breakpointObserver.observe(
+            this.breakpointList.map(list => list.breakpoint),
+        ).subscribe(state => {
+            this.sizeChanged$.next(this.getScreenSize(state));
+        });
     }
 
-    private getScreenSize(): ScreenSize {
-        if (!window) {
+    private getScreenSize(breakpointState: BreakpointState): ScreenSize {
+        const matchedBreakpoint = Object.entries(breakpointState.breakpoints)
+            .find(([ key, value ]) => value);
+
+        if (!matchedBreakpoint) {
+            console.warn('No breakpoint matched', breakpointState);
             return 'unknown';
         }
 
-        const width = window.innerWidth;
-        if (width < 768) {
-            return 's';
-        } else if (width < 992) {
-            return 'm';
-        } else if (width < 1200) {
-            return 'l';
-        } else {
-            return 'xl';
-        }
+        const foundMapping = this.breakpointList.find(list => list.breakpoint === matchedBreakpoint[0]);
+        return foundMapping?.size ?? 'unknown';
     }
 }

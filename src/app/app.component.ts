@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.subscriptions.add(this.responsiveService.sizeChanged.subscribe(screenSize => {
-            this.isMobile.set(screenSize === 's' || screenSize === 'm');
+            this.isMobile.set(screenSize === 'xs' || screenSize === 's');
             this.isOpened.set(!this.isMobile());
         }));
 
