@@ -1,5 +1,5 @@
 import { UpperCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, Inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { CharactersService } from '../../../core/services/battle-net/characters/
 import { BattleNetCharacterListEntry } from '../../../core/services/battle-net/characters/types/characters.interface';
 import { CharacterInfo } from '../../../core/services/character-store/character-store.interface';
 import { CharacterStoreService } from '../../../core/services/character-store/character-store.service';
+import { ChecklistService } from '../../../core/services/checklist/checklist.service';
 
 @Component({
     templateUrl: './add-character.component.html',
@@ -29,7 +30,8 @@ import { CharacterStoreService } from '../../../core/services/character-store/ch
     ]
 })
 export class AddCharacterComponent implements OnInit, OnDestroy {
-    private static readonly DEFAULT_CHECKLIST = 'dragonflight';
+    private readonly checklistService = inject(ChecklistService);
+    private readonly DEFAULT_CHECKLIST = this.checklistService.getLatestChecklistId();
 
     readonly form = new FormGroup({
         region: new FormControl<Region>('us', [ Validators.required ]),
@@ -77,7 +79,7 @@ export class AddCharacterComponent implements OnInit, OnDestroy {
             region: this.form.controls.region.value!,
             name: selected.name.toLowerCase(),
             realm: selected.realm.slug,
-            checklistId: AddCharacterComponent.DEFAULT_CHECKLIST,
+            checklistId: this.DEFAULT_CHECKLIST,
             overrides: {},
         };
 

@@ -17,6 +17,10 @@ export class ChecklistService {
         { id: 'thewarwithin', load: () => import('./checklists/11-thewarwithin').then(m => m.data) },
     ];
 
+    getLatestChecklistId(): string {
+        return this.checklists[this.checklists.length - 1].id;
+    }
+
     getChecklist(id: string): Observable<Checklist> {
         const checklist = this.checklists.find(cl => cl.id === id);
         if (!checklist) {
