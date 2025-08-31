@@ -11,14 +11,12 @@ export class UserInfoService {
 
     private readonly userInfo$: Subject<UserInfo> = new Subject();
 
+    public get userInfo(): Observable<UserInfo> { return this.userInfo$.asObservable() }
+
     public getUserInfo(): Observable<UserInfo> {
         const url = `${environment.backendUrl}/api/userinfo`;
         return this.backendService.getData<UserInfo>(url).pipe(
             tap(userInfo => this.userInfo$.next(userInfo)),
         );
-    }
-
-    public getLatestUserInfo(): Observable<UserInfo> {
-        return this.userInfo$.asObservable();
     }
 }

@@ -63,6 +63,12 @@
         </a>
     </mat-sidenav>
     <mat-sidenav-content>
-        <router-outlet />
+        @if (loading()) {
+            <div class="centered">
+                <mat-spinner diameter="30" />
+            </div>
+        } @else {
+            <router-outlet />
+        }
     </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserInfo } from './core/services/battle-net/userinfo/types/userinfo.interface';
 import { UserInfoService } from './core/services/battle-net/userinfo/userinfo.service';
@@ -20,6 +21,7 @@ import { ResponsiveService } from './core/services/responsive/responsive.service
         MatButtonModule,
         MatSidenavModule,
         MatTooltipModule,
+        MatProgressSpinnerModule,
 
         RouterOutlet,
         RouterLink,
@@ -33,8 +35,11 @@ export class AppComponent implements OnInit {
     private readonly responsiveService = inject(ResponsiveService);
     private readonly userInfoService = inject(UserInfoService);
     private readonly characterStoreService = inject(CharacterStoreService);
+    private readonly router = inject(Router);
 
     readonly isMobile = signal<boolean>(true);
+
+    readonly loading = signal<boolean>(false);
     readonly userInfo = signal<UserInfo | undefined>(undefined);
 
     private readonly subscriptions: Subscription = new Subscription();
@@ -49,8 +54,17 @@ export class AppComponent implements OnInit {
             this.isMobile.set(screenSize === 's' || screenSize === 'm');
             this.isOpened.set(!this.isMobile());
         }));
-        this.subscriptions.add(this.userInfoService.getLatestUserInfo().subscribe(userInfo => {
+
+        this.subscriptions.add(this.userInfoService.userInfo.subscribe(userInfo => {
             this.userInfo.set(userInfo);
+        }));
+
+        this.subscriptions.add(this.router.events.subscribe(event => {
+            if (event instanceof NavigationStart) {
+                this.loading.set(true);
+            } else if (event instanceof NavigationEnd) {
+                this.loading.set(false);
+            }
         }));
 
         this.subscriptions.add(this.characterStoreService.charactersChanged.subscribe(characters => {
