@@ -61,6 +61,7 @@ const data: Checklist = {
         { key: 'story-warwithin-karesh-desertpower', name: 'Desert Power', type: 'quest', id: 84910 },
         { key: 'story-warwithin-karesh-shadowsengarde', name: 'Shadows En Garde', type: 'quest', id: 85037 },
         { key: 'story-warwithin-karesh-thelightofkaresh', name: 'The Light of K\'aresh', type: 'quest', id: 86458 },
+        { key: 'story-warwithin-karesh-reshiiwraps', name: 'Reshii Wraps fully upgraded', type: 'item-level', level: 730, slot: 'BACK' },
 
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
