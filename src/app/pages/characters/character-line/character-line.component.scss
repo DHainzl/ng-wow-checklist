@@ -34,22 +34,13 @@ mat-card-content {
         height: 100%;
         position: absolute;
         top: 0;
-        background: rgb(50,1,46);
-        background: linear-gradient(0deg, rgba(50,1,46,1) 0%, rgba(113,25,101,1) 100%);
-    }
-
-    .progress-secondary {
-        display: block;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        background: rgb(182,168,123);
-        background: linear-gradient(180deg, rgba(182,168,123,1) 0%, rgba(106,94,78,1) 100%);
+        background: var(--mat-sys-tertiary-container);
+        
     }
 
     .progress-name {
         position: absolute;
-        color: white;
+        color: var(--mat-sys-on-tertiary-container);
         width: 100%;
         text-align: center;
         top: 2px;

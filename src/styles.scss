@@ -6,7 +6,8 @@
 @use '@angular/material' as mat;
 
 html {
-     @include mat.theme((color: (
+     @include mat.theme((
+        color: (
             primary: mat.$violet-palette,
             tertiary: mat.$magenta-palette,
         ),
@@ -20,8 +21,6 @@ html {
     ));
 
     @include mat.sidenav-overrides((
-        // container-background-color: var(--mat-sys-tertiary-container),
-        // container-text-color: var(--mat-sys-on-tertiary-container),
         container-shape: 0,
         container-divider-color: var(--mat-sys-outline),
     ));
