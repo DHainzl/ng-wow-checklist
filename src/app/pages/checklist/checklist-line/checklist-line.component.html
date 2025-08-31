@@ -32,13 +32,13 @@
 @if (item().subitems.length) {
     @for (subitem of item().subitems; track subitem) {
         <div class="row subitem">
+            <div class="column-completed"></div>
             <div class="column-label">
                 <span class="item-name item-indention-{{ item().indention + 1 }}">{{
                     subitem
                 }}</span>
             </div>
             <div class="column-note"></div>
-            <div class="column-completed"></div>
         </div>
     }
 }
