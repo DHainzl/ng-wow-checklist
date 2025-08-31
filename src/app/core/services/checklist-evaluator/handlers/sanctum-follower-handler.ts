@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemSanctumFollower } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { ChecklistNote } from './_handler.interface';
+import { CHECKLIST_INGAMEDATA, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistSanctumFollowerHandler extends ChecklistHandler<ChecklistItemSanctumFollower> {
     private static readonly MAX_FOLLOWER_LEVEL = 60;
 
-    evaluate(item: ChecklistItemSanctumFollower, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly ingameData = inject(CHECKLIST_INGAMEDATA);
 
-        if (!data.ingameData) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.ingameData) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -22,7 +24,7 @@ export class ChecklistSanctumFollowerHandler extends ChecklistHandler<ChecklistI
             };
         }
 
-        const follower = data.ingameData.followers[item.name];
+        const follower = this.ingameData.followers[this.item.name];
         
         if (!follower || !follower.collected) {
             return {

@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemSanctumMissionsCount } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { ChecklistNote } from './_handler.interface';
+import { CHECKLIST_INGAMEDATA, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistSanctumMissionsCountHandler extends ChecklistHandler<ChecklistItemSanctumMissionsCount> {
     private static readonly MAX_MISSIONS_COUNT: number = 20;
 
-    evaluate(item: ChecklistItemSanctumMissionsCount, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly ingameData = inject(CHECKLIST_INGAMEDATA);
 
-        if (!data.ingameData || data.ingameData.missions === undefined) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.ingameData || this.ingameData.missions === undefined) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -22,7 +24,7 @@ export class ChecklistSanctumMissionsCountHandler extends ChecklistHandler<Check
             };
         }
 
-        const completedMissions = data.ingameData.missions;
+        const completedMissions = this.ingameData.missions;
         
         const note: ChecklistNote = {
             type: 'text',

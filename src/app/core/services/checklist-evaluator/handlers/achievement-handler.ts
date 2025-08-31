@@ -1,22 +1,23 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BattleNetAchievement } from '../../battle-net/character/types/battlenet-achievement';
-import { BattleNetProfile } from '../../battle-net/character/types/battlenet-profile';
 import { ChecklistItemAchievement } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_ACHIEVEMENTS, CHECKLIST_PROFILE, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemAchievement> {
-    evaluate(item: ChecklistItemAchievement, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly achievements = inject(CHECKLIST_ACHIEVEMENTS);
+    private readonly profile = inject(CHECKLIST_PROFILE);
 
-        if (!data.achievements || !data.profile) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.achievements || !this.profile) {
             return { ...baseItem, completed: 'loading' };
         }
 
-        const achievement = data.achievements.achievements.find(av => av.id === item.id);
-        const wowheadId = this.getWowheadId(item, achievement, data.profile);
+        const achievement = this.achievements.achievements.find(av => av.id === this.item.id);
+        const wowheadId = this.getWowheadId(achievement);
 
         if (!achievement || !achievement.criteria.is_completed) {
             return { ...baseItem, wowheadId, completed: 'incomplete' };
@@ -25,15 +26,15 @@ export class ChecklistAchievementHandler extends ChecklistHandler<ChecklistItemA
         return { ...baseItem, wowheadId, completed: 'complete' };
     }
 
-    getWowheadId(item: ChecklistItemAchievement, achievement: BattleNetAchievement | undefined, profile: BattleNetProfile): string {
-        let link = `achievement-${item.id}`;
+    getWowheadId(achievement: BattleNetAchievement | undefined): string {
+        let link = `achievement-${this.item.id}`;
 
         if (!achievement) {
             return link;
         }
 
         if (achievement.criteria.is_completed) {
-            link += `?who=${profile.name}&when=${achievement.completed_timestamp}`;
+            link += `?who=${this.profile.name}&when=${achievement.completed_timestamp}`;
         }
 
         return link;

@@ -1,21 +1,21 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { CharacterInfo } from '../../character-store/character-store.interface';
 import { CharacterStoreService } from '../../character-store/character-store.service';
 import { ChecklistItemManual } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_CHARACTERINFO, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistManualHandler extends ChecklistHandler<ChecklistItemManual> {
     private readonly characterStoreService = inject(CharacterStoreService);
 
-    evaluate(item: ChecklistItemManual, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly characterInfo = inject(CHECKLIST_CHARACTERINFO);
 
-        if (!data.characterInfo.overrides) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.characterInfo.overrides) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -23,14 +23,14 @@ export class ChecklistManualHandler extends ChecklistHandler<ChecklistItemManual
             };
         }
 
-        if (this.isCompleted(item, data.characterInfo.overrides)) {
+        if (this.isCompleted()) {
             return {
                 ...baseItem,
                 completed: 'complete',
                 note: {
                     type: 'button',
                     label: 'Uncheck',
-                    onClick: () => this.changeChecked(false, item, data.characterInfo),
+                    onClick: () => this.changeChecked(false),
                 }
             };
         } else {
@@ -40,14 +40,14 @@ export class ChecklistManualHandler extends ChecklistHandler<ChecklistItemManual
                 note: {
                     type: 'button',
                     label: 'Check',
-                    onClick: () => this.changeChecked(true, item, data.characterInfo),
+                    onClick: () => this.changeChecked(true),
                 }
             };
         }
     }
 
-    isCompleted(item: ChecklistItemManual, overrides: CharacterInfo['overrides']): boolean {
-        const override = overrides[item.key];
+    isCompleted(): boolean {
+        const override = this.characterInfo.overrides[this.item.key];
 
         if (override && override.type === 'manual') {
             return override.checked;
@@ -57,9 +57,11 @@ export class ChecklistManualHandler extends ChecklistHandler<ChecklistItemManual
     }
 
     // TODO Only works on reload ...
-    private changeChecked(isChecked: boolean, item: ChecklistItemManual, characterInfo: CharacterInfo): Observable<undefined> {
+    private changeChecked(isChecked: boolean): Observable<undefined> {
+        const { region, realm, name } = this.characterInfo;
+
         return this.characterStoreService
-            .getCharacter(characterInfo.region, characterInfo.realm, characterInfo.name)
+            .getCharacter(region, realm, name)
             .pipe(
                 mergeMap(character => {
                     if (!character) {
@@ -67,7 +69,7 @@ export class ChecklistManualHandler extends ChecklistHandler<ChecklistItemManual
                         return of(undefined);
                     }
 
-                    character.overrides[item.key] = {
+                    character.overrides[this.item.key] = {
                         type: 'manual',
                         checked: isChecked,
                     };

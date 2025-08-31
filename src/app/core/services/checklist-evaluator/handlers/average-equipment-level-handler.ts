@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { BattleNetEquipment } from '../../battle-net/character/types/battlenet-equipment';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemAverageEquipmentLevel } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_EQUIPMENT, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistAverageEquipmentHandler extends ChecklistHandler<ChecklistItemAverageEquipmentLevel> {
-    evaluate(item: ChecklistItemAverageEquipmentLevel, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly equipment = inject(CHECKLIST_EQUIPMENT);
 
-        if (!data.equipment) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.equipment) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -18,7 +18,7 @@ export class ChecklistAverageEquipmentHandler extends ChecklistHandler<Checklist
             };
         }
 
-        const subitems = this.getItemsBelowLevel(item, data.equipment);
+        const subitems = this.getItemsBelowLevel();
 
         if (subitems.length) {
             return {
@@ -35,14 +35,14 @@ export class ChecklistAverageEquipmentHandler extends ChecklistHandler<Checklist
         }
     }
 
-    private getItemsBelowLevel(item: ChecklistItemAverageEquipmentLevel, equipment: BattleNetEquipment): string[] {
+    private getItemsBelowLevel(): string[] {
         const excludedKeys = [ 'SHIRT', 'TABARD' ];
 
-        return equipment.equipped_items
-            .filter(i => !excludedKeys.includes(i.slot.type))
-            .filter(i => i.level.value < item.max)
-            .map(i => {
-                return `${i.slot.name} (${i.level.value})`;
+        return this.equipment.equipped_items
+            .filter(item => !excludedKeys.includes(item.slot.type))
+            .filter(item => item.level.value < this.item.max)
+            .map(item => {
+                return `${item.slot.name} (${item.level.value})`;
             });
     }
 }

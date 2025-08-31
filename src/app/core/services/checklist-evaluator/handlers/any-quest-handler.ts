@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { BattleNetQuests } from '../../battle-net/character/types/battlenet-quest';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemAnyQuest } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_QUESTS, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistAnyQuestHandler extends ChecklistHandler<ChecklistItemAnyQuest> {
-    evaluate(item: ChecklistItemAnyQuest, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly quests = inject(CHECKLIST_QUESTS);
 
-        if (!data.quests) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.quests) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -18,7 +18,7 @@ export class ChecklistAnyQuestHandler extends ChecklistHandler<ChecklistItemAnyQ
             };
         }
 
-        const anyCompleted = item.quests.some(q => this.isQuestCompleted(q.id, data.quests));
+        const anyCompleted = this.item.quests.some(q => this.isQuestCompleted(q.id));
 
         if (anyCompleted) {
             return {
@@ -31,15 +31,15 @@ export class ChecklistAnyQuestHandler extends ChecklistHandler<ChecklistItemAnyQ
         return {
             ...baseItem,
             completed: 'incomplete',
-            subitems: this.getSubitems(item),
+            subitems: this.getSubitems(),
         };
     }
 
-    private isQuestCompleted(questId: number, quests: BattleNetQuests): boolean {
-        return !!quests.quests.find(q => q.id === questId);
+    private isQuestCompleted(questId: number): boolean {
+        return !!this.quests.quests.find(q => q.id === questId);
     }
 
-    private getSubitems(item: ChecklistItemAnyQuest): string[] {
-        return item.quests.map(q => q.name);
+    private getSubitems(): string[] {
+        return this.item.quests.map(q => q.name);
     }
 }

@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemSanctumConduit } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { ChecklistNote } from './_handler.interface';
+import { CHECKLIST_INGAMEDATA, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistSanctumConduitHandler extends ChecklistHandler<ChecklistItemSanctumConduit> {
     private static readonly DESIRED_LEVEL = 239;
 
-    evaluate(item: ChecklistItemSanctumConduit, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly ingameData = inject(CHECKLIST_INGAMEDATA);
 
-        if (!data.ingameData?.conduits) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.ingameData?.conduits) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -22,7 +24,7 @@ export class ChecklistSanctumConduitHandler extends ChecklistHandler<ChecklistIt
             };
         }
 
-        const conduitLevel = data.ingameData.conduits[`${item.conduitId}`] ?? 0;
+        const conduitLevel = this.ingameData.conduits[`${this.item.conduitId}`] ?? 0;
 
         const note: ChecklistNote = {
             type: 'text',

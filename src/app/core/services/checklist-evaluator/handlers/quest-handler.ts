@@ -1,22 +1,24 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemQuest } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_INGAMEDATA, CHECKLIST_QUESTS, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistQuestHandler extends ChecklistHandler<ChecklistItemQuest> {
-    evaluate(item: ChecklistItemQuest, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
+    private readonly quests = inject(CHECKLIST_QUESTS);
+    private readonly ingameData = inject(CHECKLIST_INGAMEDATA);
+
+    evaluate(): EvaluatedChecklistItem {
         const baseItem = {
-            ...this.getBaseEvaluatedItem(item, data),
-            wowheadId: `quest-${item.id}`,
+            ...this.getBaseEvaluatedItem(),
+            wowheadId: `quest-${this.item.id}`,
         };
 
-        if (!data.quests) {
+        if (!this.quests) {
             return { ...baseItem, completed: 'loading' };
         }
 
-        const completedQuest = data.quests.quests.find(quest => quest.id === item.id);
+        const completedQuest = this.quests.quests.find(quest => quest.id === this.item.id);
 
         // API responded true
         if (completedQuest) {
@@ -24,7 +26,7 @@ export class ChecklistQuestHandler extends ChecklistHandler<ChecklistItemQuest> 
         }
 
         // Hidden quests might be reported by ingame addon
-        const completedIngame = data.ingameData?.quests?.[`${item.id}`] ?? false;
+        const completedIngame = this.ingameData?.quests?.[`${this.item.id}`] ?? false;
         return {
             ...baseItem,
             completed: completedIngame ? 'complete' : 'incomplete',

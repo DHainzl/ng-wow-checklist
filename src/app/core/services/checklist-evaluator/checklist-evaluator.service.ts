@@ -1,9 +1,9 @@
-import { inject, Injectable } from "@angular/core";
+import { EnvironmentInjector, inject, Injectable, Injector, Provider, runInInjectionContext, StaticProvider } from "@angular/core";
 import { BattleNetProfile } from "../battle-net/character/types/battlenet-profile";
 import { Checklist, ChecklistItem } from "../checklist/checklist.interface";
 import { EvaluatedChecklistItem } from "./evaluated-checklist-item.interface";
 import { ChecklistEvaluatorData } from "./handlers/_handler.interface";
-import { ChecklistHandler } from "./handlers/_handler.service";
+import { CHECKLIST_ACHIEVEMENTS, CHECKLIST_ALL_ITEMS, CHECKLIST_CHARACTERINFO, CHECKLIST_EQUIPMENT, CHECKLIST_EVALUATED_ITEMS, CHECKLIST_INGAMEDATA, CHECKLIST_ITEM, CHECKLIST_MEDIA, CHECKLIST_PROFESSIONS, CHECKLIST_PROFILE, CHECKLIST_QUESTS, CHECKLIST_REPUTATIONS, ChecklistHandler } from "./handlers/_handler.service";
 import { ChecklistAchievementHandler } from "./handlers/achievement-handler";
 import { ChecklistAnyQuestHandler } from "./handlers/any-quest-handler";
 import { ChecklistAverageEquipmentHandler } from "./handlers/average-equipment-level-handler";
@@ -26,26 +26,50 @@ import { ChecklistSecondaryProfessionHandler } from "./handlers/secondary-profes
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistEvaluatorService {
-    private readonly HANDLERS: { [ X in ChecklistItem['type'] ]: ChecklistHandler<ChecklistItem> } = {
-        header: inject(ChecklistHeaderHandler),
-        achievement: inject(ChecklistAchievementHandler),
-        quest: inject(ChecklistQuestHandler),
-        'any-quest': inject(ChecklistAnyQuestHandler),
-        reputation: inject(ChecklistReputationHandler),
-        'profession-primary': inject(ChecklistPrimaryProfessionHandler),
-        'profession-secondary': inject(ChecklistSecondaryProfessionHandler),
-        level: inject(ChecklistLevelHandler),
-        'avg-item-level': inject(ChecklistAverageEquipmentHandler),
-        manual: inject(ChecklistManualHandler),
-        'item-level': inject(ChecklistEquipmentHandler),
-        renown: inject(ChecklistRenownHandler),
-        'sanctum-talent': inject(ChecklistSanctumTalentHandler),
-        'sanctum-follower': inject(ChecklistSanctumFollowerHandler),
-        'sanctum-follower-any': inject(ChecklistSanctumFollowerAnyHandler),
-        'sanctum-conduit': inject(ChecklistSanctumConduitHandler),
-        'sanctum-missions-count': inject(ChecklistSanctumMissionsCountHandler),
-        'sanctum-legendary': inject(ChecklistSanctumLegendaryHandler),
-        'reputation-renown': inject(ChecklistReputationRenownHandler),
+    private readonly environmentInjector = inject(EnvironmentInjector);
+
+    private readonly handlerProviders: Array<Provider | StaticProvider> = [
+        ChecklistHeaderHandler,
+        ChecklistAchievementHandler,
+        ChecklistQuestHandler,
+        ChecklistAnyQuestHandler,
+        ChecklistReputationHandler,
+        ChecklistPrimaryProfessionHandler,
+        ChecklistSecondaryProfessionHandler,
+        ChecklistLevelHandler,
+        ChecklistAverageEquipmentHandler,
+        ChecklistManualHandler,
+        ChecklistEquipmentHandler,
+        ChecklistRenownHandler,
+        ChecklistSanctumTalentHandler,
+        ChecklistSanctumFollowerHandler,
+        ChecklistSanctumFollowerAnyHandler,
+        ChecklistSanctumConduitHandler,
+        ChecklistSanctumMissionsCountHandler,
+        ChecklistSanctumLegendaryHandler,
+        ChecklistReputationRenownHandler,
+    ];
+
+    private readonly HANDLERS: { [ X in ChecklistItem['type'] ]: typeof ChecklistHandler<ChecklistItem> } = {
+        header: ChecklistHeaderHandler,
+        achievement: ChecklistAchievementHandler,
+        quest: ChecklistQuestHandler,
+        'any-quest': ChecklistAnyQuestHandler,
+        reputation: ChecklistReputationHandler,
+        'profession-primary': ChecklistPrimaryProfessionHandler,
+        'profession-secondary': ChecklistSecondaryProfessionHandler,
+        level: ChecklistLevelHandler,
+        'avg-item-level': ChecklistAverageEquipmentHandler,
+        manual: ChecklistManualHandler,
+        'item-level': ChecklistEquipmentHandler,
+        renown: ChecklistRenownHandler,
+        'sanctum-talent': ChecklistSanctumTalentHandler,
+        'sanctum-follower': ChecklistSanctumFollowerHandler,
+        'sanctum-follower-any': ChecklistSanctumFollowerAnyHandler,
+        'sanctum-conduit': ChecklistSanctumConduitHandler,
+        'sanctum-missions-count': ChecklistSanctumMissionsCountHandler,
+        'sanctum-legendary': ChecklistSanctumLegendaryHandler,
+        'reputation-renown': ChecklistReputationRenownHandler,
     };
 
     evaluate(checklist: Checklist, data: ChecklistEvaluatorData): EvaluatedChecklistItem[] {
@@ -60,12 +84,35 @@ export class ChecklistEvaluatorService {
             .forEach(item => evaluated.unshift(this.evaluateItem(item, evaluated, data)));
 
         return evaluated;
-
     }
 
     private evaluateItem(item: ChecklistItem, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
         if (this.HANDLERS[item.type]) {
-            return this.HANDLERS[item.type].evaluate(item, evaluated, data);
+            const injector = Injector.create({
+                providers: [
+                    ...this.handlerProviders,
+
+                    { provide: CHECKLIST_ITEM, useValue: item },
+                    { provide: CHECKLIST_EVALUATED_ITEMS, useValue: evaluated },
+                    { provide: CHECKLIST_ALL_ITEMS, useValue: data.allItems },
+                    { provide: CHECKLIST_QUESTS, useValue: data.quests },
+                    { provide: CHECKLIST_PROFESSIONS, useValue: data.professions },
+                    { provide: CHECKLIST_REPUTATIONS, useValue: data.reputations },
+                    { provide: CHECKLIST_ACHIEVEMENTS, useValue: data.achievements },
+                    { provide: CHECKLIST_EQUIPMENT, useValue: data.equipment },
+                    { provide: CHECKLIST_MEDIA, useValue: data.media },
+                    { provide: CHECKLIST_PROFILE, useValue: data.profile },
+                    { provide: CHECKLIST_CHARACTERINFO, useValue: data.characterInfo },
+                    { provide: CHECKLIST_INGAMEDATA, useValue: data.ingameData },
+                ],
+                parent: this.environmentInjector,
+            });
+
+            const handler = runInInjectionContext(injector, () => {
+                return inject(this.HANDLERS[item.type]);
+            });
+
+            return handler.evaluate();
         }
 
         console.warn('Could not find handler for checklist item!', item.type, item.name);

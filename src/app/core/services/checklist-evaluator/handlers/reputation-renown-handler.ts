@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
-import { BattleNetCharacterReputation, BattleNetCharacterReputations } from '../../battle-net/character/types/battlenet-reputation';
+import { inject, Injectable } from '@angular/core';
+import { BattleNetCharacterReputation } from '../../battle-net/character/types/battlenet-reputation';
 import { ChecklistItemReputationRenown } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_REPUTATIONS, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistReputationRenownHandler extends ChecklistHandler<ChecklistItemReputationRenown> {
-    evaluate(item: ChecklistItemReputationRenown, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly reputations = inject(CHECKLIST_REPUTATIONS);
 
-        if (!data.reputations) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.reputations) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -18,8 +19,8 @@ export class ChecklistReputationRenownHandler extends ChecklistHandler<Checklist
             };
         }
 
-        const reputation = this.getReputation(item, data.reputations);
-        const label = this.getLabel(item);
+        const reputation = this.getReputation();
+        const label = this.getLabel();
 
         if (!reputation) {
             return {
@@ -29,7 +30,7 @@ export class ChecklistReputationRenownHandler extends ChecklistHandler<Checklist
             };
         }
 
-        const isCompleted = (reputation.standing.renown_level ?? 0) >= item.max;
+        const isCompleted = (reputation.standing.renown_level ?? 0) >= this.item.max;
 
         if (isCompleted) {
             return {
@@ -45,17 +46,17 @@ export class ChecklistReputationRenownHandler extends ChecklistHandler<Checklist
                 completed: 'incomplete',
                 note: {
                     type: 'text',
-                    text: `${reputation.standing.renown_level ?? 0} / ${item.max}`,
+                    text: `${reputation.standing.renown_level ?? 0} / ${this.item.max}`,
                 },
             };
         }
     }
 
-    private getLabel(item: ChecklistItemReputationRenown): string {
-        return `${item.name}: Renown ${item.max}`;
+    private getLabel(): string {
+        return `${this.item.name}: Renown ${this.item.max}`;
     }
 
-    private getReputation(item: ChecklistItemReputationRenown, reputations: BattleNetCharacterReputations): BattleNetCharacterReputation | undefined {
-        return reputations.reputations.find(reputation => reputation.faction.id === item.id);
+    private getReputation(): BattleNetCharacterReputation | undefined {
+        return this.reputations.reputations.find(reputation => reputation.faction.id === this.item.id);
     }
 }

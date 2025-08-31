@@ -1,20 +1,17 @@
-import { Injectable } from '@angular/core';
-import {
-    BattleNetProfession,
-    BattleNetProfessionSkill,
-    isTieredProfession
-} from '../../battle-net/character/types/battlenet-profession';
+import { inject, Injectable } from '@angular/core';
+import { BattleNetProfession, BattleNetProfessionSkill, isTieredProfession } from '../../battle-net/character/types/battlenet-profession';
 import { ChecklistItemPrimaryProfession, ChecklistItemSecondaryProfession } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_PROFESSIONS, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<ChecklistItemPrimaryProfession> {
-    evaluate(item: ChecklistItemPrimaryProfession, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly professions = inject(CHECKLIST_PROFESSIONS);
+
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
     
-        if (!data.professions || !data.professions.primaries) {
+        if (!this.professions || !this.professions.primaries) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -23,7 +20,7 @@ export class ChecklistPrimaryProfessionHandler extends ChecklistHandler<Checklis
             };
         }
 
-        const profession = getProfession(data.professions.primaries, item);
+        const profession = getProfession(this.professions.primaries, this.item);
 
         if (!profession) {
             return {

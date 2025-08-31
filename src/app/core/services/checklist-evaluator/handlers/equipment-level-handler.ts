@@ -1,16 +1,18 @@
-import { Injectable } from '@angular/core';
-import { BattleNetEquipment, BattleNetEquipmentItem } from '../../battle-net/character/types/battlenet-equipment';
+import { inject, Injectable } from '@angular/core';
+import { BattleNetEquipmentItem } from '../../battle-net/character/types/battlenet-equipment';
 import { ChecklistItemEquipmentLevel } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { ChecklistNote } from './_handler.interface';
+import { CHECKLIST_EQUIPMENT, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEquipmentLevel> {
-    evaluate(item: ChecklistItemEquipmentLevel, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly equipment = inject(CHECKLIST_EQUIPMENT);
 
-        if (!data.equipment) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.equipment) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -18,7 +20,7 @@ export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEqu
             };
         }
 
-        const equippedItem = this.getItem(item, data.equipment);
+        const equippedItem = this.getItem();
         if (!equippedItem) {
             return {
                 ...baseItem,
@@ -32,10 +34,10 @@ export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEqu
 
         const note: ChecklistNote = {
             type: 'text',
-            text: `${equippedItem.level.value} / ${item.level}`,
+            text: `${equippedItem.level.value} / ${this.item.level}`,
         }
 
-        if (equippedItem.level.value >= item.level) {
+        if (equippedItem.level.value >= this.item.level) {
             return {
                 ...baseItem,
                 note,
@@ -50,7 +52,7 @@ export class ChecklistEquipmentHandler extends ChecklistHandler<ChecklistItemEqu
         }
     }
 
-    private getItem(item: ChecklistItemEquipmentLevel, equipment: BattleNetEquipment): BattleNetEquipmentItem | undefined {
-        return equipment.equipped_items.find(i => i.slot.type === item.slot);
+    private getItem(): BattleNetEquipmentItem | undefined {
+        return this.equipment.equipped_items.find(item => item.slot.type === this.item.slot);
     }
 }

@@ -1,17 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemLevel } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_PROFILE, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> {
-    evaluate(item: ChecklistItemLevel, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = {
-            ...this.getBaseEvaluatedItem(item, data),
-        };
+    private readonly profile = inject(CHECKLIST_PROFILE);
 
-        if (!data.profile) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.profile) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -19,7 +18,7 @@ export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> 
             };
         }
 
-        const isCompleted = data.profile.level >= item.max;
+        const isCompleted = this.profile.level >= this.item.max;
 
         if (isCompleted) {
             return {
@@ -33,7 +32,7 @@ export class ChecklistLevelHandler extends ChecklistHandler<ChecklistItemLevel> 
                 completed: 'incomplete',
                 note: {
                     type: 'text',
-                    text: `${data.profile.level} / ${item.max}`,
+                    text: `${this.profile.level} / ${this.item.max}`,
                 }
             };
         }

@@ -1,20 +1,21 @@
-import { Injectable } from '@angular/core';
-import { BattleNetCharacterReputation, BattleNetCharacterReputations } from '../../battle-net/character/types/battlenet-reputation';
-import { CharacterInfo } from '../../character-store/character-store.interface';
+import { inject, Injectable } from '@angular/core';
+import { BattleNetCharacterReputation } from '../../battle-net/character/types/battlenet-reputation';
 import { ChecklistItemReputation } from '../../checklist/checklist.interface';
 import { ReputationTiersService } from '../../reputation-tiers/reputation-tiers.service';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_CHARACTERINFO, CHECKLIST_REPUTATIONS, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemReputation> {
-    tiersService: ReputationTiersService = new ReputationTiersService();
+    private readonly tiersService = inject(ReputationTiersService);
 
-    evaluate(item: ChecklistItemReputation, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly reputations = inject(CHECKLIST_REPUTATIONS);
+    private readonly characterInfo = inject(CHECKLIST_CHARACTERINFO);
+
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
         
-        if (!data.reputations || !data.characterInfo.overrides) {
+        if (!this.reputations || !this.characterInfo.overrides) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -22,9 +23,9 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
             };
         }
         
-        const max = this.getMax(item, data.characterInfo.overrides);
-        const reputation = this.getReputation(item, data.reputations);
-        const label = this.getLabel(item, max);
+        const max = this.getMax();
+        const reputation = this.getReputation();
+        const label = this.getLabel(max);
 
         if (!reputation) {
             return {
@@ -56,23 +57,23 @@ export class ChecklistReputationHandler extends ChecklistHandler<ChecklistItemRe
         }
     }
 
-    private getLabel(item: ChecklistItemReputation, max: number): string {
-        const tiers = this.tiersService.getTiers(item.id);
+    private getLabel(max: number): string {
+        const tiers = this.tiersService.getTiers(this.item.id);
 
-        return `${item.name}: ${tiers.tiers[max].name}`;
+        return `${this.item.name}: ${tiers.tiers[max].name}`;
     }
 
-    private getReputation(item: ChecklistItemReputation, reputations: BattleNetCharacterReputations): BattleNetCharacterReputation | undefined {
-        return reputations.reputations.find(reputation => reputation.faction.id === item.id);
+    private getReputation(): BattleNetCharacterReputation | undefined {
+        return this.reputations.reputations.find(reputation => reputation.faction.id === this.item.id);
     }
 
-    private getMax(item: ChecklistItemReputation, overrides: CharacterInfo['overrides']): number {
-        const override = overrides[item.key];
+    private getMax(): number {
+        const override = this.characterInfo.overrides[this.item.key];
 
         if (override && override.type === 'reputation') {
             return override.max;
         }
 
-        return item.max;
+        return this.item.max;
     }
 }

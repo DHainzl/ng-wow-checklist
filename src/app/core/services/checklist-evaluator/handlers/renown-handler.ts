@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemRenown } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_PROFILE, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistRenownHandler extends ChecklistHandler<ChecklistItemRenown> {
-    evaluate(item: ChecklistItemRenown, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly profile = inject(CHECKLIST_PROFILE);
+
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
     
-        if (!data.profile) {
+        if (!this.profile) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -17,7 +18,7 @@ export class ChecklistRenownHandler extends ChecklistHandler<ChecklistItemRenown
             };
         }
 
-        const isCompleted = (data.profile.covenant_progress?.renown_level ?? 0) >= item.threshold;
+        const isCompleted = (this.profile.covenant_progress?.renown_level ?? 0) >= this.item.threshold;
 
         if (isCompleted) {
             return {
@@ -31,7 +32,7 @@ export class ChecklistRenownHandler extends ChecklistHandler<ChecklistItemRenown
                 completed: 'incomplete',
                 note: {
                     type: 'text',
-                    text: `${data.profile.covenant_progress?.renown_level ?? 0} / ${item.threshold}`,
+                    text: `${this.profile.covenant_progress?.renown_level ?? 0} / ${this.item.threshold}`,
                 },
             };
         }

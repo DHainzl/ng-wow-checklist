@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemSanctumFollowerAny } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData, ChecklistNote } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { ChecklistNote } from './_handler.interface';
+import { CHECKLIST_INGAMEDATA, ChecklistHandler } from './_handler.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistSanctumFollowerAnyHandler extends ChecklistHandler<ChecklistItemSanctumFollowerAny> {
     private static readonly MAX_FOLLOWER_LEVEL = 60;
 
-    evaluate(item: ChecklistItemSanctumFollowerAny, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly ingameData = inject(CHECKLIST_INGAMEDATA);
 
-        if (!data.ingameData) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.ingameData) {
             return {
                 ...baseItem,
                 completed: 'loading',
@@ -22,9 +24,9 @@ export class ChecklistSanctumFollowerAnyHandler extends ChecklistHandler<Checkli
             };
         }
 
-        const followerName = item.followers
-            .find(name => data.ingameData.followers[name]?.collected);
-        const follower = data.ingameData.followers[followerName!];
+        const followerName = this.item.followers
+            .find(name => this.ingameData.followers[name]?.collected);
+        const follower = this.ingameData.followers[followerName!];
         
         if (!follower || !follower.collected) {
             return {

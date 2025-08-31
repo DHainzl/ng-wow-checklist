@@ -1,18 +1,19 @@
 
-import { Injectable } from '@angular/core';
-import { CharacterInfo } from '../../character-store/character-store.interface';
+import { inject, Injectable } from '@angular/core';
 import { ChecklistItemSecondaryProfession } from '../../checklist/checklist.interface';
 import { EvaluatedChecklistItem } from '../evaluated-checklist-item.interface';
-import { ChecklistEvaluatorData } from './_handler.interface';
-import { ChecklistHandler } from './_handler.service';
+import { CHECKLIST_CHARACTERINFO, CHECKLIST_PROFESSIONS, ChecklistHandler } from './_handler.service';
 import { getProfession } from './primary-profession-handler';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<ChecklistItemSecondaryProfession> {
-    evaluate(item: ChecklistItemSecondaryProfession, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        const baseItem = this.getBaseEvaluatedItem(item, data);
+    private readonly professions = inject(CHECKLIST_PROFESSIONS);
+    private readonly characterInfo = inject(CHECKLIST_CHARACTERINFO);
 
-        if (!data.professions || !data.professions.secondaries || !data.characterInfo.overrides) {
+    evaluate(): EvaluatedChecklistItem {
+        const baseItem = this.getBaseEvaluatedItem();
+
+        if (!this.professions || !this.professions.secondaries || !this.characterInfo.overrides) {
             return {
                 ...baseItem,
                 shown: false,
@@ -21,8 +22,8 @@ export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<Checkl
             };
         }
 
-        const profession = getProfession(data.professions.secondaries, item);
-        const isEnabled = this.isEnabled(data.characterInfo.overrides, item);
+        const profession = getProfession(this.professions.secondaries, this.item);
+        const isEnabled = this.isEnabled();
 
         if (!profession || !isEnabled) {
             return {
@@ -44,8 +45,8 @@ export class ChecklistSecondaryProfessionHandler extends ChecklistHandler<Checkl
         };
     }
 
-    private isEnabled(overrides: CharacterInfo['overrides'], item: ChecklistItemSecondaryProfession): boolean {
-        const override = overrides[item.key];
+    private isEnabled(): boolean {
+        const override = this.characterInfo.overrides[this.item.key];
 
         if (override && override.type === 'profession-secondary') {
             return override.enabled;
