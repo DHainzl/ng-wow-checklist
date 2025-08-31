@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
     private readonly userInfoService = inject(UserInfoService);
     private readonly characterStoreService = inject(CharacterStoreService);
     private readonly router = inject(Router);
+    private readonly matIconRegistry = inject(MatIconRegistry);
 
     readonly isMobile = signal<boolean>(true);
 
@@ -50,6 +51,8 @@ export class AppComponent implements OnInit {
     readonly sidenav = viewChild(MatSidenav);
 
     ngOnInit(): void {
+        this.matIconRegistry.setDefaultFontSetClass('material-symbols-outlined');
+
         this.subscriptions.add(this.responsiveService.sizeChanged.subscribe(screenSize => {
             this.isMobile.set(screenSize === 'xs' || screenSize === 's');
             this.isOpened.set(!this.isMobile());

@@ -43,6 +43,10 @@ mat-sidenav {
             color: var(--mat-sys-on-tertiary-container);
 
             font-weight: 500;
+
+            mat-icon {
+                font-variation-settings: 'FILL' 1;
+            }
         }
     }
 
