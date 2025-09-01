@@ -1,0 +1,54 @@
+@if (visible()) {
+    <div
+        class="row"
+        [class.complete]="completed() == 'complete'"
+        [class.incomplete]="completed() !== 'complete'"
+    >
+        <div class="column-completed">
+            <mat-icon>{{ icon() }}</mat-icon>
+        </div>
+        <div class="column-label">
+            <a [attr.data-wowhead]="wowheadId()" [href]="noNavHref">
+                <span
+                    class="item-name item-indention-{{ indention() }}"
+                    [innerHTML]="label()"
+                ></span>
+            </a>
+        </div>
+        <div class="column-note">
+            @switch (note()?.type) {
+                @case ('text') {
+                    {{ $any(note()).text }}
+                }
+                @case ('button') {
+                    <button matButton (click)="runOnClick()">{{ $any(note()).label }}</button>
+                }
+            }
+        </div>
+    </div>
+
+    @if (subitems().length) {
+        @for (subitem of subitems(); track subitem) {
+            <div class="row subitem">
+                <div class="column-completed"></div>
+                <div class="column-label">
+                    <span class="item-name item-indention-{{ indention() + 1 }}">{{
+                        subitem
+                    }}</span>
+                </div>
+                <div class="column-note"></div>
+            </div>
+        }
+    }
+}
+
+@if(item().type === 'header') {
+    @for(item of $any(item()).subitems; track item) {
+        <checklist-tree-line
+            [item]="item"
+            [hideCompleted]="hideCompleted()"
+            [responses]="responses()"
+            [indention]="indention() + 1"
+        />
+    }
+}

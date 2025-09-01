@@ -38,5 +38,4 @@ export interface ChecklistEvaluatorData {
     profile: BattleNetProfile,
     characterInfo: CharacterInfo,
     ingameData: CharacterIngameData,
-    allItems: ChecklistItem[],
 }

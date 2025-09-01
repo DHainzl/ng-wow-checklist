@@ -8,6 +8,5 @@ export interface EvaluatedChecklistItem {
     note: ChecklistNote | undefined;
     subitems: string[];
     wowheadId: string;
-    indention: number;
     baseItem: ChecklistItem;
 }

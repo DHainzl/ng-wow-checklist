@@ -21,6 +21,7 @@ export interface ChecklistItemBase {
 export interface ChecklistItemHeader extends ChecklistItemBase {
     type: 'header';
     level: number;
+    subitems?: ChecklistItem[];
 }
 export interface ChecklistItemAchievement extends ChecklistItemBase {
     id: number;

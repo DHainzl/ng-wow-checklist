@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, viewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { forkJoin, of } from 'rxjs';
@@ -33,7 +33,8 @@ import { ChecklistSecondaryProfessionHandler } from '../../core/services/checkli
 import { AddTitlePipe } from '../../shared/pipes/add-title.pipe';
 import { MediaAssetPipe } from '../../shared/pipes/media-asset.pipe';
 import { SafeBackgroundImagePipe } from '../../shared/pipes/safe-background-image.pipe';
-import { ChecklistLineComponent } from './checklist-line/checklist-line.component';
+import { ChecklistResponses } from './checklist-responses.interface';
+import { ChecklistTreeLineComponent } from './checklist-tree-line/checklist-tree-line.component';
 import { RemoveCharacterDialogComponent } from './remove-character-dialog/remove-character-dialog.component';
 
 @Component({
@@ -56,7 +57,7 @@ import { RemoveCharacterDialogComponent } from './remove-character-dialog/remove
         SafeBackgroundImagePipe,
         AddTitlePipe,
 
-        ChecklistLineComponent,
+        ChecklistTreeLineComponent,
     ],
     providers: [ ChecklistEvaluatorService ],
 })
@@ -75,6 +76,8 @@ export class ChecklistComponent {
     readonly realm = input.required<string>();
     readonly name = input.required<string>();
 
+    readonly subItemComponents = viewChildren(ChecklistTreeLineComponent);
+
     readonly loading = signal<boolean>(true);
     readonly error = signal<string>('');
 
@@ -92,7 +95,30 @@ export class ChecklistComponent {
     readonly characterInfo = signal<CharacterInfo | undefined>(undefined);
     readonly ingameData = signal<CharacterIngameData | undefined>(undefined);
     readonly checklist = signal<Checklist | undefined>(undefined);
-    
+
+    readonly responses = computed<ChecklistResponses>(() => ({
+        quests: this.quests(),
+        professions: this.professions(),
+        reputations: this.reputations(),
+        achievements: this.achievements(),
+        equipment: this.equipment(),
+        media: this.media(),
+        profile: this.profile(),
+        characterInfo: this.characterInfo(),
+        ingameData: this.ingameData(),
+        checklist: this.checklist(),
+    }));
+
+    readonly checklistTree = computed(() => {
+        const checklist = this.checklist();
+
+        if (!checklist) {
+            return [];
+        }
+
+        return this.checklistEvaluatorService.buildTree(checklist.items);;
+    });
+
     readonly availableChecklists = computed(() => {
         const profile = this.profile();
 
@@ -101,31 +127,16 @@ export class ChecklistComponent {
         }
 
         return this.checklistService.getAvailableChecklists(profile);
-    })
+    });
 
-    readonly checklistItems = computed(() => {
-        if (this.loading()) {
-            return [];
+    readonly allCompleted = computed(() => {
+        if (!this.subItemComponents().length) {
+            return false;
         }
 
-        return this.checklistEvaluatorService.evaluate(this.checklist()!, {
-            quests: this.quests()!,
-            professions: this.professions()!,
-            reputations: this.reputations()!,
-            achievements: this.achievements()!,
-            equipment: this.equipment()!,
-            media: this.media()!,
-            profile: this.profile()!,
-            characterInfo: this.characterInfo()!,
-            ingameData: this.ingameData()!,
-            allItems: this.checklist()!.items,
-        });
+        return this.subItemComponents()
+            .every(comp => comp.shown() && comp.completed() === 'complete');
     });
-    readonly allCompleted = computed(() => {
-        const incompleteItems = this.checklistItems()
-            .filter(item => item.shown && item.completed !== 'complete');
-        return incompleteItems.length === 0;
-    })
 
 
     constructor() {
@@ -197,7 +208,7 @@ export class ChecklistComponent {
                 this.professions.set(professions);
                 this.ingameData.set(ingameData);
                 this.checklist.set(checklist);
-                
+
                 const secondaryProfessionOverride = this.characterInfo()!.overrides[ChecklistSecondaryProfessionHandler.GLOBAL_OVERRIDE_KEY];
                 if (secondaryProfessionOverride && secondaryProfessionOverride.type === 'profession-secondary') {
                     this.showSecondaryProfessions.set(secondaryProfessionOverride.enabled);

@@ -1,9 +1,8 @@
 import { EnvironmentInjector, inject, Injectable, Injector, Provider, runInInjectionContext, StaticProvider } from "@angular/core";
+import { ChecklistResponses } from "../../../pages/checklist/checklist-responses.interface";
 import { BattleNetProfile } from "../battle-net/character/types/battlenet-profile";
-import { Checklist, ChecklistItem } from "../checklist/checklist.interface";
-import { EvaluatedChecklistItem } from "./evaluated-checklist-item.interface";
-import { ChecklistEvaluatorData } from "./handlers/_handler.interface";
-import { CHECKLIST_ACHIEVEMENTS, CHECKLIST_ALL_ITEMS, CHECKLIST_CHARACTERINFO, CHECKLIST_EQUIPMENT, CHECKLIST_EVALUATED_ITEMS, CHECKLIST_INGAMEDATA, CHECKLIST_ITEM, CHECKLIST_MEDIA, CHECKLIST_PROFESSIONS, CHECKLIST_PROFILE, CHECKLIST_QUESTS, CHECKLIST_REPUTATIONS, ChecklistHandler } from "./handlers/_handler.service";
+import { ChecklistItem } from "../checklist/checklist.interface";
+import { CHECKLIST_ACHIEVEMENTS, CHECKLIST_CHARACTERINFO, CHECKLIST_EQUIPMENT, CHECKLIST_INGAMEDATA, CHECKLIST_ITEM, CHECKLIST_MEDIA, CHECKLIST_PROFESSIONS, CHECKLIST_PROFILE, CHECKLIST_QUESTS, CHECKLIST_REPUTATIONS, ChecklistHandler } from "./handlers/_handler.service";
 import { ChecklistAchievementHandler } from "./handlers/achievement-handler";
 import { ChecklistAnyQuestHandler } from "./handlers/any-quest-handler";
 import { ChecklistAverageEquipmentHandler } from "./handlers/average-equipment-level-handler";
@@ -72,61 +71,58 @@ export class ChecklistEvaluatorService {
         'reputation-renown': ChecklistReputationRenownHandler,
     };
 
-    evaluate(checklist: Checklist, data: ChecklistEvaluatorData): EvaluatedChecklistItem[] {
-        const items = checklist.items
-            .filter(item => this.isInRightCovenant(item, data.profile))
-            .filter(item => this.isRightClass(item, data.profile));
+    buildTree(items: ChecklistItem[]): ChecklistItem[] {
+        const tree: ChecklistItem[] = [];
+        const itemsCopy = [...items];
 
-        const evaluated: EvaluatedChecklistItem[] = [];
+        var currentItem: ChecklistItem | undefined;
 
-        // Go through them bottom-to-top so we can evaluate the headers when we reach them
-        items.reverse()
-            .forEach(item => evaluated.unshift(this.evaluateItem(item, evaluated, data)));
+        while (currentItem = itemsCopy.shift()) {
+            if (currentItem.type === 'header') {
+                const currentLevel = currentItem.level;
+                const nextIndex = itemsCopy.findIndex(item => item.type === 'header' && item.level <= currentLevel);
+                const subitems = nextIndex === -1 ? itemsCopy.splice(0) : itemsCopy.splice(0, nextIndex);
 
-        return evaluated;
-    }
-
-    private evaluateItem(item: ChecklistItem, evaluated: EvaluatedChecklistItem[], data: ChecklistEvaluatorData): EvaluatedChecklistItem {
-        if (this.HANDLERS[item.type]) {
-            const injector = Injector.create({
-                providers: [
-                    ...this.handlerProviders,
-
-                    { provide: CHECKLIST_ITEM, useValue: item },
-                    { provide: CHECKLIST_EVALUATED_ITEMS, useValue: evaluated },
-                    { provide: CHECKLIST_ALL_ITEMS, useValue: data.allItems },
-                    { provide: CHECKLIST_QUESTS, useValue: data.quests },
-                    { provide: CHECKLIST_PROFESSIONS, useValue: data.professions },
-                    { provide: CHECKLIST_REPUTATIONS, useValue: data.reputations },
-                    { provide: CHECKLIST_ACHIEVEMENTS, useValue: data.achievements },
-                    { provide: CHECKLIST_EQUIPMENT, useValue: data.equipment },
-                    { provide: CHECKLIST_MEDIA, useValue: data.media },
-                    { provide: CHECKLIST_PROFILE, useValue: data.profile },
-                    { provide: CHECKLIST_CHARACTERINFO, useValue: data.characterInfo },
-                    { provide: CHECKLIST_INGAMEDATA, useValue: data.ingameData },
-                ],
-                parent: this.environmentInjector,
-            });
-
-            const handler = runInInjectionContext(injector, () => {
-                return inject(this.HANDLERS[item.type]);
-            });
-
-            return handler.evaluate();
+                tree.push({
+                    ...currentItem,
+                    subitems: this.buildTree(subitems),
+                })
+            } else {
+                tree.push(currentItem);
+            }
         }
 
-        console.warn('Could not find handler for checklist item!', item.type, item.name);
+        return tree;
+    }
 
-        return {
-            completed: 'loading',
-            indention: 0,
-            label: item.name,
-            note: undefined,
-            shown: true,
-            subitems: [],
-            wowheadId: '',
-            baseItem: item,
-        };
+    getHandler(item: ChecklistItem, responses: ChecklistResponses): ChecklistHandler<ChecklistItem> {
+        if (!this.HANDLERS[item.type]) {
+            throw new Error('Could not find handler for checklist item! ' + item.type);
+        }
+
+        const injector = Injector.create({
+            providers: [
+                ...this.handlerProviders,
+
+                { provide: CHECKLIST_ITEM, useValue: item },
+                { provide: CHECKLIST_QUESTS, useValue: responses.quests },
+                { provide: CHECKLIST_PROFESSIONS, useValue: responses.professions },
+                { provide: CHECKLIST_REPUTATIONS, useValue: responses.reputations },
+                { provide: CHECKLIST_ACHIEVEMENTS, useValue: responses.achievements },
+                { provide: CHECKLIST_EQUIPMENT, useValue: responses.equipment },
+                { provide: CHECKLIST_MEDIA, useValue: responses.media },
+                { provide: CHECKLIST_PROFILE, useValue: responses.profile },
+                { provide: CHECKLIST_CHARACTERINFO, useValue: responses.characterInfo },
+                { provide: CHECKLIST_INGAMEDATA, useValue: responses.ingameData },
+            ],
+            parent: this.environmentInjector,
+        });
+
+        const handler = runInInjectionContext(injector, () => {
+            return inject(this.HANDLERS[item.type]);
+        });
+
+        return handler;
     }
 
     private isInRightCovenant(item: ChecklistItem, profile: BattleNetProfile): boolean {

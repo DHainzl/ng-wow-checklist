@@ -11,8 +11,6 @@ import { ChecklistItem } from "../../checklist/checklist.interface";
 import { EvaluatedChecklistItem } from "../evaluated-checklist-item.interface";
 
 export const CHECKLIST_ITEM = new InjectionToken<ChecklistItem>('Checklist Item');
-export const CHECKLIST_EVALUATED_ITEMS = new InjectionToken<EvaluatedChecklistItem[]>('Previously evaluated items');
-export const CHECKLIST_ALL_ITEMS = new InjectionToken<ChecklistItem[]>('All Checklist Items');
 export const CHECKLIST_QUESTS = new InjectionToken<BattleNetQuests>('Provided Checklist Data: Quests')
 export const CHECKLIST_PROFESSIONS = new InjectionToken<BattleNetProfessions>('Provided Checklist Data: Professions')
 export const CHECKLIST_REPUTATIONS = new InjectionToken<BattleNetCharacterReputations>('Provided Checklist Data: Reputation')
@@ -26,14 +24,12 @@ export const CHECKLIST_INGAMEDATA = new InjectionToken<CharacterIngameData>('Pro
 @Injectable()
 export abstract class ChecklistHandler<T extends ChecklistItem> {
     protected readonly item = inject<T>(CHECKLIST_ITEM);
-    protected readonly allItems = inject<ChecklistItem[]>(CHECKLIST_ALL_ITEMS);
 
     abstract evaluate(): EvaluatedChecklistItem;
 
     getBaseEvaluatedItem(): EvaluatedChecklistItem {
         return {
             completed: 'loading',
-            indention: this.getIndention(),
             label: this.item.name,
             note: undefined,
             shown: true,
@@ -41,22 +37,5 @@ export abstract class ChecklistHandler<T extends ChecklistItem> {
             wowheadId: '',
             baseItem: this.item,
         };
-    }
-
-    private getIndention(): number {
-        if (this.item.type === 'header') {
-            return this.item.level;
-        }
-
-        let lastIndention = 0;
-        this.allItems.find(item => {
-            if (item.type === 'header') {
-                lastIndention = item.level;
-            }
-
-            return item.key === this.item.key;
-        });
-
-        return lastIndention + 1;
     }
 }

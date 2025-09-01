@@ -11,13 +11,6 @@ mat-card-subtitle {
     font-size: 15px;
 }
 
-.checklist {
-    background-color: var(--mat-sys-surface-container-low);
-    color: var(--mat-sys-on-surface);
-    border-radius: var(--mat-sys-corner-medium);
-    padding: 10px 0;
-}
-
 .completion-alert {
     background-color: var(--mat-sys-tertiary-container);
     color: var(--mat-sys-on-tertiary-container);
@@ -38,4 +31,18 @@ mat-card-subtitle {
 .error {
     margin: 15px 0;
     color: var(--mat-sys-error);
+}
+
+
+.checklist-card {
+    display: block;
+    background-color: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+    border-radius: var(--mat-sys-corner-medium);
+    padding: 10px 0;
+    margin-bottom: 20px;
+
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
 }

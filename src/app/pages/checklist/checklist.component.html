@@ -106,12 +106,12 @@
                         </div>
                     }
 
-                    @if (!allCompleted() || !hideCompleted()) {
-                        <div class="checklist">
-                            @for (item of checklistItems(); track item) {
-                                <checklist-line [item]="item" [hideCompleted]="hideCompleted()" />
-                            }
-                        </div>
+                    @for(item of checklistTree(); track item) {
+                        <checklist-tree-line
+                            [item]="item"
+                            [hideCompleted]="hideCompleted()"
+                            [responses]="responses()"
+                        />
                     }
                 </mat-card-content>
             }
