@@ -63,6 +63,11 @@ const data: Checklist = {
         { key: 'story-warwithin-karesh-thelightofkaresh', name: 'The Light of K\'aresh', type: 'quest', id: 86458 },
         { key: 'story-warwithin-karesh-reshiiwraps', name: 'Reshii Wraps fully upgraded', type: 'item-level', level: 730, slot: 'BACK' },
 
+        { key: 'story-warwithin-voass', name: 'Visions of a Shadowed Sun', type: 'header', level: 2 },
+        { key: 'story-warwithin-voass-radiantvisions', name: 'Radiant Visions', type: 'quest', id: 85002 },
+        { key: 'story-warwithin-voass-ameetingwithminnda', name: 'A Meeting with Minn\'da', type: 'quest', id: 85214 },
+        { key: 'story-warwithin-voass-pathsforward', name: 'Paths Forward', type: 'quest', id: 84949 },
+
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
         { key: 'warwithin-herbalism', type: 'profession-primary', name: 'Khaz Algar Herbalism', id: 2877 },
