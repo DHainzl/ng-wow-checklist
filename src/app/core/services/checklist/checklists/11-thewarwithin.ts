@@ -68,6 +68,10 @@ const data: Checklist = {
         { key: 'story-warwithin-voass-ameetingwithminnda', name: 'A Meeting with Minn\'da', type: 'quest', id: 85214 },
         { key: 'story-warwithin-voass-pathsforward', name: 'Paths Forward', type: 'quest', id: 84949 },
 
+        { key: 'story-warwithin-epilogue', name: 'Epilogue', type: 'header', level: 1 },
+        { key: 'story-warwithin-epilogue-prepatch', name: 'The Cult Within', type: 'quest', id: 90768 },
+        
+
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
         { key: 'warwithin-herbalism', type: 'profession-primary', name: 'Khaz Algar Herbalism', id: 2877 },
