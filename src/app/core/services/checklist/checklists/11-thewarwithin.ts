@@ -70,7 +70,6 @@ const data: Checklist = {
 
         { key: 'story-warwithin-epilogue', name: 'Epilogue', type: 'header', level: 1 },
         { key: 'story-warwithin-epilogue-prepatch', name: 'The Cult Within', type: 'quest', id: 90768 },
-        
 
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
