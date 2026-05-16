@@ -46,6 +46,11 @@ export class ChecklistService {
             name: 'The War Within',
             load: () => import('./checklists/11-thewarwithin').then(m => m.data),
         },
+        {
+            id: 'midnight',
+            name: 'Midnight',
+            load: () => import('./checklists/12-midnight').then(m => m.data),
+        }
     ];
 
     getLatestChecklistId(): string {
