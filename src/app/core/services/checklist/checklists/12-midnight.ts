@@ -1,7 +1,7 @@
 import { Checklist } from '../checklist.interface';
 
 const data: Checklist = {
-    id: 'thewarwithin',
+    id: 'midnight',
     items: [
         { key: 'leveling', name: 'Leveling', type: 'header', level: 0 },
 
@@ -43,6 +43,14 @@ const data: Checklist = {
         { key: 'story-midnight-battleofthebridge', name: 'The Battle of the Bridge', type: 'quest', id: 88769 },
         { key: 'story-midnight-darkwell', name: 'The Darkwell', type: 'quest', id: 88710 },
         { key: 'story-midnight-dawnofanewwell', name: 'Dawn of a New Well', type: 'quest', id: 90867 },
+
+        { key: 'story-curseofulatek', name: 'The Curse of Ula\'tek', type: 'header', level: 1 },
+        { key: 'story-curseofulatek-legacyoftheamani', name: 'Legacy of the Amani', type: 'quest', id: 93012 },
+        { key: 'story-curseofulatek-anislandoffangs', name: 'An Island of Fangs', type: 'quest', id: 93024 },
+        { key: 'story-curseofulatek-ghostsofthepast', name: 'Ghosts of the Past', type: 'quest', id: 92930 },
+        { key: 'story-curseofulatek-originalsin', name: 'Original Sin', type: 'quest', id: 92937 },
+        { key: 'story-curseofulatek-battleforatalutek', name: 'The Battle for Atal\'Utek', type: 'quest', id: 93420 },
+        { key: 'story-curseofulatek-callofthevoid', name: 'The Call of the Void', type: 'quest', id: 94531 },
 
         { key: 'professions', name: 'Professions', type: 'header', level: 0 },
 
